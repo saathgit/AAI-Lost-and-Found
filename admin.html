@@ -1,0 +1,3222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - AAI Lost & Found</title>
+    
+    <!-- Firebase App -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+    :root {
+        --primary-blue: #022A75;
+        --secondary-blue: #001c70;
+        --accent-gold: #d4af37;
+        --light-gold: #e6c34f;
+        --light-blue: #fafdffc1;
+        --white: #ffffff;
+        --black: #000000;
+        --text-dark: #000936;
+        --success: #28a745;
+        --warning: #ffc107;
+        --danger: #dc3545;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Georgia', serif;
+        background-color: var(--light-blue);
+        color: var(--text-dark);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* Enhanced Navigation with Logo */
+    .navbar {
+        background-color: var(--primary-blue) !important;
+        font-size: 17px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        transition: all 0.4s ease;
+        padding: 12px 0;
+        min-height: 80px;
+        position: relative;
+        z-index: 1000;
+    } 
+
+    .navbar.scrolled {
+        padding: 10px 0;
+        backdrop-filter: blur(15px);
+        background-color: rgba(0, 15, 61, 0.98) !important;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar-brand {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--accent-gold) !important;
+        font-size: 1.8rem;
+        transition: all 0.3s ease;
+        padding: 8px 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* Logo Styles */
+    .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo {
+        width: 50px;
+        height: 50px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .logo-box {
+        width: 40px;
+        height: 35px;
+        background: var(--primary-blue);
+        border: 2px solid var(--accent-gold);
+        border-radius: 6px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo-box::before {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        right: 2px;
+        bottom: 2px;
+        background: 
+            linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%),
+            repeating-linear-gradient(0deg, 
+                rgba(255,255,255,0.1) 0px, 
+                rgba(255,255,255,0.1) 1px, 
+                transparent 1px, 
+                transparent 4px
+            );
+        border-radius: 4px;
+    }
+
+    .logo-items {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 25px;
+    }
+
+    .logo-book {
+        position: absolute;
+        width: 12px;
+        height: 15px;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 2px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .logo-book:nth-child(1) {
+        top: 2px;
+        left: 4px;
+        transform: rotate(-5deg);
+    }
+
+    .logo-book:nth-child(2) {
+        top: 5px;
+        left: 10px;
+        transform: rotate(3deg);
+        background: #e9ecef;
+    }
+
+    .logo-book:nth-child(3) {
+        top: 8px;
+        left: 16px;
+        transform: rotate(-2deg);
+        background: #ffffff;
+    }
+
+    .logo-magnifier {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        width: 20px;
+        height: 20px;
+        animation: float-magnifier 3s ease-in-out infinite;
+    }
+
+    .magnifier-handle {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        width: 8px;
+        height: 8px;
+        background: var(--accent-gold);
+        border-radius: 50%;
+        transform: rotate(45deg);
+    }
+
+    .magnifier-handle::before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 12px;
+        height: 3px;
+        background: var(--accent-gold);
+        border-radius: 2px;
+        transform: rotate(-45deg);
+        transform-origin: left center;
+    }
+
+    .magnifier-glass {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 16px;
+        height: 16px;
+        border: 2px solid var(--accent-gold);
+        border-radius: 50%;
+        background: rgba(212, 175, 55, 0.1);
+    }
+
+    .magnifier-glass::before {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 6px;
+        height: 6px;
+        background: var(--accent-gold);
+        border-radius: 50%;
+        opacity: 0.6;
+    }
+
+    @keyframes float-magnifier {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-3px) rotate(5deg);
+        }
+    }
+
+    .navbar-brand:hover .logo {
+        transform: scale(1.1) rotate(-5deg);
+    }
+
+    .navbar-brand:hover .logo-magnifier {
+        animation-duration: 1.5s;
+    }
+
+    .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+    }
+
+    .brand-main {
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+
+    .brand-sub {
+        font-size: 0.7rem;
+        font-weight: 400;
+        opacity: 0.9;
+        letter-spacing: 0.5px;
+    }
+
+    .navbar-nav {
+        gap: 5px;
+    }
+
+    .navbar-nav .nav-item {
+        position: relative;
+        margin: 0 2px;
+    }
+
+    .navbar-nav .nav-item .nav-link {
+        color: var(--white) !important;
+        transition: all 0.3s ease;
+        padding: 12px 20px !important;
+        position: relative;
+        font-weight: 500;
+        border-radius: 8px;
+        margin: 0 3px;
+        font-size: 1.05rem;
+        letter-spacing: 0.3px;
+    }
+
+    .navbar-nav .nav-item .nav-link:hover {
+        color: var(--accent-gold) !important;
+        background: rgba(212, 175, 55, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .navbar-nav .nav-item .nav-link::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    .navbar-nav .nav-item .nav-link:hover::before {
+        width: 70%;
+    }
+
+    .navbar-nav .nav-item.active .nav-link {
+        color: var(--accent-gold) !important;
+        background: rgba(212, 175, 55, 0.15);
+        font-weight: 600;
+    }
+
+    .navbar-nav .nav-item.active .nav-link::before {
+        width: 80%;
+        background: var(--accent-gold);
+    }
+
+    /* Enhanced Navbar Toggler */
+    .navbar-toggler {
+        border: 2px solid var(--accent-gold);
+        padding: 8px 10px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .navbar-toggler:focus {
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+        outline: none;
+    }
+
+    .navbar-toggler:hover {
+        background: rgba(212, 175, 55, 0.1);
+        transform: scale(1.05);
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28212, 175, 53, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='3' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        width: 25px;
+        height: 25px;
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-toggler:hover .navbar-toggler-icon {
+        transform: scale(1.1);
+    }
+
+    /* Enhanced Hero Section with Aurora */
+    .hero {
+        background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+        color: var(--white);
+        padding: 120px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+        animation: pulse 8s ease-in-out infinite;
+    }
+
+    /* Aurora Borealis Effect */
+    .aurora {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.8;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .aurora-layer {
+        position: absolute;
+        width: 200%;
+        height: 400px;
+        background: linear-gradient(90deg, 
+            transparent 0%,
+            rgba(212, 175, 55, 0.3) 20%,
+            rgba(100, 200, 255, 0.4) 40%,
+            rgba(212, 175, 55, 0.3) 60%,
+            transparent 100%
+        );
+        filter: blur(25px);
+        animation: aurora-flow 18s ease-in-out infinite;
+    }
+
+    .aurora-layer:nth-child(1) {
+        top: 15%;
+        animation-delay: 0s;
+        background: linear-gradient(90deg, 
+            transparent 0%,
+            rgba(212, 175, 55, 0.25) 25%,
+            rgba(100, 200, 255, 0.35) 50%,
+            rgba(212, 175, 55, 0.25) 75%,
+            transparent 100%
+        );
+        height: 350px;
+    }
+
+    .aurora-layer:nth-child(2) {
+        top: 40%;
+        animation-delay: -4s;
+        background: linear-gradient(90deg, 
+            transparent 0%,
+            rgba(100, 200, 255, 0.3) 30%,
+            rgba(212, 175, 55, 0.4) 60%,
+            rgba(100, 200, 255, 0.3) 90%,
+            transparent 100%
+        );
+        height: 300px;
+    }
+
+    .aurora-layer:nth-child(3) {
+        top: 65%;
+        animation-delay: -8s;
+        background: linear-gradient(90deg, 
+            transparent 0%,
+            rgba(212, 175, 55, 0.35) 20%,
+            rgba(100, 200, 255, 0.25) 40%,
+            rgba(212, 175, 55, 0.35) 80%,
+            transparent 100%
+        );
+        height: 250px;
+    }
+
+    @keyframes aurora-flow {
+        0%, 100% {
+            transform: translateX(-50%) translateY(0px) scaleY(1);
+            opacity: 0.6;
+        }
+        25% {
+            transform: translateX(-25%) translateY(15px) scaleY(1.2);
+            opacity: 0.9;
+        }
+        50% {
+            transform: translateX(0%) translateY(0px) scaleY(1);
+            opacity: 0.7;
+        }
+        75% {
+            transform: translateX(-75%) translateY(-15px) scaleY(0.8);
+            opacity: 0.8;
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% { 
+            opacity: 0.8; 
+            transform: scale(1);
+        }
+        50% { 
+            opacity: 1; 
+            transform: scale(1.02);
+        }
+    }
+
+    /* Enhanced Particle Background */
+    .particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 2;
+    }
+
+    .particle {
+        position: absolute;
+        background: var(--accent-gold);
+        border-radius: 50%;
+        opacity: 0.7;
+        animation: float-particle 35s infinite linear;
+        box-shadow: 
+            0 0 15px rgba(212, 175, 55, 0.6),
+            0 0 30px rgba(212, 175, 55, 0.3);
+    }
+
+    .particle:nth-child(odd) {
+        background: var(--light-gold);
+        opacity: 0.6;
+        box-shadow: 
+            0 0 12px rgba(230, 195, 79, 0.5),
+            0 0 25px rgba(230, 195, 79, 0.2);
+    }
+
+    .particle:nth-child(3n) {
+        background: rgba(255, 255, 255, 0.9);
+        opacity: 0.4;
+        box-shadow: 
+            0 0 10px rgba(255, 255, 255, 0.4),
+            0 0 20px rgba(255, 255, 255, 0.2);
+    }
+
+    .particle:nth-child(4n) {
+        background: rgba(100, 200, 255, 0.8);
+        opacity: 0.5;
+        box-shadow: 
+            0 0 12px rgba(100, 200, 255, 0.5),
+            0 0 25px rgba(100, 200, 255, 0.2);
+    }
+
+    @keyframes float-particle {
+        0% {
+            transform: translateY(120vh) rotate(0deg) scale(0.4);
+            opacity: 0;
+        }
+        5% {
+            opacity: 0.7;
+            transform: scale(0.8);
+        }
+        90% {
+            opacity: 0.7;
+        }
+        95% {
+            opacity: 0.3;
+        }
+        100% {
+            transform: translateY(-150px) rotate(180deg) scale(1.2);
+            opacity: 0;
+        }
+    }
+
+    /* Hero Content Styling */
+    .hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        color: var(--accent-gold);
+        position: relative;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        line-height: 1.2;
+        animation: textGlow 3s ease-in-out infinite alternate;
+        z-index: 3;
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.95;
+        position: relative;
+        font-weight: 300;
+        letter-spacing: 0.5px;
+        line-height: 1.4;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        color: var(--white);
+        z-index: 3;
+    }
+
+    @keyframes textGlow {
+        from {
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+                         0 0 20px rgba(212, 175, 55, 0.3);
+        }
+        to {
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+                         0 0 30px rgba(212, 175, 55, 0.5),
+                         0 0 40px rgba(212, 175, 55, 0.3);
+        }
+    }
+
+    /* Login Section */
+    .login-section {
+        padding: 80px 0;
+        background-color: var(--white);
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .login-container {
+        max-width: 450px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 10;
+    }
+
+    .login-card {
+        background: var(--white);
+        border-radius: 20px;
+        padding: 50px 40px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        border: 2px solid transparent;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transform-style: preserve-3d;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .login-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 2px solid transparent;
+        border-radius: 20px;
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold)) border-box;
+        -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+    }
+
+    .login-card:hover::before {
+        opacity: 1;
+    }
+
+    .login-card:hover {
+        transform: translateY(-8px) rotateX(5deg);
+        box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+    }
+
+    .login-icon {
+        font-size: 4rem;
+        color: var(--accent-gold);
+        margin-bottom: 25px;
+        display: inline-block;
+        transition: all 0.4s ease;
+    }
+
+    .login-card:hover .login-icon {
+        transform: scale(1.1) rotateY(10deg);
+        color: var(--light-gold);
+    }
+
+    .login-card h2 {
+        color: var(--primary-blue);
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 15px;
+        position: relative;
+    }
+
+    .login-card p {
+        color: var(--secondary-blue);
+        margin-bottom: 35px;
+        line-height: 1.6;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+        text-align: left;
+        position: relative;
+        z-index: 20;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        color: var(--primary-blue);
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .form-control {
+        border: 2px solid var(--light-blue);
+        border-radius: 10px;
+        padding: 14px 18px;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        position: relative;
+        z-index: 30;
+        background-color: var(--white) !important;
+    }
+
+    .form-control:focus {
+        border-color: var(--accent-gold);
+        box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+    }
+
+    /* Fix for text input issues */
+    input, textarea, select {
+        pointer-events: auto !important;
+        user-select: text !important;
+        -webkit-user-select: text !important;
+        position: relative;
+        z-index: 100;
+    }
+
+    .btn-login {
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        color: var(--primary-blue);
+        border: none;
+        padding: 16px 35px;
+        font-weight: bold;
+        border-radius: 50px;
+        transition: all 0.4s ease;
+        width: 100%;
+        margin-top: 15px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-size: 1.1rem;
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+        position: relative;
+        overflow: hidden;
+        z-index: 20;
+    }
+
+    .btn-login::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: left 0.6s;
+    }
+
+    .btn-login:hover::before {
+        left: 100%;
+    }
+
+    .btn-login:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(212, 175, 55, 0.4);
+        color: var(--primary-blue);
+    }
+
+    .btn-login:disabled {
+        background: var(--light-blue);
+        color: var(--text-dark);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .alert-danger {
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
+        border: 2px solid var(--danger);
+        color: var(--danger);
+        text-align: left;
+        border-radius: 12px;
+        padding: 15px 20px;
+        margin-bottom: 25px;
+        z-index: 10;
+    }
+
+    /* Admin Dashboard (Hidden by default) */
+    .admin-section {
+        padding: 60px 0;
+        background-color: var(--light-blue);
+        display: none;
+        position: relative;
+    }
+
+    .form-card {
+        background: var(--white);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        border: 2px solid transparent;
+        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+        transform-style: preserve-3d;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 10;
+    }
+
+    .form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 2px solid transparent;
+        border-radius: 20px;
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold)) border-box;
+        -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+    }
+
+    .form-card:hover::before {
+        opacity: 1;
+    }
+
+    .form-card:hover {
+        transform: translateY(-8px) rotateX(5deg);
+        box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+    }
+
+    .form-card h3 {
+        color: var(--primary-blue);
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 25px;
+        border-bottom: 3px solid var(--accent-gold);
+        padding-bottom: 15px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .form-card h3 i {
+        color: var(--accent-gold);
+        margin-right: 10px;
+    }
+
+    .stats-card {
+        background: var(--white);
+        border-radius: 20px;
+        padding: 35px 25px;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        border: 2px solid transparent;
+        transition: all 0.4s ease;
+        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+        transform-style: preserve-3d;
+    }
+
+    .stats-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 2px solid transparent;
+        border-radius: 20px;
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold)) border-box;
+        -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+    }
+
+    .stats-card:hover::before {
+        opacity: 1;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-10px) rotateX(5deg);
+        border-color: var(--accent-gold);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    }
+
+    .stats-icon {
+        font-size: 3rem;
+        color: var(--accent-gold);
+        margin-bottom: 20px;
+        display: inline-block;
+        transition: all 0.4s ease;
+    }
+
+    .stats-card:hover .stats-icon {
+        transform: scale(1.1) rotateY(10deg);
+        color: var(--light-gold);
+    }
+
+    .stats-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--primary-blue);
+        display: block;
+        margin-bottom: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .stats-card:hover .stats-number {
+        color: var(--secondary-blue);
+    }
+
+    .stats-label {
+        font-size: 1.1rem;
+        color: var(--secondary-blue);
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        color: var(--primary-blue);
+        border: none;
+        padding: 14px 30px;
+        font-weight: bold;
+        border-radius: 50px;
+        transition: all 0.4s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1rem;
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+        z-index: 20;
+    }
+
+    .btn-submit::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: left 0.6s;
+    }
+
+    .btn-submit:hover::before {
+        left: 100%;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(212, 175, 55, 0.4);
+        text-decoration: none;
+        color: var(--primary-blue);
+    }
+
+    .btn-logout {
+        background: linear-gradient(135deg, var(--danger), #c82333);
+        color: var(--white);
+        border: none;
+        padding: 12px 25px;
+        font-weight: bold;
+        border-radius: 50px;
+        transition: all 0.4s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+        position: relative;
+        overflow: hidden;
+        z-index: 20;
+    }
+
+    .btn-logout::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: left 0.6s;
+    }
+
+    .btn-logout:hover::before {
+        left: 100%;
+    }
+
+    .btn-logout:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(220, 53, 69, 0.4);
+        color: var(--white);
+    }
+
+    .btn-outline-primary {
+        border: 2px solid var(--primary-blue);
+        color: var(--primary-blue);
+        background: transparent;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--primary-blue);
+        color: var(--white);
+        transform: translateY(-2px);
+    }
+
+    .btn-outline-danger {
+        border: 2px solid var(--danger);
+        color: var(--danger);
+        background: transparent;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: var(--danger);
+        color: var(--white);
+        transform: translateY(-2px);
+    }
+
+    .admin-table {
+        background: var(--white);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .admin-table:hover {
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    .table th {
+        background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+        color: var(--white);
+        border: none;
+        font-weight: 600;
+        padding: 15px 12px;
+    }
+
+    .table td {
+        border-color: var(--light-blue);
+        vertical-align: middle;
+        padding: 12px;
+    }
+
+    .badge-status {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        display: inline-block;
+    }
+
+    .badge-available {
+        background: linear-gradient(135deg, var(--success), #34ce57);
+        color: white;
+    }
+
+    .badge-claimed {
+        background: linear-gradient(135deg, var(--secondary-blue), #002288);
+        color: white;
+    }
+
+    .badge-pending {
+        background: linear-gradient(135deg, var(--warning), #e0a800);
+        color: var(--black);
+    }
+
+    .action-buttons .btn {
+        margin: 0 3px;
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .action-buttons .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+        background: var(--white);
+        border-radius: 15px;
+        padding: 25px 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .admin-welcome {
+        color: var(--primary-blue);
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 5px;
+    }
+
+    .admin-welcome-text {
+        color: var(--secondary-blue);
+        margin-bottom: 0;
+    }
+
+    /* Custom Modal System */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 15, 61, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .custom-modal {
+        background: var(--white);
+        border-radius: 20px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+        max-width: 500px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        transform: scale(0.8) translateY(-20px);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .custom-modal::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 2px solid transparent;
+        border-radius: 20px;
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold)) border-box;
+        -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+    }
+
+    .modal-overlay.active .custom-modal {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+
+    .modal-overlay.active .custom-modal::before {
+        opacity: 1;
+    }
+
+    .modal-header {
+        padding: 25px 30px 15px;
+        border-bottom: 2px solid var(--light-blue);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .modal-icon {
+        font-size: 2.2rem;
+        color: var(--accent-gold);
+    }
+
+    .modal-title {
+        color: var(--primary-blue);
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        margin: 0;
+        flex: 1;
+    }
+
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--secondary-blue);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-close:hover {
+        background: var(--light-blue);
+        color: var(--danger);
+        transform: rotate(90deg);
+    }
+
+    .modal-body {
+        padding: 25px 30px;
+        color: var(--text-dark);
+        line-height: 1.6;
+    }
+
+    .modal-footer {
+        padding: 15px 30px 25px;
+        display: flex;
+        gap: 15px;
+        justify-content: flex-end;
+        border-top: 2px solid var(--light-blue);
+    }
+
+    .modal-btn {
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1rem;
+    }
+
+    .modal-btn-primary {
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        color: var(--primary-blue);
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .modal-btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+    }
+
+    .modal-btn-secondary {
+        background: var(--light-blue);
+        color: var(--secondary-blue);
+        border: 2px solid var(--light-blue);
+    }
+
+    .modal-btn-secondary:hover {
+        background: var(--white);
+        border-color: var(--secondary-blue);
+        transform: translateY(-2px);
+    }
+
+    .modal-btn-danger {
+        background: linear-gradient(135deg, var(--danger), #c82333);
+        color: var(--white);
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    .modal-btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+    }
+
+    .modal-content {
+        white-space: pre-line;
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 10px;
+        background: var(--light-blue);
+        border-radius: 10px;
+        margin-top: 15px;
+    }
+
+    /* Modal Variations */
+    .modal-success .modal-icon {
+        color: var(--success);
+    }
+
+    .modal-warning .modal-icon {
+        color: var(--warning);
+    }
+
+    .modal-danger .modal-icon {
+        color: var(--danger);
+    }
+
+    .modal-info .modal-icon {
+        color: var(--primary-blue);
+    }
+
+    /* Footer */
+    footer {
+        background-color: var(--primary-blue);
+        color: var(--white);
+        padding: 50px 0 20px;
+        margin-top: auto;
+        position: relative;
+    }
+
+    .footer-links a {
+        color: var(--accent-gold);
+        text-decoration: none;
+        margin: 0 15px;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .footer-links a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 1px;
+        bottom: -2px;
+        left: 0;
+        background-color: var(--accent-gold);
+        transition: width 0.3s ease;
+    }
+
+    .footer-links a:hover {
+        color: var(--light-gold);
+        text-decoration: none;
+    }
+
+    .footer-links a:hover::after {
+        width: 100%;
+    }
+
+    /* Enhanced Scroll Animations for Down-only triggering */
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .scroll-animate.animated {
+        opacity: 1;
+        transform: translateY(0);
+        /* Once animated, stay animated - no reverse transitions */
+    }
+
+    .scroll-animate-delay-1 {
+        transition-delay: 0.1s;
+    }
+
+    .scroll-animate-delay-2 {
+        transition-delay: 0.2s;
+    }
+
+    .scroll-animate-delay-3 {
+        transition-delay: 0.3s;
+    }
+
+    /* Ensure section titles stay visible but can re-animate */
+    .section-title.scroll-animate {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .section-title.scroll-animate:not(.animated) {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    /* Hero elements should animate once and stay */
+    .hero .scroll-animate {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 2.8rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+        }
+        
+        .hero {
+            padding: 80px 0;
+        }
+        
+        .login-card {
+            padding: 30px 25px;
+        }
+        
+        .form-card {
+            padding: 25px;
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+        }
+        
+        .brand-main {
+            font-size: 1.2rem;
+        }
+        
+        .brand-sub {
+            font-size: 0.65rem;
+        }
+        
+        .logo {
+            width: 45px;
+            height: 45px;
+        }
+        
+        .logo-box {
+            width: 35px;
+            height: 30px;
+        }
+        
+        .navbar-nav {
+            gap: 0;
+            padding: 15px 0;
+        }
+        
+        .navbar-nav .nav-item {
+            margin: 2px 0;
+        }
+        
+        .navbar-nav .nav-item .nav-link {
+            padding: 12px 15px !important;
+            margin: 2px 0;
+            text-align: center;
+            border-radius: 6px;
+        }
+        
+        .navbar-nav .nav-item .nav-link:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .navbar-collapse {
+            background: rgba(0, 15, 61, 0.95);
+            border-radius: 12px;
+            margin-top: 10px;
+            padding: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .footer-links a {
+            display: block;
+            margin: 10px 0;
+        }
+
+        .admin-header {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        
+        .btn-logout {
+            margin-left: 0;
+            margin-top: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .action-buttons .btn {
+            display: block;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        .modal-footer {
+            flex-direction: column;
+        }
+        
+        .modal-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .navbar-brand {
+            font-size: 1.3rem;
+        }
+        
+        .brand-main {
+            font-size: 1.1rem;
+        }
+        
+        .brand-sub {
+            font-size: 0.6rem;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .logo-box {
+            width: 32px;
+            height: 28px;
+        }
+        
+        .logo-items {
+            width: 26px;
+            height: 22px;
+        }
+        
+        .logo-book {
+            width: 10px;
+            height: 13px;
+        }
+        
+        .logo-magnifier {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .magnifier-glass {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .stats-card {
+            padding: 25px 15px;
+        }
+        
+        .stats-number {
+            font-size: 2rem;
+        }
+        
+        .modal-header {
+            padding: 20px 25px 15px;
+        }
+        
+        .modal-body {
+            padding: 20px 25px;
+        }
+        
+        .modal-footer {
+            padding: 15px 25px 20px;
+        }
+    }
+
+    /* Add subtle animation when page loads */
+    @keyframes slideInNav {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .navbar {
+        animation: slideInNav 0.6s ease-out;
+    }
+
+    /* Additional floating shapes */
+    .floating-shape {
+        position: absolute;
+        opacity: 0.1;
+        animation: float-shape 25s infinite linear;
+    }
+
+    .floating-shape.circle {
+        background: var(--accent-gold);
+        border-radius: 50%;
+    }
+
+    .floating-shape.triangle {
+        width: 0;
+        height: 0;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-bottom: 26px solid var(--accent-gold);
+        background: transparent;
+    }
+
+    .floating-shape.square {
+        background: var(--light-gold);
+        transform: rotate(45deg);
+    }
+
+    @keyframes float-shape {
+        0% {
+            transform: translateY(100vh) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.1;
+        }
+        90% {
+            opacity: 0.1;
+        }
+        100% {
+            transform: translateY(-100px) rotate(720deg);
+            opacity: 0;
+        }
+    }
+
+    /* Fix section titles visibility */
+    .section-title {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+
+    .section-title.scroll-animate {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+
+    .section-title.scroll-animate.animated {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+
+    /* Form check styling */
+    .form-check-input:checked {
+        background-color: var(--accent-gold);
+        border-color: var(--accent-gold);
+    }
+
+    .form-check-input:focus {
+        border-color: var(--accent-gold);
+        box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+    }
+
+    .form-check-label {
+        color: var(--text-dark);
+    }
+
+    /* Pagination styling */
+    .pagination .page-link {
+        color: var(--primary-blue);
+        border: 1px solid var(--light-blue);
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: var(--accent-gold);
+        border-color: var(--accent-gold);
+        color: var(--primary-blue);
+    }
+
+    .pagination .page-link:hover {
+        background-color: var(--light-blue);
+        border-color: var(--accent-gold);
+        color: var(--primary-blue);
+    }
+    </style>
+</head>
+<body>
+    <!-- Navigation with Logo -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="logo-container">
+                    <div class="logo">
+                        <div class="logo-box">
+                            <div class="logo-items">
+                                <div class="logo-book"></div>
+                                <div class="logo-book"></div>
+                                <div class="logo-book"></div>
+                            </div>
+                        </div>
+                        <div class="logo-magnifier">
+                            <div class="magnifier-glass"></div>
+                            <div class="magnifier-handle"></div>
+                        </div>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-main">AAI Lost & Found</span>
+                        <span class="brand-sub">Alliance Academy For Innovation</span>
+                    </div>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="browse.html">Browse Items</a></li>
+                    <li class="nav-item"><a class="nav-link" href="report.html">Report Found</a></li>
+                    <li class="nav-item"><a class="nav-link" href="claim.html">Claim Item</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="admin.html">Admin</a></li>
+                    <!-- Add this logout button to all pages except login -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutBtn" style="color: var(--light-gold) !important;">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Enhanced Hero Section -->
+    <section class="hero">
+        <div class="particles" id="particles"></div>
+        <div class="aurora"></div>
+        <div class="container">
+            <h1 class="scroll-animate">Admin Dashboard</h1>
+            <p class="hero-subtitle scroll-animate scroll-animate-delay-1">
+                Manage lost and found items, claims, and system settings
+            </p>
+        </div>
+    </section>
+
+    <!-- Login Section -->
+    <section class="login-section" id="loginSection">
+        <div class="container">
+            <div class="login-container">
+                <div class="login-card scroll-animate">
+                    <div class="login-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h2>Admin Login</h2>
+                    <p>Enter your credentials to access the admin dashboard</p>
+                    
+                    <div class="alert alert-danger" id="loginError" style="display: none;">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <span id="errorMessage">Invalid username or password</span>
+                    </div>
+
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" placeholder="Enter admin username" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                        </div>
+
+                        <button type="submit" class="btn-login" id="loginButton">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login to Dashboard
+                        </button>
+                    </form>
+
+                    <div class="mt-4 pt-3 border-top">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Contact system administrator if you've forgotten your credentials
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Dashboard (Hidden until login) -->
+    <section class="admin-section" id="adminSection">
+        <div class="container">
+            <!-- Admin Header with Logout -->
+            <div class="admin-header scroll-animate">
+                <div>
+                    <h2 class="admin-welcome">Welcome, <span id="adminName">Administrator</span></h2>
+                    <p class="admin-welcome-text">Last login: <span id="lastLogin">Just now</span></p>
+                </div>
+                <button class="btn-logout" onclick="showConfirmModal('Are you sure you want to logout?', logout, null, 'warning')">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </button>
+            </div>
+
+            <!-- Admin Stats -->
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <div class="stats-card scroll-animate">
+                        <div class="stats-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <span class="stats-number" id="totalItems">24</span>
+                        <span class="stats-label">Total Items</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stats-card scroll-animate scroll-animate-delay-1">
+                        <div class="stats-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <span class="stats-number" id="claimedItems">14</span>
+                        <span class="stats-label">Items Claimed</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stats-card scroll-animate scroll-animate-delay-2">
+                        <div class="stats-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <span class="stats-number" id="pendingClaims">5</span>
+                        <span class="stats-label">Pending Claims</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stats-card scroll-animate scroll-animate-delay-3">
+                        <div class="stats-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <span class="stats-number" id="availableItems">5</span>
+                        <span class="stats-label">Available Items</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="form-card scroll-animate">
+                        <h3><i class="fas fa-bolt me-2"></i>Quick Actions</h3>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <a href="report.html" class="btn-submit w-100 text-center">
+                                    <i class="fas fa-plus me-2"></i>Add Item
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <button class="btn-submit w-100" onclick="exportData()">
+                                    <i class="fas fa-download me-2"></i>Export Data
+                                </button>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <button class="btn-submit w-100" onclick="showBulkActionsModal()">
+                                    <i class="fas fa-tasks me-2"></i>Bulk Actions
+                                </button>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <button class="btn-submit w-100" onclick="showSettingsModal()">
+                                    <i class="fas fa-cog me-2"></i>Settings
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Items Management -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-card scroll-animate">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="mb-0"><i class="fas fa-list me-2"></i>Item Management</h3>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-primary" onclick="filterItems('all')">All</button>
+                                <button class="btn btn-sm btn-outline-primary" onclick="filterItems('available')">Available</button>
+                                <button class="btn btn-sm btn-outline-primary" onclick="filterItems('claimed')">Claimed</button>
+                                <button class="btn btn-sm btn-outline-primary" onclick="filterItems('pending')">Pending</button>
+                            </div>
+                        </div>
+
+                        <div class="admin-table">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" id="selectAll">
+                                            </th>
+                                            <th>ID</th>
+                                            <th>Item Name</th>
+                                            <th>Category</th>
+                                            <th>Date Found</th>
+                                            <th>Location</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminItemsTable">
+                                        <!-- Items will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteSelected()">
+                                    <i class="fas fa-trash me-1"></i>Delete Selected
+                                </button>
+                            </div>
+                            <nav>
+                                <ul class="pagination pagination-sm mb-0">
+                                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Claims Management -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="form-card scroll-animate">
+                        <h3><i class="fas fa-handshake me-2"></i>Claim Requests</h3>
+
+                        <div class="admin-table">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Claim ID</th>
+                                            <th>Item</th>
+                                            <th>Claimant</th>
+                                            <th>Date Submitted</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminClaimsTable">
+                                        <!-- Claims will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 scroll-animate">
+                    <div class="logo-container" style="justify-content: flex-start; margin-bottom: 15px;">
+                        <div class="logo" style="width: 40px; height: 40px;">
+                            <div class="logo-box">
+                                <div class="logo-items">
+                                    <div class="logo-book"></div>
+                                    <div class="logo-book"></div>
+                                    <div class="logo-book"></div>
+                                </div>
+                            </div>
+                            <div class="logo-magnifier">
+                                <div class="magnifier-glass"></div>
+                                <div class="magnifier-handle"></div>
+                            </div>
+                        </div>
+                        <div class="brand-text">
+                            <span class="brand-main">AAI Lost & Found</span>
+                            <span class="brand-sub">Alliance Academy For Innovation</span>
+                        </div>
+                    </div>
+                    <p>Helping reunite students with their belongings since 2024</p>
+                </div>
+                <div class="col-md-6 text-md-end scroll-animate scroll-animate-delay-1">
+                    <div class="footer-links">
+                        <a href="index.html"><i class="fas fa-home me-1"></i> Home</a>
+                        <a href="browse.html"><i class="fas fa-search me-1"></i> Browse</a>
+                        <a href="report.html"><i class="fas fa-plus me-1"></i> Report</a>
+                        <a href="claim.html"><i class="fas fa-handshake me-1"></i> Claim</a>
+                        <a href="admin.html"><i class="fas fa-cog me-1"></i> Admin</a>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-color: var(--accent-gold);">
+            <div class="row">
+                <div class="col-12 text-center scroll-animate">
+                    <p>&copy; 2024 Alliance Academy For Innovation. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Modal Container -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="custom-modal" id="customModal">
+            <!-- Modal content will be inserted here dynamically -->
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+    // Custom Modal System
+    let currentModalCallback = null;
+    let currentModalCancelCallback = null;
+
+    function showModal(title, message, type = 'info', showCancel = false, confirmText = 'Confirm', cancelText = 'Cancel') {
+        const modalOverlay = document.getElementById('modalOverlay');
+        const customModal = document.getElementById('customModal');
+        
+        // Determine icon based on type
+        let icon = 'fas fa-info-circle';
+        let modalClass = 'modal-info';
+        
+        switch(type) {
+            case 'success':
+                icon = 'fas fa-check-circle';
+                modalClass = 'modal-success';
+                break;
+            case 'warning':
+                icon = 'fas fa-exclamation-triangle';
+                modalClass = 'modal-warning';
+                break;
+            case 'danger':
+                icon = 'fas fa-times-circle';
+                modalClass = 'modal-danger';
+                break;
+            case 'info':
+            default:
+                icon = 'fas fa-info-circle';
+                modalClass = 'modal-info';
+                break;
+        }
+        
+        // Create modal HTML
+        const modalHTML = `
+            <div class="modal-header">
+                <i class="${icon} modal-icon"></i>
+                <h3 class="modal-title">${title}</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                ${message}
+            </div>
+            <div class="modal-footer">
+                ${showCancel ? `
+                <button class="modal-btn modal-btn-secondary" onclick="handleModalCancel()">
+                    <i class="fas fa-times me-1"></i>${cancelText}
+                </button>
+                ` : ''}
+                <button class="modal-btn modal-btn-primary" onclick="handleModalConfirm()">
+                    <i class="fas fa-check me-1"></i>${confirmText}
+                </button>
+            </div>
+        `;
+        
+        // Set modal content and class
+        customModal.innerHTML = modalHTML;
+        customModal.className = `custom-modal ${modalClass}`;
+        
+        // Show modal
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function showConfirmModal(message, confirmCallback, cancelCallback = null, type = 'warning') {
+        currentModalCallback = confirmCallback;
+        currentModalCancelCallback = cancelCallback;
+        showModal('Confirm Action', message, type, true, 'Yes, Continue', 'Cancel');
+    }
+
+    function showAlertModal(title, message, type = 'info') {
+        showModal(title, message, type, false, 'OK');
+    }
+
+    function showDetailModal(title, content, type = 'info') {
+        const modalOverlay = document.getElementById('modalOverlay');
+        const customModal = document.getElementById('customModal');
+        
+        let icon = 'fas fa-info-circle';
+        let modalClass = 'modal-info';
+        
+        switch(type) {
+            case 'success':
+                icon = 'fas fa-check-circle';
+                modalClass = 'modal-success';
+                break;
+            case 'warning':
+                icon = 'fas fa-exclamation-triangle';
+                modalClass = 'modal-warning';
+                break;
+            case 'danger':
+                icon = 'fas fa-times-circle';
+                modalClass = 'modal-danger';
+                break;
+            case 'info':
+            default:
+                icon = 'fas fa-info-circle';
+                modalClass = 'modal-info';
+                break;
+        }
+        
+        const modalHTML = `
+            <div class="modal-header">
+                <i class="${icon} modal-icon"></i>
+                <h3 class="modal-title">${title}</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content">${content}</div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-primary" onclick="closeModal()">
+                    <i class="fas fa-check me-1"></i>Close
+                </button>
+            </div>
+        `;
+        
+        customModal.innerHTML = modalHTML;
+        customModal.className = `custom-modal ${modalClass}`;
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        const modalOverlay = document.getElementById('modalOverlay');
+        modalOverlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        
+        // Reset callbacks
+        currentModalCallback = null;
+        currentModalCancelCallback = null;
+    }
+
+    function handleModalConfirm() {
+        if (currentModalCallback) {
+            currentModalCallback();
+        }
+        closeModal();
+    }
+
+    function handleModalCancel() {
+        if (currentModalCancelCallback) {
+            currentModalCancelCallback();
+        }
+        closeModal();
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    // Your existing JavaScript code with modal replacements
+    // Admin credentials (In a real application, this would be handled server-side)
+    const ADMIN_CREDENTIALS = [
+        { username: "admin", password: "aai2025", name: "Main Administrator" },
+        { username: "staff", password: "staff123", name: "Staff Member" },
+        { username: "saathsvj", password: "saath27", name: "Saathvik" }
+    ];
+
+    // Load items from localStorage or use sample data
+    function loadAllItems() {
+        let storedItems = JSON.parse(localStorage.getItem('lostFoundItems') || '[]');
+        
+        // If no stored items, use sample data
+        if (storedItems.length === 0) {
+            return getSampleItems();
+        }
+        
+        // Sort by timestamp (newest first)
+        return storedItems.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    }
+
+    // Load claims from localStorage
+    function loadAllClaims() {
+        return JSON.parse(localStorage.getItem('lostFoundClaims') || '[]');
+    }
+
+    // Save items to localStorage
+    function saveItemsToStorage(items) {
+        localStorage.setItem('lostFoundItems', JSON.stringify(items));
+    }
+
+    // Save claims to localStorage
+    function saveClaimsToStorage(claims) {
+        localStorage.setItem('lostFoundClaims', JSON.stringify(claims));
+    }
+
+    // Sample data for initial setup
+    function getSampleItems() {
+        return [
+            {
+                id: 1,
+                title: "Wireless Earbuds - Black Case",
+                category: "electronics",
+                description: "Black wireless earbuds case found near the charging port. No earbuds inside.",
+                dateFound: "2024-01-15",
+                location: "main-hallway",
+                image: "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=400&h=300&fit=crop&crop=center",
+                status: "available",
+                foundBy: "Staff Member",
+                contact: "office@aai.edu",
+                timestamp: "2024-01-15T10:00:00Z"
+            },
+            {
+                id: 2,
+                title: "Calculus Textbook",
+                category: "books",
+                description: "AP Calculus textbook with some notes inside cover. Name appears to be 'Alex'.",
+                dateFound: "2024-01-14",
+                location: "library",
+                image: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=400&h=300&fit=crop&crop=center",
+                status: "available",
+                foundBy: "Librarian",
+                contact: "library@aai.edu",
+                timestamp: "2024-01-14T14:30:00Z"
+            },
+            {
+                id: 3,
+                title: "Blue Hoodie - Size L",
+                category: "clothing",
+                description: "Navy blue hoodie with school logo on front. Found in cafeteria during lunch.",
+                dateFound: "2024-01-13",
+                location: "cafeteria",
+                image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=300&fit=crop&crop=center",
+                status: "pending",
+                foundBy: "Cafeteria Staff",
+                contact: "cafeteria@aai.edu",
+                timestamp: "2024-01-13T12:15:00Z"
+            },
+            {
+                id: 4,
+                title: "Metal Water Bottle",
+                category: "accessories",
+                description: "Stainless steel water bottle with some stickers. Keeps liquids cold/hot.",
+                dateFound: "2024-01-12",
+                location: "gym",
+                image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=400&h=300&fit=crop&crop=center",
+                status: "claimed",
+                foundBy: "Coach Johnson",
+                contact: "gym@aai.edu",
+                timestamp: "2024-01-12T16:45:00Z"
+            }
+        ];
+    }
+
+    // Sample claims data
+    function getSampleClaims() {
+        return [
+            {
+                id: "CLM-" + Date.now(),
+                itemId: 3,
+                itemName: "Blue Hoodie - Size L",
+                claimant: "Alex Johnson",
+                claimantEmail: "alex.johnson@student.aai.edu",
+                claimantPhone: "555-0123",
+                claimDescription: "I lost my blue hoodie during lunch in the cafeteria. It has my name written inside the collar.",
+                dateSubmitted: new Date().toISOString().split('T')[0],
+                status: "pending",
+                timestamp: new Date().toISOString()
+            },
+            {
+                id: "CLM-" + (Date.now() - 86400000), // 1 day ago
+                itemId: 4,
+                itemName: "Metal Water Bottle",
+                claimant: "Sarah Williams",
+                claimantEmail: "sarah.williams@student.aai.edu",
+                claimantPhone: "555-0456",
+                claimDescription: "This is my water bottle that I left in the gym after basketball practice.",
+                dateSubmitted: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+                status: "approved",
+                timestamp: new Date(Date.now() - 86400000).toISOString()
+            }
+        ];
+    }
+
+    // Check if user is already logged in
+    function checkLoginStatus() {
+        const isLoggedIn = localStorage.getItem('adminLoggedIn');
+        const adminName = localStorage.getItem('adminName');
+        const loginTime = localStorage.getItem('loginTime');
+        
+        if (isLoggedIn === 'true' && adminName) {
+            showAdminDashboard(adminName, loginTime);
+        }
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        checkLoginStatus();
+        
+        // Initialize sample data if empty
+        initializeSampleData();
+        
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            attemptLogin();
+        });
+        
+        // Select all checkbox
+        document.getElementById('selectAll').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('#adminItemsTable input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+
+        // Initialize animations and effects
+        createParticles();
+        initScrollAnimations();
+        initGSAPAnimations();
+        enhanceScrollAnimationsDownOnly();
+        initNavbarScroll();
+    });
+
+    function initializeSampleData() {
+        // Initialize items if empty
+        let items = JSON.parse(localStorage.getItem('lostFoundItems') || '[]');
+        if (items.length === 0) {
+            saveItemsToStorage(getSampleItems());
+        }
+        
+        // Initialize claims if empty
+        let claims = JSON.parse(localStorage.getItem('lostFoundClaims') || '[]');
+        if (claims.length === 0) {
+            saveClaimsToStorage(getSampleClaims());
+        }
+    }
+
+    function attemptLogin() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const loginButton = document.getElementById('loginButton');
+        const errorDiv = document.getElementById('loginError');
+        
+        // Show loading state
+        const originalText = loginButton.innerHTML;
+        loginButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Authenticating...';
+        loginButton.disabled = true;
+        
+        // Simulate API call delay
+        setTimeout(function() {
+            const admin = ADMIN_CREDENTIALS.find(cred => 
+                cred.username === username && cred.password === password
+            );
+            
+            if (admin) {
+                // Successful login
+                localStorage.setItem('adminLoggedIn', 'true');
+                localStorage.setItem('adminName', admin.name);
+                localStorage.setItem('loginTime', new Date().toLocaleString());
+                
+                showAdminDashboard(admin.name, new Date().toLocaleString());
+                errorDiv.style.display = 'none';
+            } else {
+                // Failed login
+                errorDiv.style.display = 'block';
+                document.getElementById('errorMessage').textContent = 'Invalid username or password';
+            }
+            
+            // Reset button
+            loginButton.innerHTML = originalText;
+            loginButton.disabled = false;
+        }, 1500);
+    }
+
+    function showAdminDashboard(adminName, loginTime) {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('adminSection').style.display = 'block';
+        
+        document.getElementById('adminName').textContent = adminName;
+        document.getElementById('lastLogin').textContent = loginTime;
+        
+        loadAdminItems();
+        loadAdminClaims();
+        updateAdminStats();
+    }
+
+    function logout() {
+        localStorage.removeItem('adminLoggedIn');
+        localStorage.removeItem('adminName');
+        localStorage.removeItem('loginTime');
+        
+        document.getElementById('adminSection').style.display = 'none';
+        document.getElementById('loginSection').style.display = 'block';
+        
+        // Clear login form
+        document.getElementById('loginForm').reset();
+        document.getElementById('loginError').style.display = 'none';
+        
+        showAlertModal('Logged Out', 'You have been successfully logged out.', 'success');
+    }
+
+    function loadAdminItems() {
+        const tableBody = document.getElementById('adminItemsTable');
+        tableBody.innerHTML = '';
+        
+        const items = loadAllItems();
+        
+        items.forEach(item => {
+            const statusClass = `badge-${item.status}`;
+            const statusText = item.status.charAt(0).toUpperCase() + item.status.slice(1);
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="checkbox" value="${item.id}"></td>
+                <td>AAI-${item.id.toString().padStart(3, '0')}</td>
+                <td>${item.title}</td>
+                <td>${item.category}</td>
+                <td>${formatDate(item.dateFound)}</td>
+                <td>${formatLocation(item.location)}</td>
+                <td><span class="badge-status ${statusClass}">${statusText}</span></td>
+                <td class="action-buttons">
+                    <button class="btn btn-sm btn-outline-primary" onclick="viewItem(${item.id})">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-success" onclick="editItem(${item.id})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="showDeleteItemModal(${item.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function loadAdminClaims() {
+        const tableBody = document.getElementById('adminClaimsTable');
+        tableBody.innerHTML = '';
+        
+        const claims = loadAllClaims();
+        
+        claims.forEach(claim => {
+            const statusClass = claim.status === 'approved' ? 'badge-claimed' : 
+                              claim.status === 'pending' ? 'badge-pending' : 'badge-available';
+            const statusText = claim.status.charAt(0).toUpperCase() + claim.status.slice(1);
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${claim.id}</td>
+                <td>${claim.itemName}</td>
+                <td>${claim.claimant}</td>
+                <td>${formatDate(claim.dateSubmitted)}</td>
+                <td><span class="badge-status ${statusClass}">${statusText}</span></td>
+                <td class="action-buttons">
+                    <button class="btn btn-sm btn-outline-primary" onclick="viewClaim('${claim.id}')">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    ${claim.status === 'pending' ? `
+                    <button class="btn btn-sm btn-outline-success" onclick="showApproveClaimModal('${claim.id}')">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="showRejectClaimModal('${claim.id}')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    ` : ''}
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function updateAdminStats() {
+        const items = loadAllItems();
+        const claims = loadAllClaims();
+        
+        const totalItems = items.length;
+        const claimedItems = items.filter(item => item.status === 'claimed').length;
+        const availableItems = items.filter(item => item.status === 'available').length;
+        const pendingClaims = claims.filter(claim => claim.status === 'pending').length;
+        
+        document.getElementById('totalItems').textContent = totalItems;
+        document.getElementById('claimedItems').textContent = claimedItems;
+        document.getElementById('availableItems').textContent = availableItems;
+        document.getElementById('pendingClaims').textContent = pendingClaims;
+    }
+
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    }
+
+    function formatLocation(location) {
+        const locations = {
+            'main-hallway': 'Main Hallway',
+            'cafeteria': 'Cafeteria',
+            'library': 'Library',
+            'gym': 'Gym',
+            'parking-lot': 'Parking Lot',
+            'classroom': 'Classroom',
+            'bus-stop': 'Bus Stop',
+            'math-wing': 'Math Wing',
+            'front-office': 'Front Office',
+            'computer-lab': 'Computer Lab',
+            'locker-room': 'Locker Room',
+            'other': 'Various Locations'
+        };
+        return locations[location] || location;
+    }
+
+    // Admin action functions with custom modals
+    function viewItem(itemId) {
+        const items = loadAllItems();
+        const item = items.find(i => i.id === itemId);
+        
+        if (item) {
+            const details = `Item Details:
+------------
+ID: AAI-${item.id.toString().padStart(3, '0')}
+Name: ${item.title}
+Category: ${item.category}
+Description: ${item.description}
+Date Found: ${formatDate(item.dateFound)}
+Location: ${formatLocation(item.location)}
+Status: ${item.status}
+Found By: ${item.foundBy}
+Contact: ${item.contact}
+${item.additionalNotes ? `Additional Notes: ${item.additionalNotes}` : ''}`;
+            showDetailModal('Item Details', details, 'info');
+        }
+    }
+
+    function editItem(itemId) {
+        const items = loadAllItems();
+        const item = items.find(i => i.id === itemId);
+        
+        if (item) {
+            showStatusUpdateModal(item);
+        }
+    }
+
+    function showStatusUpdateModal(item) {
+        const modalOverlay = document.getElementById('modalOverlay');
+        const customModal = document.getElementById('customModal');
+        
+        const modalHTML = `
+            <div class="modal-header">
+                <i class="fas fa-edit modal-icon"></i>
+                <h3 class="modal-title">Update Item Status</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Update status for: <strong>${item.title}</strong></p>
+                <div class="form-group">
+                    <label for="statusSelect">New Status:</label>
+                    <select class="form-control" id="statusSelect">
+                        <option value="available" ${item.status === 'available' ? 'selected' : ''}>Available</option>
+                        <option value="claimed" ${item.status === 'claimed' ? 'selected' : ''}>Claimed</option>
+                        <option value="pending" ${item.status === 'pending' ? 'selected' : ''}>Pending</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
+                    <i class="fas fa-times me-1"></i>Cancel
+                </button>
+                <button class="modal-btn modal-btn-primary" onclick="updateItemStatus(${item.id})">
+                    <i class="fas fa-save me-1"></i>Update Status
+                </button>
+            </div>
+        `;
+        
+        customModal.innerHTML = modalHTML;
+        customModal.className = 'custom-modal modal-info';
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function updateItemStatus(itemId) {
+        const newStatus = document.getElementById('statusSelect').value;
+        const items = loadAllItems();
+        const item = items.find(i => i.id === itemId);
+        
+        if (item) {
+            // Update item status
+            item.status = newStatus;
+            saveItemsToStorage(items);
+            
+            // If status changed to claimed, update any pending claims
+            if (newStatus === 'claimed') {
+                const claims = loadAllClaims();
+                const pendingClaim = claims.find(c => c.itemId === itemId && c.status === 'pending');
+                if (pendingClaim) {
+                    pendingClaim.status = 'approved';
+                    saveClaimsToStorage(claims);
+                }
+            }
+            
+            showAlertModal('Status Updated', `Item status updated to: ${newStatus}`, 'success');
+            loadAdminItems();
+            loadAdminClaims();
+            updateAdminStats();
+            closeModal();
+        }
+    }
+
+    function showDeleteItemModal(itemId) {
+        const items = loadAllItems();
+        const item = items.find(i => i.id === itemId);
+        
+        if (item) {
+            showConfirmModal(
+                `Are you sure you want to delete "${item.title}"? This action cannot be undone.`,
+                () => deleteItem(itemId),
+                null,
+                'danger'
+            );
+        }
+    }
+
+    function deleteItem(itemId) {
+        const items = loadAllItems();
+        const itemIndex = items.findIndex(i => i.id === itemId);
+        
+        if (itemIndex !== -1) {
+            const itemName = items[itemIndex].title;
+            
+            // Remove item from storage
+            items.splice(itemIndex, 1);
+            saveItemsToStorage(items);
+            
+            // Remove any claims associated with this item
+            const claims = loadAllClaims();
+            const updatedClaims = claims.filter(c => c.itemId !== itemId);
+            saveClaimsToStorage(updatedClaims);
+            
+            showAlertModal('Item Deleted', `"${itemName}" has been deleted successfully.`, 'success');
+            loadAdminItems();
+            loadAdminClaims();
+            updateAdminStats();
+        }
+    }
+
+    function viewClaim(claimId) {
+        const claims = loadAllClaims();
+        const claim = claims.find(c => c.id === claimId);
+        const items = loadAllItems();
+        const item = items.find(i => i.id === claim.itemId);
+        
+        if (claim && item) {
+            const details = `Claim Details:
+-------------
+Claim ID: ${claim.id}
+Item: ${claim.itemName}
+Claimant: ${claim.claimant}
+Email: ${claim.claimantEmail}
+Phone: ${claim.claimantPhone || 'Not provided'}
+Date Submitted: ${formatDate(claim.dateSubmitted)}
+Status: ${claim.status}
+
+Claim Description:
+${claim.claimDescription}
+
+Item Details:
+------------
+Category: ${item.category}
+Date Found: ${formatDate(item.dateFound)}
+Location: ${formatLocation(item.location)}
+Found By: ${item.foundBy}`;
+            showDetailModal('Claim Details', details, 'info');
+        }
+    }
+
+    function showApproveClaimModal(claimId) {
+        showConfirmModal(
+            'Approve this claim? The item status will be updated to "claimed".',
+            () => approveClaim(claimId),
+            null,
+            'success'
+        );
+    }
+
+    function approveClaim(claimId) {
+        const claims = loadAllClaims();
+        const items = loadAllItems();
+        
+        const claim = claims.find(c => c.id === claimId);
+        if (claim) {
+            // Update claim status
+            claim.status = 'approved';
+            
+            // Update item status
+            const itemIndex = items.findIndex(i => i.id === claim.itemId);
+            if (itemIndex !== -1) {
+                items[itemIndex].status = 'claimed';
+            }
+            
+            saveClaimsToStorage(claims);
+            saveItemsToStorage(items);
+            
+            showAlertModal('Claim Approved', 'Claim approved successfully!', 'success');
+            loadAdminItems();
+            loadAdminClaims();
+            updateAdminStats();
+        }
+    }
+
+    function showRejectClaimModal(claimId) {
+        showConfirmModal(
+            'Reject this claim? The claimant will need to submit a new claim if they wish to try again.',
+            () => rejectClaim(claimId),
+            null,
+            'danger'
+        );
+    }
+
+    function rejectClaim(claimId) {
+        const claims = loadAllClaims();
+        const claim = claims.find(c => c.id === claimId);
+        
+        if (claim) {
+            // Remove the claim
+            const updatedClaims = claims.filter(c => c.id !== claimId);
+            saveClaimsToStorage(updatedClaims);
+            
+            showAlertModal('Claim Rejected', 'Claim rejected successfully!', 'success');
+            loadAdminClaims();
+            updateAdminStats();
+        }
+    }
+
+    function filterItems(status) {
+        const items = loadAllItems();
+        let filteredItems = items;
+        
+        if (status !== 'all') {
+            filteredItems = items.filter(item => item.status === status);
+        }
+        
+        const tableBody = document.getElementById('adminItemsTable');
+        tableBody.innerHTML = '';
+        
+        filteredItems.forEach(item => {
+            const statusClass = `badge-${item.status}`;
+            const statusText = item.status.charAt(0).toUpperCase() + item.status.slice(1);
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="checkbox" value="${item.id}"></td>
+                <td>AAI-${item.id.toString().padStart(3, '0')}</td>
+                <td>${item.title}</td>
+                <td>${item.category}</td>
+                <td>${formatDate(item.dateFound)}</td>
+                <td>${formatLocation(item.location)}</td>
+                <td><span class="badge-status ${statusClass}">${statusText}</span></td>
+                <td class="action-buttons">
+                    <button class="btn btn-sm btn-outline-primary" onclick="viewItem(${item.id})">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-success" onclick="editItem(${item.id})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="showDeleteItemModal(${item.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+        
+        // Update filter buttons active state
+        document.querySelectorAll('.btn-group .btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+    }
+
+    function deleteSelected() {
+        const selected = document.querySelectorAll('#adminItemsTable input[type="checkbox"]:checked');
+        if (selected.length === 0) {
+            showAlertModal('No Selection', 'Please select items to delete', 'warning');
+            return;
+        }
+        
+        showConfirmModal(
+            `Delete ${selected.length} selected item(s)? This action cannot be undone.`,
+            () => performBulkDelete(selected),
+            null,
+            'danger'
+        );
+    }
+
+    function performBulkDelete(selected) {
+        const items = loadAllItems();
+        const claims = loadAllClaims();
+        let deletedCount = 0;
+        
+        selected.forEach(checkbox => {
+            const itemId = parseInt(checkbox.value);
+            const itemIndex = items.findIndex(i => i.id === itemId);
+            
+            if (itemIndex !== -1) {
+                items.splice(itemIndex, 1);
+                deletedCount++;
+                
+                // Remove any claims associated with this item
+                const claimIndex = claims.findIndex(c => c.itemId === itemId);
+                if (claimIndex !== -1) {
+                    claims.splice(claimIndex, 1);
+                }
+            }
+        });
+        
+        saveItemsToStorage(items);
+        saveClaimsToStorage(claims);
+        
+        showAlertModal('Items Deleted', `${deletedCount} item(s) deleted successfully!`, 'success');
+        loadAdminItems();
+        loadAdminClaims();
+        updateAdminStats();
+        
+        // Reset select all checkbox
+        document.getElementById('selectAll').checked = false;
+    }
+
+    function exportData() {
+        const items = loadAllItems();
+        const claims = loadAllClaims();
+        
+        // Create CSV content
+        let csvContent = "data:text/csv;charset=utf-8,";
+        
+        // Items data
+        csvContent += "ITEMS DATA\n";
+        csvContent += "ID,Name,Category,Description,Date Found,Location,Status,Found By,Contact\n";
+        items.forEach(item => {
+            csvContent += `AAI-${item.id.toString().padStart(3, '0')},"${item.title}","${item.category}","${item.description}","${item.dateFound}","${formatLocation(item.location)}","${item.status}","${item.foundBy}","${item.contact}"\n`;
+        });
+        
+        // Claims data
+        csvContent += "\nCLAIMS DATA\n";
+        csvContent += "Claim ID,Item Name,Claimant,Email,Phone,Date Submitted,Status,Description\n";
+        claims.forEach(claim => {
+            csvContent += `"${claim.id}","${claim.itemName}","${claim.claimant}","${claim.claimantEmail}","${claim.claimantPhone || ''}","${claim.dateSubmitted}","${claim.status}","${claim.claimDescription}"\n`;
+        });
+        
+        // Create download link
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `aai_lost_found_export_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        showAlertModal('Data Exported', 'Data exported successfully!', 'success');
+    }
+
+    function showBulkActionsModal() {
+        const modalOverlay = document.getElementById('modalOverlay');
+        const customModal = document.getElementById('customModal');
+        
+        const modalHTML = `
+            <div class="modal-header">
+                <i class="fas fa-tasks modal-icon"></i>
+                <h3 class="modal-title">Bulk Actions</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Select a bulk action to perform on selected items:</p>
+                <div class="d-grid gap-2">
+                    <button class="modal-btn modal-btn-primary" onclick="performBulkAction('claimed')">
+                        <i class="fas fa-check-circle me-2"></i>Mark Selected as "Claimed"
+                    </button>
+                    <button class="modal-btn modal-btn-primary" onclick="performBulkAction('available')">
+                        <i class="fas fa-box me-2"></i>Mark Selected as "Available"
+                    </button>
+                    <button class="modal-btn modal-btn-danger" onclick="deleteSelected()">
+                        <i class="fas fa-trash me-2"></i>Delete Selected Items
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
+                    <i class="fas fa-times me-1"></i>Cancel
+                </button>
+            </div>
+        `;
+        
+        customModal.innerHTML = modalHTML;
+        customModal.className = 'custom-modal modal-info';
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function performBulkAction(newStatus) {
+        const selected = document.querySelectorAll('#adminItemsTable input[type="checkbox"]:checked');
+        if (selected.length === 0) {
+            showAlertModal('No Selection', 'Please select items to update', 'warning');
+            closeModal();
+            return;
+        }
+        
+        const items = loadAllItems();
+        let updatedCount = 0;
+        
+        selected.forEach(checkbox => {
+            const itemId = parseInt(checkbox.value);
+            const item = items.find(i => i.id === itemId);
+            
+            if (item) {
+                item.status = newStatus;
+                updatedCount++;
+            }
+        });
+        
+        saveItemsToStorage(items);
+        showAlertModal('Bulk Action Complete', `${updatedCount} item(s) marked as "${newStatus}"`, 'success');
+        loadAdminItems();
+        updateAdminStats();
+        closeModal();
+        
+        // Reset select all checkbox
+        document.getElementById('selectAll').checked = false;
+    }
+
+    function showSettingsModal() {
+        const modalOverlay = document.getElementById('modalOverlay');
+        const customModal = document.getElementById('customModal');
+        
+        const modalHTML = `
+            <div class="modal-header">
+                <i class="fas fa-cog modal-icon"></i>
+                <h3 class="modal-title">System Settings</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Select a system action:</p>
+                <div class="d-grid gap-2">
+                    <button class="modal-btn modal-btn-danger" onclick="showResetDataModal()">
+                        <i class="fas fa-redo me-2"></i>Reset All Data
+                    </button>
+                    <button class="modal-btn modal-btn-warning" onclick="showClearClaimsModal()">
+                        <i class="fas fa-broom me-2"></i>Clear All Claims
+                    </button>
+                    <button class="modal-btn modal-btn-primary" onclick="exportData(); closeModal();">
+                        <i class="fas fa-download me-2"></i>Export All Data
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
+                    <i class="fas fa-times me-1"></i>Close
+                </button>
+            </div>
+        `;
+        
+        customModal.innerHTML = modalHTML;
+        customModal.className = 'custom-modal modal-info';
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function showResetDataModal() {
+        showConfirmModal(
+            'WARNING: This will delete ALL items and claims. This action cannot be undone!',
+            resetAllData,
+            null,
+            'danger'
+        );
+    }
+
+    function resetAllData() {
+        localStorage.removeItem('lostFoundItems');
+        localStorage.removeItem('lostFoundClaims');
+        initializeSampleData();
+        showAlertModal('Data Reset', 'All data has been reset to sample data.', 'success');
+        loadAdminItems();
+        loadAdminClaims();
+        updateAdminStats();
+    }
+
+    function showClearClaimsModal() {
+        showConfirmModal(
+            'Clear all claims?',
+            clearAllClaims,
+            null,
+            'warning'
+        );
+    }
+
+    function clearAllClaims() {
+        localStorage.removeItem('lostFoundClaims');
+        saveClaimsToStorage([]);
+        showAlertModal('Claims Cleared', 'All claims have been cleared.', 'success');
+        loadAdminClaims();
+        updateAdminStats();
+    }
+
+    // Animation functions
+    function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        if (!particlesContainer) return;
+        
+        // Clear any existing particles
+        particlesContainer.innerHTML = '';
+        
+        // Create Aurora Borealis
+        const aurora = document.querySelector('.aurora');
+        if (aurora) {
+            aurora.innerHTML = '';
+            
+            // Create multiple aurora layers
+            for (let i = 0; i < 3; i++) {
+                const auroraLayer = document.createElement('div');
+                auroraLayer.className = 'aurora-layer';
+                aurora.appendChild(auroraLayer);
+            }
+        }
+        
+        // Create more visible particles
+        const particleCount = 30;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // Larger, more visible particles
+            const size = Math.random() * 8 + 3;
+            const left = Math.random() * 100;
+            const animationDuration = Math.random() * 20 + 30;
+            const animationDelay = Math.random() * 25;
+            
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${left}%`;
+            particle.style.animationDuration = `${animationDuration}s`;
+            particle.style.animationDelay = `${animationDelay}s`;
+            
+            // Start particles at different heights for more natural distribution
+            particle.style.top = `${Math.random() * 20 + 80}vh`;
+            
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    function initNavbarScroll() {
+        const navbar = document.querySelector('.navbar');
+        let lastScrollY = window.scrollY;
+        
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            
+            // Add/remove scrolled class based on scroll position
+            if (currentScrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            // Optional: Hide navbar on scroll down, show on scroll up
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                navbar.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollY = currentScrollY;
+        });
+    }
+
+    function initScrollAnimations() {
+        const animatedElements = document.querySelectorAll('.scroll-animate');
+        
+        // Show section titles immediately but keep them animatable
+        const sectionTitles = document.querySelectorAll('.section-title');
+        sectionTitles.forEach(title => {
+            title.classList.add('animated');
+        });
+
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+
+        function updateScrollDirection() {
+            const currentScrollY = window.scrollY;
+            const isScrollingDown = currentScrollY > lastScrollY;
+            
+            animatedElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                const isInViewport = elementTop < window.innerHeight - elementVisible;
+                
+                // Only animate when scrolling down AND element is in viewport
+                if (isScrollingDown && isInViewport && elementTop > 0) {
+                    element.classList.add('animated');
+                }
+                // Keep elements animated once they've been animated (don't remove the class)
+            });
+            
+            lastScrollY = currentScrollY;
+            ticking = false;
+        }
+
+        function onScroll() {
+            if (!ticking) {
+                requestAnimationFrame(updateScrollDirection);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        
+        // Initial check for elements already in viewport
+        setTimeout(() => {
+            animatedElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                const isInViewport = elementTop < window.innerHeight - elementVisible;
+                
+                if (isInViewport && elementTop > 0) {
+                    element.classList.add('animated');
+                }
+            });
+        }, 100);
+    }
+
+    function initGSAPAnimations() {
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Kill any existing ScrollTriggers to avoid conflicts
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            
+            // Hero section animations (one-time only)
+            gsap.from('.hero h1', {
+                duration: 1.2,
+                y: 100,
+                opacity: 0,
+                ease: "power3.out",
+                delay: 0.2
+            });
+            
+            gsap.from('.hero-subtitle', {
+                duration: 1,
+                y: 50,
+                opacity: 0,
+                ease: "power3.out",
+                delay: 0.5
+            });
+        }
+    }
+
+    function enhanceScrollAnimationsDownOnly() {
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+        
+        function updateAnimations() {
+            const scrolledElements = document.querySelectorAll('.scroll-animate');
+            const currentScrollY = window.scrollY;
+            const isScrollingDown = currentScrollY > lastScrollY;
+            const windowHeight = window.innerHeight;
+            
+            if (isScrollingDown) {
+                scrolledElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top + currentScrollY;
+                    const elementVisible = 150;
+                    
+                    if (currentScrollY > (elementTop - windowHeight + elementVisible)) {
+                        element.classList.add('animated');
+                    }
+                });
+            }
+            
+            lastScrollY = currentScrollY;
+            ticking = false;
+        }
+        
+        function onScroll() {
+            if (!ticking) {
+                requestAnimationFrame(updateAnimations);
+                ticking = true;
+            }
+        }
+        
+        window.addEventListener('scroll', onScroll, { passive: true });
+        
+        // Initial check for elements in viewport
+        setTimeout(() => {
+            const scrolledElements = document.querySelectorAll('.scroll-animate');
+            const scrollPosition = window.scrollY;
+            const windowHeight = window.innerHeight;
+            
+            scrolledElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top + scrollPosition;
+                const elementVisible = 150;
+                
+                if (scrollPosition > (elementTop - windowHeight + elementVisible)) {
+                    element.classList.add('animated');
+                }
+            });
+        }, 100);
+    }
+
+    // Add this to ALL your existing pages (except login.html)
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if user is authenticated
+        const isAuthenticated = localStorage.getItem('aai_authenticated');
+        
+        // If not authenticated and not on login page, redirect to login
+        if (!isAuthenticated && !window.location.pathname.endsWith('login.html')) {
+            window.location.href = 'login.html';
+        }
+    });
+    
+    // Add this to ALL protected pages (index.html, browse.html, report.html, claim.html, admin.html)
+    document.addEventListener('DOMContentLoaded', function() {
+        // Authentication check - redirect to login if not authenticated
+        const isAuthenticated = localStorage.getItem('aai_authenticated');
+        if (!isAuthenticated) {
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        // Logout functionality
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('aai_authenticated');
+                localStorage.removeItem('aai_username');
+                window.location.href = 'login.html';
+            });
+        }
+    });
+    </script>
+</body>
+</html>

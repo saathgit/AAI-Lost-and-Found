@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YFGFG9WY4P"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YFGFG9WY4P');
+</script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - Amorantha</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+ 
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+ 
+    
+    
+    
+    <style>
+               .star-rating-xyz123 {
+    display: flex;
+    gap: 5px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #ccc;
+    margin: 10px 0;
+}
+
+.star-rating-xyz123 .star.hovered,
+.star-rating-xyz123 .star.selected {
+    color: gold;
+}
+
+
+    #cartModal {
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        color: #516357;
+    }
+
+     .footer-container-xyz123 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        padding: 10px;
+    }
+
+    .social-media-xyz123 {
+        display: flex;
+        gap: 10px;
+    }
+
+    .social-icon-xyz123 {
+        font-size: 24px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .footer-divider-xyz123 {
+        width: 2px;
+        height: 30px;
+        background-color: #ccc;
+    }
+
+    .weird-feedback-btn-xyz123 {
+        background-color: #28382c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    .weird-feedback-btn-xyz123:hover {
+        background-color: #323f33;
+    }
+
+    .modal-xyz123 {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        max-width: 90%;
+        background: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        z-index: 1000;
+    }
+
+    .modal-content-xyz123 {
+        position: relative;
+    }
+
+    .close-btn-xyz123 {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    #weird-feedback-input-xyz123 {
+        width: 100%;
+        height: 120px;
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        resize: none;
+    }
+
+    .submit-btn-xyz123 {
+        background-color: #233d45;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    .submit-btn-xyz123:hover {
+        background-color: #435760;
+    }
+.popup-container {
+    position: absolute;
+    
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s;
+
+
+
+}
+.popup {
+    background: white;
+    padding: 20px;
+    border-radius: 2px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    width: 500px;
+}
+.popup input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.popup button {
+    background: #80607c;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.popup button:hover {
+    background: #9a8097;
+}
+.popup p {
+    color: #263634;
+    font-family: 'Times New Roman', Times, serif;
+
+
+}
+.close-btn {
+    background: #7d444a;
+    margin-top: 10px;
+}
+.close-btn:hover {
+    background: #6b3f43;
+}
+.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+
+#cartModal {
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        color: #516357;
+    }
+
+
+.footer-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        padding: 10px;
+    }
+
+    .social-media {
+        display: flex;
+        gap: 10px;
+    }
+
+    .social-icon {
+        font-size: 24px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .footer-separator {
+        width: 2px;
+        height: 30px;
+        background-color: #ccc;
+    }
+
+    .review-btn {
+        background-color: #28382c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    .review-btn:hover {
+        background-color: #323f33;
+    }
+
+    .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        max-width: 90%;
+        background: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .popup-content {
+        position: relative;
+    }
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    textarea {
+        width: 100%;
+        height: 120px;
+        margin: 10px 0;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .submit-btn {
+        background-color: #233136;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    .submit-btn:hover {
+        background-color: #1f3038;
+    } 
+        p {text-align: center;}
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            font-family: 'Georgia', serif;
+            background-color: #e4e2cf;
+            color: #4a3f35;
+        }
+
+        .navbar {
+            background-color: #e5d181;
+            font-size: 16px;
+        }
+
+        
+
+        h1, h3 {
+            font-family: 'Garamond', serif;
+            color: #6d6875;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .menu-item-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 20px;
+            justify-content: center;
+            padding: 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            .menu-item-container {
+                grid-template-columns: repeat(2, 1fr); 
+            }
+        }
+
+        .menu-item {
+            width: 100%;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .menu-item-inner {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: clamp(120px, 25vw, 300px); 
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .menu-item:hover .menu-item-inner {
+            transform: rotateY(180deg);
+        }
+
+        .menu-item-front, .menu-item-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: clamp(0.8rem, 1.5vw, 1.2rem); 
+    line-height: 1.4; 
+    padding: 8px; 
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+
+    background: rgba(255, 255, 255, 0.9); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.3s ease, opacity 0.3s ease; 
+}
+
+        .menu-item-front {
+            background-size: cover;
+            background-position: center;
+            color: #fbf4ed;
+        }
+
+        .menu-item-back {
+            background-color: #988281;
+            color: #fbf4ed;
+            transform: rotateY(180deg);
+        }
+
+        .add-to-cart {
+            margin-top: 10px;
+            font-size: 0.9em;
+            background-color: #e5d181;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .add-to-cart:hover {
+            background-color: #d4c470;
+        }
+
+        .menu-item-back {
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-between; 
+    align-items: center; 
+    text-align: center;
+    padding: 16px; 
+    background: rgba(255, 255, 255, 0.9); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item-back p {
+    margin: 8px 0; 
+    font-size: 1rem; 
+}
+
+.menu-item-back {
+    color: #2b1111; 
+}
+
+button.add-to-cart {
+    background-color: #e9745a; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    margin-top: auto; 
+}
+
+.menu-item-front {
+    color: white; 
+}
+
+.menu-item-front h3 {
+    color: white;
+    font-weight: bold;
+    font-family: 'Playfair Display', serif; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+button.add-to-cart:hover {
+    background-color: #e94e2b; 
+}
+
+        .cart-item-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .checkout-button {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        .cart-item {
+            margin: 10px;
+        }
+
+        .menu-item-container {
+    margin-bottom: 50px; 
+}
+
+
+footer {
+            background-color: #516357;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+
+
+
+
+
+
+
+        .section-wrapper {
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: center;
+           gap: 2rem;
+           padding: 5vh 0;
+       }
+       .social-media {
+           margin-top: 7px;
+           text-align: center;
+       }
+
+
+
+
+
+
+
+
+       .social-icon {
+           font-size: 24px;
+           margin: 0 10px;
+           color: #4a3f35;
+           transition: color 0.3s ease;
+       }
+
+
+
+
+
+
+
+
+       .social-icon:hover {
+           color: #e5d181;
+       }
+
+
+
+
+
+        
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="index.html">
+            <img src="AmoranthaLogo.png" alt="Amorantha Logo" style="height: 90px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="menu.html">Menu</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="location.html">Visit Us!</a></li>
+                <li class="nav-item"><a class="nav-link" href="reservations.html">Make a Reservation</a></li>
+                <li class="nav-item"><a class="nav-link" href="events&news.html">Events & News</a></li>
+                <li class="nav-item"><a class="nav-link" href="reference.html">Reference Page</a></li>
+
+ 
+             </ul>
+        </div>
+        <button class="btn btn-outline-dark ml-auto" data-toggle="modal" data-target="#cartModal">
+            Cart <span id="cart-count" class="badge badge-pill badge-primary">0</span>
+        </button>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>Menu</h1>
+
+        <h3>Featured Dishes</h3>
+        <div class="menu-item-container">
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/featured1.png');">
+                        <h3>Jackfruit Vindaloo Tacos</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Tender jackfruit marinated in a tangy vindaloo sauce, served in soft tortillas with pickled red onions and cilantro.</p>
+                        <p><strong>$12.99</strong></p>
+                        <button class="add-to-cart" data-name="Jackfruit Vindaloo Tacos" data-price="12.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/featured2.png');">
+                        <h3>Paneer-Style Tofu Croquetas</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Tofu and potato croquetas seasoned with cumin, coriander, and saffron, served with roasted red pepper sauce.</p>
+                        <p><strong>$14.99</strong></p>
+                        <button class="add-to-cart" data-name="Paneer-Style Tofu Croquetas" data-price="14.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/featured3.png');">
+                        <h3>Spiced Aloo Patatas</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Crispy potatoes with masala seasoning, served with vegan saffron aioli.</p>
+                        <p><strong>$15.99</strong></p>
+                        <button class="add-to-cart" data-name="Spiced Aloo Patatas" data-price="15.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/featured4.png');">
+                        <h3>Coconut Saffron Flan</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Delicious combination of flavors with a touch of sweetness.</p>
+                        <p><strong>$16.99</strong></p>
+                        <button class="add-to-cart" data-name="Coconut Saffron Flan" data-price="16.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>Main Dishes</h3>
+        <div class="menu-item-container">
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/main1.png');">
+                        <h3>Saffron/Coconut Paella with Spiced Tofu</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Saffron infused rice with roasted bell peppers, zucchini, and snap peas. Served with a choice of tofu or chickpeas marinated in garam masala. </p>
+                        <p><strong>$18.99</strong></p>
+                        <button class="add-to-cart" data-name="Saffron/Coconut Paella with Spiced Tofu" data-price="18.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/main2.png');">
+                        <h3>Tikka Masala Sweet Potato Bowls</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Roasted sweet potato halves stuffed with spiced lentils and spinach, topped with a creamy sunflower seed tikka masala sauce. Served with a lime-cilantro drizzle.</p>
+                        <p><strong>$19.99</strong></p>
+                        <button class="add-to-cart" data-name="Tikka Masala Sweet Potato Bowls" data-price="19.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/main3.png');">
+                        <h3>Smoky Eggplant & Spinach Flatbread</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Grilled smoky eggplant on gluten-free flatbread or a rice bowl base with sautéed spinach, caramelized onions, and a zesty lemon-tahini drizzle. </p>
+                        <p><strong>$20.99</strong></p>
+                        <button class="add-to-cart" data-name="Smoky Eggplant & Spinach Flatbread" data-price="20.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/main4.png');">
+                        <h3>Plantain Curry Buddha Bowl</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Plantain slices served over coconut-infused black rice or quinoa with sautéed bok choy, pickled radish, and a mango-coconut curry sauce. </p>
+                        <p><strong>$21.99</strong></p>
+                        <button class="add-to-cart" data-name="Plantain Curry Buddha Bowl" data-price="21.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>Sides</h3>
+        <div class="menu-item-container">
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/side1.png');">
+                        <h3>Crispy Okra Pakora Nachos</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Crunchy okra fritters topped with vegan queso, pico de gallo, and a sprinkle of chaat masala. Served with guacamole.</p>
+                        <p><strong>$5.99</strong></p>
+                        <button class="add-to-cart" data-name="Crispy Okra Pakora Nachos" data-price="5.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/side2.png');">
+                        <h3>Golden Gazpacho Shooters
+                        </h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Chilled soup made with golden tomatoes, bell peppers, and mango. Garnished with toasted pumpkin seed slivers and fresh basil.</p>
+                        <p><strong>$6.99</strong></p>
+                        <button class="add-to-cart" data-name="Golden Gazpacho Shooters
+                        " data-price="6.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/side3.png');">
+                        <h3>Spiced Garbanzo Empanadillas</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Mini empanadas filled with curried chickpeas and raisins, baked until flaky. Served with a side of tangy tamarind chutney.</p>
+                        <p><strong>$7.99</strong></p>
+                        <button class="add-to-cart" data-name="Spiced Garbanzo Empanadillas" data-price="7.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/side4.png');">
+                        <h3>Curried Quinoa Salad</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>A light and refreshing salad with curried quinoa, cucumber, cherry tomatoes, and fresh mint. Tossed in a lemon-turmeric vinaigrette.</p>
+                        <p><strong>$8.99</strong></p>
+                        <button class="add-to-cart" data-name="Curried Quinoa Salad" data-price="8.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>Desserts</h3>
+        <div class="menu-item-container">
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/dessert1.png');">
+                        <h3>Churros with Chai-Spiced Chocolate Dip</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Classic churros with a cinnamon sugar coating. Paired with a velvety oat-based chocolate dip infused with chai spices.</p>
+                        <p><strong>$4.99</strong></p>
+                        <button class="add-to-cart" data-name="Churros with Chai-Spiced Chocolate Dip" data-price="4.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/dessert2.png');">
+                        <h3>Coconut-Rose Pudding</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Creamy coconut milk pudding infused with rosewater, sweetened with agave, and topped with shredded coconut.</p>
+                        <p><strong>$5.99</strong></p>
+                        <button class="add-to-cart" data-name="Coconut-Rose Pudding" data-price="5.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/dessert3.png');">
+                        <h3>Mango Cardamom Nice Cream</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>A refreshing frozen dessert made from whipped frozen mango and banana, with a hint of cardamom. Garnished with coconut flakes.</p>
+                        <p><strong>$6.99</strong></p>
+                        <button class="add-to-cart" data-name="Mango Cardamom Nice Cream" data-price="6.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/dessert4.png');">
+                        <h3>Cardamom Mango Tres Leches Cake</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>A spongy cake soaked in a blend of almond, oat, and coconut milk. Layered with fresh mango slices and dusted with cardamom.</p>
+                        <p><strong>$7.99</strong></p>
+                        <button class="add-to-cart" data-name="Cardamom Mango Tres Leches Cake" data-price="7.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>Drinks</h3>
+        <div class="menu-item-container">
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/drink1.png');">
+                        <h3>Watermelon Agua Fresca with Basil</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Sweet watermelon juice with a hint of lime and fresh basil leaves. Hydrating and lightly sweetened (if desired).</p>
+                        <p><strong>$2.99</strong></p>
+                        <button class="add-to-cart" data-name="Watermelon Agua Fresca with Basil" data-price="2.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/drink2.png');">
+                        <h3>Mango Lassi Smoothie</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>A tropical twist on a classic lassi made with mango, coconut yogurt, a dash of cardamom, and coconut milk.</p>
+                        <p><strong>$3.99</strong></p>
+                        <button class="add-to-cart" data-name="Mango Lassi Smoothie" data-price="3.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/drink3.png');">
+                        <h3>Saffron Citrus Refresher</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Fresh orange juice, lemon, saffron threads, and a hint of mint for an aromatic, energizing drink.</p>
+                        <p><strong>$1.99</strong></p>
+                        <button class="add-to-cart" data-name="Saffron Citrus Refresher" data-price="1.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/drink4.png');">
+                        <h3>Chia Guava Fizz</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Guava juice with sparkling water, chia seeds, and a hint of lime for a fun, fizzy drink with texture.</p>
+                        <p><strong>$4.99</strong></p>
+                        <button class="add-to-cart" data-name="Chia Guava Fizz" data-price="4.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>Kids' Menu</h3>
+        <div class="menu-item-container">
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/kids1.png');">
+                        <h3>Cheesy Naan Quesadilla</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Melted cheese with a mild spiced filling of potatoes and sweet peppers, sandwiched between fluffy naan. Served with a side of mango salsa.</p>
+                        <p><strong>$5.49</strong></p>
+                        <button class="add-to-cart" data-name="Cheesy Naan Quesadilla" data-price="5.49">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/kids2.png');">
+                        <h3>Patatas Masala Bites</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Crispy potato cubes tossed in a mild, kid-friendly masala seasoning, served with a creamy aioli dip.</p>
+                        <p><strong>$6.49</strong></p>
+                        <button class="add-to-cart" data-name="Patatas Masala Bites" data-price="6.49">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/kids3.png');">
+                        <h3>Tikka Tacos</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>Soft mini gluten-free tortillas filled with mild chicken tikka or paneer tikka, topped with lettuce and a drizzle of yogurt sauce.</p>
+                        <p><strong>$7.49</strong></p>
+                        <button class="add-to-cart" data-name="Tikka Tacos" data-price="7.49">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-inner">
+                    <div class="menu-item-front" style="background-image: url('menuImages/kids4.png');">
+                        <h3>Churro Gulab Jamun Bites</h3>
+                    </div>
+                    <div class="menu-item-back">
+                        <p>A dessert treat of crispy churro sticks paired with small gulab jamun balls and chocolate sauce for dipping.</p>
+                        <p><strong>$5.99</strong></p>
+                        <button class="add-to-cart" data-name="Churro Gulab Jamun Bites" data-price="5.99">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
+
+
+    <footer>
+        <div class="footer-container-xyz123">
+            <div class="social-media-xyz123">
+                <a href="https://www.facebook.com/people/Amorantha-Restaurants/pfbid02aKZJRGsgxXBbhRV8sRkfGHZQ8YZWuZ8VK7iEERT8jciJsN1vS8eZW4YRrNBTYu64l/" class="social-icon"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/amorantha.restaurant/" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@amorantha.restaurant" class="social-icon"><i class="fab fa-tiktok"></i></a>
+            </div>
+    
+            <div class="footer-divider-xyz123"></div>
+    
+            <button class="weird-feedback-btn-xyz123" onclick="openWeirdFeedback()">Leave a Review</button>
+        </div>
+    
+        <p class="footer-note-xyz123">TSA24-25 Webmaster</p>
+    </footer>
+    
+    <div id="weird-feedback-container-xyz123" class="modal-xyz123">
+        <div class="modal-content-xyz123">
+            <span class="close-btn-xyz123" onclick="closeWeirdFeedback()">&times;</span>
+            <h2>Leave Feedback</h2>
+            <input type="text" id="weird-feedback-name-xyz123" placeholder="Name (First, Last)" required>
+        
+            <!-- Star Rating -->
+            <div class="star-rating-xyz123">
+                <span class="star" data-rating="1">&#9733;</span>
+                <span class="star" data-rating="2">&#9733;</span>
+                <span class="star" data-rating="3">&#9733;</span>
+                <span class="star" data-rating="4">&#9733;</span>
+                <span class="star" data-rating="5">&#9733;</span>
+            </div>
+        
+            <textarea id="weird-feedback-input-xyz123" placeholder="Write your review here..."></textarea>
+            <button class="submit-btn-xyz123" onclick="submitWeirdFeedback()">Submit</button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Your Cart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="cart-item-container" id="cart-items"></div>
+                    <button class="btn btn-success checkout-button" id="checkout-button">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+ 
+
+    <script>
+
+window.onload = function () {
+    setTimeout(() => {
+      document.getElementById("newsletter-icon").style.animation = "none";
+    }, 5000);
+  };
+
+  function openNewsletterPopup() {
+    document.getElementById("newsletter-popup").style.display = "block";
+  }
+
+  function closeNewsletterPopup() {
+    document.getElementById("newsletter-popup").style.display = "none";
+  }
+
+function openNewsletterPopup() {
+    document.getElementById('newsletter-popup').style.display = 'block';
+  }
+
+  function closeNewsletterPopup() {
+    document.getElementById('newsletter-popup').style.display = 'none';
+  }
+
+
+
+let selectedRating = 0;
+
+const stars = document.querySelectorAll('.star-rating-xyz123 .star');
+
+stars.forEach(star => {
+    const rating = star.getAttribute('data-rating');
+
+    // Hover effects
+    star.addEventListener('mouseover', () => {
+        highlightStars(rating);
+    });
+
+    star.addEventListener('mouseout', () => {
+        highlightStars(selectedRating);
+    });
+
+    // Click to select rating
+    star.addEventListener('click', () => {
+        selectedRating = rating;
+        highlightStars(selectedRating);
+    });
+});
+
+function highlightStars(rating) {
+    stars.forEach(star => {
+        const starRating = star.getAttribute('data-rating');
+        star.classList.toggle('hovered', starRating <= rating);
+        star.classList.toggle('selected', starRating <= selectedRating);
+    });
+}
+
+function submitWeirdFeedback() {
+    const name = document.getElementById('weird-feedback-name-xyz123').value;
+    const review = document.getElementById('weird-feedback-input-xyz123').value;
+    console.log("Name:", name);
+    console.log("Review:", review);
+    console.log("Rating:", selectedRating);
+    alert("Thanks for your feedback!");
+}
+
+function submitWeirdFeedback() {
+    const name = document.getElementById('weird-feedback-name-xyz123').value;
+    const review = document.getElementById('weird-feedback-input-xyz123').value;
+    console.log("Name:", name);
+    console.log("Review:", review);
+    console.log("Rating:", selectedRating);
+    // Add your form handling logic here
+}
+
+function openWeirdFeedback() {
+        document.getElementById("weird-feedback-container-xyz123").style.display = "block";
+    }
+
+    function closeWeirdFeedback() {
+        document.getElementById("weird-feedback-container-xyz123").style.display = "none";
+    }
+
+    function submitWeirdFeedback() {
+        let feedbackText = document.getElementById("weird-feedback-input-xyz123").value;
+        if (feedbackText.trim() === "") {
+            alert("Please enter a review before submitting.");
+            return;
+        }
+        alert("Thank you for your feedback!");
+        document.getElementById("weird-feedback-input-xyz123").value = "";
+        closeWeirdFeedback();
+    }
+
+
+
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || []; 
+        const cartCount = document.getElementById('cart-count');
+        const cartItemsContainer = document.getElementById('cart-items');
+    
+        function updateCart() {
+    localStorage.setItem('cart', JSON.stringify(cart)); 
+    const cartCount = document.getElementById('cart-count');
+    if (cartCount) {
+        cartCount.textContent = cart.length; 
+    }
+    displayCart(); 
+}
+
+    
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCart();
+        }
+    
+        function displayCart() {
+            if (!cartItemsContainer) return;
+    
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `${item.name} - $${item.price}`;
+                cartItemsContainer.appendChild(cartItem);
+                total += parseFloat(item.price);
+            });
+    
+            const totalItem = document.createElement('div');
+            totalItem.classList.add('cart-item');
+            totalItem.innerHTML = `<strong>Total: $${total.toFixed(2)}</strong>`;
+            cartItemsContainer.appendChild(totalItem);
+        }
+    
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const name = event.target.getAttribute('data-name');
+                const price = event.target.getAttribute('data-price');
+                addToCart(name, price);
+            });
+        });
+    
+        const checkoutButton = document.getElementById('checkout-button');
+        if (checkoutButton) {
+            checkoutButton.addEventListener('click', () => {
+                alert('Order Placed!');
+                cart = [];
+                updateCart(); 
+            });
+        }
+    
+        document.addEventListener('DOMContentLoaded', () => {
+    cart = JSON.parse(localStorage.getItem('cart')) || []; 
+    updateCart(); 
+});
+    </script>
+    
+</body>
+</html>

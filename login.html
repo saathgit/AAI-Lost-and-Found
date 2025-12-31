@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AAI Lost & Found - Secure Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #022A75;
+            --secondary-blue: #001c70;
+            --accent-gold: #d4af37;
+            --light-gold: #e6c34f;
+            --light-blue: #fafdffc1;
+            --white: #ffffff;
+            --black: #000000;
+            --text-dark: #000936;
+            --success: #28a745;
+            --warning: #ffc107;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background-color: var(--light-blue);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Navigation with Modern Sticky Effect */
+        .navbar {
+            background-color: transparent !important;
+            font-size: 17px;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 20px 0;
+            min-height: 90px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(0px);
+        } 
+
+        .navbar.scrolled {
+            padding: 15px 0;
+            backdrop-filter: blur(15px);
+            background-color: rgba(2, 42, 117, 0.95) !important;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--accent-gold) !important;
+            font-size: 1.8rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(0);
+        }
+
+        /* Logo Animation */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 35px;
+            background: var(--primary-blue);
+            border: 2px solid var(--accent-gold);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-box::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: 
+                linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%),
+                repeating-linear-gradient(0deg, 
+                    rgba(255,255,255,0.1) 0px, 
+                    rgba(255,255,255,0.1) 1px, 
+                    transparent 1px, 
+                    transparent 4px
+                );
+            border-radius: 4px;
+        }
+
+        .logo-items {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 25px;
+        }
+
+        .logo-book {
+            position: absolute;
+            width: 12px;
+            height: 15px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 2px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .logo-book:nth-child(1) {
+            top: 2px;
+            left: 4px;
+            transform: rotate(-5deg) translateY(0);
+        }
+
+        .logo-book:nth-child(2) {
+            top: 5px;
+            left: 10px;
+            transform: rotate(3deg) translateY(0);
+            background: #e9ecef;
+        }
+
+        .logo-book:nth-child(3) {
+            top: 8px;
+            left: 16px;
+            transform: rotate(-2deg) translateY(0);
+            background: #ffffff;
+        }
+
+        .logo:hover .logo-book:nth-child(1) {
+            transform: rotate(-8deg) translateY(-2px);
+        }
+
+        .logo:hover .logo-book:nth-child(2) {
+            transform: rotate(5deg) translateY(-1px);
+        }
+
+        .logo:hover .logo-book:nth-child(3) {
+            transform: rotate(-5deg) translateY(-3px);
+        }
+
+        .logo-magnifier {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            animation: float-magnifier 3s ease-in-out infinite;
+        }
+
+        .magnifier-handle {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+
+        .magnifier-handle::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 12px;
+            height: 3px;
+            background: var(--accent-gold);
+            border-radius: 2px;
+            transform: rotate(-45deg);
+            transform-origin: left center;
+        }
+
+        .magnifier-glass {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--accent-gold);
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .magnifier-glass::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+
+        @keyframes float-magnifier {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-3px) rotate(5deg);
+            }
+        }
+
+        .navbar-brand:hover .logo {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .navbar-brand:hover .logo-magnifier {
+            animation-duration: 1.5s;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .brand-main {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .brand-sub {
+            font-size: 0.7rem;
+            font-weight: 400;
+            opacity: 0.9;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar-nav .nav-item .nav-link {
+            color: var(--white) !important;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 10px 20px !important;
+            position: relative;
+            font-weight: 500;
+            border-radius: 8px;
+            margin: 0 5px;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            opacity: 0.9;
+        }
+
+        .navbar-nav .nav-item .nav-link:hover {
+            color: var(--accent-gold) !important;
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-2px);
+            opacity: 1;
+        }
+
+        .navbar-nav .nav-item .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .navbar-nav .nav-item .nav-link:hover::before {
+            width: 70%;
+        }
+
+        .navbar-nav .nav-item.active .nav-link {
+            color: var(--accent-gold) !important;
+            background: rgba(212, 175, 55, 0.15);
+            font-weight: 600;
+            opacity: 1;
+        }
+
+        .navbar-nav .nav-item.active .nav-link::before {
+            width: 80%;
+            background: var(--accent-gold);
+        }
+
+        /* Enhanced Hero Section with Modern Parallax */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            padding: 180px 0 120px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(100, 200, 255, 0.1) 0%, transparent 50%);
+            opacity: 0.8;
+            animation: bg-pulse 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes bg-pulse {
+            0% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(1.1) rotate(1deg);
+                opacity: 0.9;
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            transform: translateY(30px);
+            opacity: 0;
+            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.5s;
+        }
+
+        @keyframes fadeUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            margin-bottom: 2rem;
+            color: var(--accent-gold);
+            position: relative;
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+            line-height: 1.6;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .hero-cta {
+            opacity: 0;
+            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.1s;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards 2s;
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 24px;
+            height: 40px;
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .scroll-indicator span::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 10px;
+            background: var(--accent-gold);
+            border-radius: 2px;
+            animation: scrollDown 2s infinite;
+        }
+
+        @keyframes scrollDown {
+            0% {
+                transform: translateX(-50%) translateY(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-50%) translateY(20px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Modern Login Section with Glass Morphism */
+        .login-section {
+            padding: 120px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+            z-index: 1;
+        }
+
+        .login-section::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(2, 42, 117, 0.05) 0%, transparent 70%);
+            z-index: 1;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 60px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.08),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .login-card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+            z-index: 2;
+        }
+
+        .login-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .login-icon {
+            font-size: 5rem;
+            color: var(--accent-gold);
+            margin-bottom: 30px;
+            display: inline-block;
+            transform: scale(0.8);
+            opacity: 0;
+            animation: scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
+        }
+
+        @keyframes scaleIn {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .login-card h2 {
+            color: var(--primary-blue);
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.5s;
+        }
+
+        .login-card p {
+            color: var(--text-dark);
+            margin-bottom: 40px;
+            font-size: 1.2rem;
+            line-height: 1.7;
+            opacity: 0.9;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.7s;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+            color: var(--primary-blue);
+            border: none;
+            padding: 18px 50px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            font-size: 1.2rem;
+            box-shadow: 
+                0 10px 30px rgba(212, 175, 55, 0.3),
+                0 0 0 1px rgba(212, 175, 55, 0.1);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            min-width: 280px;
+            margin: 0 auto;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.9s;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.7s;
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(135deg, var(--light-gold), var(--accent-gold));
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(212, 175, 55, 0.4),
+                0 0 0 1px rgba(212, 175, 55, 0.2);
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .security-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .security-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            color: var(--secondary-blue);
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 15, 61, 0.1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .security-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .security-item i {
+            color: var(--accent-gold);
+            font-size: 2rem;
+        }
+
+        .security-item span {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .security-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Modern Footer */
+        footer {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 80px 0 30px;
+            margin-top: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .footer-link {
+            color: var(--accent-gold);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent-gold);
+            transition: width 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--light-gold);
+            text-decoration: none;
+        }
+
+        .footer-link:hover::after {
+            width: 100%;
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 150px 0 80px;
+                min-height: auto;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .login-card {
+                padding: 40px 25px;
+            }
+            
+            .login-card h2 {
+                font-size: 2rem;
+            }
+            
+            .security-features {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .btn-login {
+                min-width: auto;
+                width: 100%;
+                padding: 16px 30px;
+            }
+
+            .navbar-nav .nav-item .nav-link {
+                margin: 5px 0;
+                text-align: center;
+            }
+        }
+
+        /* Smooth Scroll Reveal Animations */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-element.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading Animation */
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+            z-index: 9999;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Bar -->
+    <div class="loading-bar" id="loadingBar"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="logo-container">
+                    <div class="logo">
+                        <div class="logo-box">
+                            <div class="logo-items">
+                                <div class="logo-book"></div>
+                                <div class="logo-book"></div>
+                                <div class="logo-book"></div>
+                            </div>
+                        </div>
+                        <div class="logo-magnifier">
+                            <div class="magnifier-glass"></div>
+                            <div class="magnifier-handle"></div>
+                        </div>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-main">AAI Lost & Found</span>
+                        <span class="brand-sub">Alliance Academy For Innovation</span>
+                    </div>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="browse.html">Browse Items</a></li>
+                    <li class="nav-item"><a class="nav-link" href="report.html">Report Found</a></li>
+                    <li class="nav-item"><a class="nav-link" href="claim.html">Claim Item</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Enhanced Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1>Secure Access Required</h1>
+                <p class="hero-subtitle">
+                    AAI Lost & Found is exclusively available to Alliance Academy For Innovation students and staff
+                </p>
+                <div class="hero-cta">
+                    <a href="#login" class="btn-login">
+                        <i class="fas fa-arrow-down me-2"></i>Access System
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- Login Section -->
+    <section id="login" class="login-section">
+        <div class="login-container">
+            <div class="container">
+                <div class="login-card reveal-element" id="loginCard">
+                    <div class="login-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h2>ClassLink Authentication Required</h2>
+                    <p>To access the AAI Lost & Found system, you must verify your identity through our secure ClassLink portal. This ensures only authorized Alliance Academy students and staff can use this service.</p>
+                    
+                    <a href="#" class="btn-login" id="classlinkLogin">
+                        <i class="fas fa-sign-in-alt"></i>Login with ClassLink
+                    </a>
+                    
+                    <div class="security-features">
+                        <div class="security-item reveal-element" style="transition-delay: 0.1s">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Secure Authentication</span>
+                        </div>
+                        <div class="security-item reveal-element" style="transition-delay: 0.2s">
+                            <i class="fas fa-user-shield"></i>
+                            <span>Student & Staff Only</span>
+                        </div>
+                        <div class="security-item reveal-element" style="transition-delay: 0.3s">
+                            <i class="fas fa-lock"></i>
+                            <span>Data Protection</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="logo" style="width: 40px; height: 40px;">
+                            <div class="logo-box">
+                                <div class="logo-items">
+                                    <div class="logo-book"></div>
+                                    <div class="logo-book"></div>
+                                    <div class="logo-book"></div>
+                                </div>
+                            </div>
+                            <div class="logo-magnifier">
+                                <div class="magnifier-glass"></div>
+                                <div class="magnifier-handle"></div>
+                            </div>
+                        </div>
+                        <div class="brand-text">
+                            <span class="brand-main">AAI Lost & Found</span>
+                            <span class="brand-sub">Alliance Academy For Innovation</span>
+                        </div>
+                    </div>
+                    <p>Helping reunite students with their belongings since 2024</p>
+                </div>
+                <div class="footer-links-grid">
+                    <a href="login.html" class="footer-link"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
+                    <a href="index.html" class="footer-link"><i class="fas fa-home me-1"></i> Home</a>
+                    <a href="browse.html" class="footer-link"><i class="fas fa-search me-1"></i> Browse</a>
+                    <a href="report.html" class="footer-link"><i class="fas fa-plus me-1"></i> Report</a>
+                    <a href="claim.html" class="footer-link"><i class="fas fa-handshake me-1"></i> Claim</a>
+                    <a href="admin.html" class="footer-link"><i class="fas fa-cog me-1"></i> Admin</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Alliance Academy For Innovation. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Modern Scroll Animations
+        function initScrollAnimations() {
+            const revealElements = document.querySelectorAll('.reveal-element');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        
+                        // Animate child security items with delay
+                        if (entry.target.id === 'loginCard') {
+                            setTimeout(() => {
+                                const securityItems = document.querySelectorAll('.security-item');
+                                securityItems.forEach((item, index) => {
+                                    setTimeout(() => {
+                                        item.classList.add('visible');
+                                    }, index * 100);
+                                });
+                            }, 300);
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            revealElements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+
+        // Smooth Scrolling for Anchor Links
+        function initSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const headerHeight = document.querySelector('.navbar').offsetHeight;
+                        const targetPosition = targetElement.offsetTop - headerHeight - 20;
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Enhanced Navbar Scroll Effect
+        function initNavbarScroll() {
+            const navbar = document.querySelector('.navbar');
+            let lastScrollY = window.scrollY;
+            
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+                
+                // Update loading bar
+                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercent = (currentScrollY / scrollHeight) * 100;
+                document.getElementById('loadingBar').style.width = scrollPercent + '%';
+                
+                // Navbar background on scroll
+                if (currentScrollY > 100) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+                
+                // Hide/show navbar on scroll
+                if (currentScrollY > lastScrollY && currentScrollY > 200) {
+                    navbar.style.transform = 'translateY(-100%)';
+                } else {
+                    navbar.style.transform = 'translateY(0)';
+                }
+                
+                lastScrollY = currentScrollY;
+            });
+        }
+
+        // ClassLink Login Handler
+        function initClassLinkLogin() {
+            const loginBtn = document.getElementById('classlinkLogin');
+            
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Animate button press
+                loginBtn.style.transform = 'scale(0.98)';
+                
+                // Show loading state
+                const originalHTML = loginBtn.innerHTML;
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Connecting to ClassLink...';
+                loginBtn.style.pointerEvents = 'none';
+                
+                // Simulate authentication delay
+                setTimeout(() => {
+                    // Check if user is already authenticated
+                    const isAuthenticated = localStorage.getItem('aai_authenticated');
+                    
+                    if (isAuthenticated) {
+                        // Already authenticated, redirect
+                        window.location.href = 'index.html';
+                    } else {
+                        // Show authentication modal
+                        showAuthModal();
+                        
+                        // Reset button
+                        setTimeout(() => {
+                            loginBtn.innerHTML = originalHTML;
+                            loginBtn.style.transform = '';
+                            loginBtn.style.pointerEvents = 'auto';
+                        }, 500);
+                    }
+                }, 1500);
+            });
+        }
+
+        // Modern Authentication Modal
+        function showAuthModal() {
+            const modalHTML = `
+                <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                        <div class="modal-content" style="border-radius: 20px; overflow: hidden; border: none;">
+                            <div class="modal-body p-0">
+                                <div class="auth-container" style="padding: 40px 30px; text-align: center;">
+                                    <div class="auth-icon mb-4">
+                                        <div style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-user-graduate fa-2x" style="color: var(--accent-gold);"></i>
+                                        </div>
+                                    </div>
+                                    <h4 style="color: var(--primary-blue); margin-bottom: 10px; font-weight: 600;">School Authentication</h4>
+                                    <p style="color: var(--text-dark); opacity: 0.8; margin-bottom: 30px; font-size: 0.9rem;">
+                                        Sign in with your Alliance Academy credentials
+                                    </p>
+                                    <div class="auth-form">
+                                        <div class="form-group" style="margin-bottom: 20px;">
+                                            <input type="text" class="form-control" id="authUsername" placeholder="Username" style="border-radius: 10px; border: 2px solid #e9ecef; padding: 12px 15px; font-size: 0.9rem;">
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 25px;">
+                                            <input type="password" class="form-control" id="authPassword" placeholder="Password" style="border-radius: 10px; border: 2px solid #e9ecef; padding: 12px 15px; font-size: 0.9rem;">
+                                        </div>
+                                        <button id="authSubmit" class="btn btn-primary btn-block" style="background: linear-gradient(135deg, var(--accent-gold), var(--light-gold)); border: none; border-radius: 10px; padding: 12px; font-weight: 600; color: var(--primary-blue);">
+                                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                                        </button>
+                                    </div>
+                                    <div class="auth-note mt-4">
+                                        <small style="color: var(--text-dark); opacity: 0.6; display: block;">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Demo: Any credentials will work
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add modal to page
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            
+            // Show modal with animation
+            const modal = $('#authModal');
+            modal.modal('show');
+            
+            // Style modal backdrop
+            $('.modal-backdrop').addClass('show');
+            
+            // Handle form submission
+            document.getElementById('authSubmit').addEventListener('click', function() {
+                const username = document.getElementById('authUsername').value;
+                const password = document.getElementById('authPassword').value;
+                
+                if (username && password) {
+                    // Store authentication
+                    localStorage.setItem('aai_authenticated', 'true');
+                    localStorage.setItem('aai_username', username);
+                    
+                    // Animate success
+                    this.innerHTML = '<i class="fas fa-check me-2"></i>Success!';
+                    this.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                    
+                    // Close and redirect
+                    setTimeout(() => {
+                        modal.modal('hide');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 300);
+                    }, 1000);
+                } else {
+                    // Shake animation for error
+                    this.innerHTML = '<i class="fas fa-exclamation me-2"></i>Please fill both fields';
+                    this.style.background = 'linear-gradient(135deg, #dc3545, #e35d6a)';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Sign In';
+                        this.style.background = 'linear-gradient(135deg, var(--accent-gold), var(--light-gold))';
+                    }, 1500);
+                }
+            });
+            
+            // Clean up modal on close
+            modal.on('hidden.bs.modal', function() {
+                $('#authModal').remove();
+                $('.modal-backdrop').remove();
+            });
+        }
+
+        // Set active nav item
+        function setActiveNavItem() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            
+            navLinks.forEach(link => {
+                const linkPage = link.getAttribute('href');
+                if (linkPage === currentPage) {
+                    link.parentElement.classList.add('active');
+                } else {
+                    link.parentElement.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show loading bar initially
+            document.getElementById('loadingBar').style.width = '30%';
+            
+            // Initialize all components
+            initScrollAnimations();
+            initSmoothScroll();
+            initNavbarScroll();
+            setActiveNavItem();
+            initClassLinkLogin();
+            
+            // Check authentication
+            const isAuthenticated = localStorage.getItem('aai_authenticated');
+            if (isAuthenticated && window.location.pathname.endsWith('login.html')) {
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            }
+            
+            // Complete loading
+            setTimeout(() => {
+                document.getElementById('loadingBar').style.width = '100%';
+                setTimeout(() => {
+                    document.getElementById('loadingBar').style.opacity = '0';
+                }, 300);
+            }, 1000);
+        });
+
+        // Handle page unloading
+        window.addEventListener('beforeunload', function() {
+            document.getElementById('loadingBar').style.width = '100%';
+        });
+    </script>
+</body>
+</html>

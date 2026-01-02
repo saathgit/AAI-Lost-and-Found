@@ -19,6 +19,44 @@
             --text-dark: #000936;
             --success: #28a745;
             --warning: #ffc107;
+            
+            /* Dark mode variables - default light mode */
+            --bg-primary: #fafdffc1;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f8f9fa;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --text-primary: #000936;
+            --text-secondary: #001c70;
+            --border-color: rgba(0, 15, 61, 0.1);
+            --navbar-bg: rgba(2, 42, 117, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.12);
+        }
+
+        /* Dark Mode Theme */
+        .dark-mode {
+            --primary-blue: #020409;
+            --secondary-blue: #090f22;
+            --accent-gold: #d4af37;
+            --light-gold: #e6c34f;
+            --light-blue: #0a0f1f;
+            --white: #ffffff;
+            --black: #000000;
+            --text-dark: #e0e7ff;
+            --success: #28a745;
+            --warning: #ffc107;
+            
+            --bg-primary: #0a0f1f;
+            --bg-secondary: #121826;
+            --bg-tertiary: #1a2c4d;
+            --bg-card: rgba(26, 44, 77, 0.95);
+            --text-primary: #e0e7ff;
+            --text-secondary: #b3c6e8;
+            --border-color: rgba(179, 198, 232, 0.2);
+            --navbar-bg: rgba(10, 15, 31, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            
+            background-color: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
         }
 
         * {
@@ -33,12 +71,104 @@
 
         body {
             font-family: 'Georgia', serif;
-            background-color: var(--light-blue);
-            color: var(--text-dark);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
             overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Parallax Elements */
+        .parallax-layer {
+            position: absolute;
+            will-change: transform;
+            pointer-events: none;
+        }
+
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(2, 42, 117, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+        }
+
+        .dark-mode .parallax-bg {
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(26, 58, 143, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+        }
+
+        /* Dark Mode Toggle Button */
+        .theme-toggle-container {
+            position: relative;
+            margin-left: 15px;
+        }
+
+        .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            color: var(--accent-gold);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: rotate(30deg) scale(1.1);
+            border-color: var(--accent-gold);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .theme-toggle-btn .fa-sun {
+            display: none;
+        }
+
+        .dark-mode .theme-toggle-btn .fa-sun {
+            display: block;
+        }
+
+        .dark-mode .theme-toggle-btn .fa-moon {
+            display: none;
+        }
+
+        .theme-toggle-tooltip {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-blue);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 1001;
+        }
+
+        .theme-toggle-btn:hover .theme-toggle-tooltip {
+            opacity: 1;
+            visibility: visible;
+            bottom: -30px;
         }
 
         /* Enhanced Navigation with Modern Sticky Effect */
@@ -59,8 +189,8 @@
         .navbar.scrolled {
             padding: 15px 0;
             backdrop-filter: blur(15px);
-            background-color: rgba(2, 42, 117, 0.95) !important;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            background-color: var(--navbar-bg) !important;
+            box-shadow: 0 8px 30px var(--shadow-color);
             border-bottom: 1px solid rgba(212, 175, 55, 0.1);
         }
 
@@ -452,9 +582,10 @@
         /* Modern Login Section with Glass Morphism */
         .login-section {
             padding: 120px 0;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
             position: relative;
             overflow: hidden;
+            transition: background 0.5s ease;
         }
 
         .login-section::before {
@@ -485,19 +616,19 @@
         }
 
         .login-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--bg-card);
             backdrop-filter: blur(20px);
             border-radius: 24px;
             padding: 60px;
             box-shadow: 
-                0 20px 60px rgba(0, 0, 0, 0.08),
+                0 20px 60px var(--shadow-color),
                 0 0 0 1px rgba(255, 255, 255, 0.1);
             text-align: center;
             max-width: 700px;
             margin: 0 auto;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--border-color);
             transform: translateY(50px);
             opacity: 0;
             transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
@@ -559,8 +690,12 @@
             animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.5s;
         }
 
+        .dark-mode .login-card h2 {
+            color: #e0e7ff;
+        }
+
         .login-card p {
-            color: var(--text-dark);
+            color: var(--text-primary);
             margin-bottom: 40px;
             font-size: 1.2rem;
             line-height: 1.7;
@@ -640,10 +775,15 @@
             padding: 25px;
             background: rgba(255, 255, 255, 0.7);
             border-radius: 16px;
-            border: 1px solid rgba(0, 15, 61, 0.1);
+            border: 1px solid var(--border-color);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             opacity: 0;
             transform: translateY(20px);
+        }
+
+        .dark-mode .security-item {
+            background: rgba(26, 44, 77, 0.7);
+            color: #b8c1ec;
         }
 
         .security-item.visible {
@@ -665,7 +805,11 @@
             transform: translateY(-5px);
             background: rgba(255, 255, 255, 0.9);
             border-color: rgba(212, 175, 55, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
+
+        .dark-mode .security-item:hover {
+            background: rgba(26, 44, 77, 0.9);
         }
 
         /* Modern Footer */
@@ -676,6 +820,10 @@
             margin-top: auto;
             position: relative;
             overflow: hidden;
+        }
+
+        .dark-mode footer {
+            background-color: #0a1a4f;
         }
 
         footer::before {
@@ -801,6 +949,16 @@
                 margin: 5px 0;
                 text-align: center;
             }
+            
+            .theme-toggle-container {
+                margin-left: 10px;
+            }
+            
+            .theme-toggle-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
         }
 
         /* Smooth Scroll Reveal Animations */
@@ -831,6 +989,9 @@
 <body>
     <!-- Loading Bar -->
     <div class="loading-bar" id="loadingBar"></div>
+    
+    <!-- Parallax Background -->
+    <div class="parallax-bg" id="parallaxBg"></div>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -867,6 +1028,13 @@
                     <li class="nav-item"><a class="nav-link" href="report.html">Report Found</a></li>
                     <li class="nav-item"><a class="nav-link" href="claim.html">Claim Item</a></li>
                     <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
+                    <li class="nav-item theme-toggle-container">
+                        <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Dark Mode">
+                            <i class="fas fa-moon"></i>
+                            <i class="fas fa-sun"></i>
+                            <span class="theme-toggle-tooltip">Toggle Dark Mode</span>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -972,8 +1140,208 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- GSAP for Parallax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
     <script>
+        // Dark Mode Functionality
+        function initDarkMode() {
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            
+            // Set initial theme
+            if (currentTheme === 'dark' || (prefersDarkScheme.matches && currentTheme !== 'light')) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+            }
+            
+            // Toggle theme on button click
+            themeToggleBtn.addEventListener('click', function() {
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                
+                if (isDarkMode) {
+                    document.body.classList.remove('dark-mode');
+                    localStorage.setItem('theme', 'light');
+                    console.log('Switched to light mode');
+                } else {
+                    document.body.classList.add('dark-mode');
+                    localStorage.setItem('theme', 'dark');
+                    console.log('Switched to dark mode');
+                }
+            });
+            
+            // Listen for system theme changes
+            prefersDarkScheme.addEventListener('change', function(e) {
+                if (!localStorage.getItem('theme')) {
+                    if (e.matches) {
+                        document.body.classList.add('dark-mode');
+                    } else {
+                        document.body.classList.remove('dark-mode');
+                    }
+                }
+            });
+        }
+
+        // Parallax Scrolling Functionality
+        function initParallaxScrolling() {
+            // Only run parallax on desktop for performance
+            if (window.innerWidth > 768) {
+                // Create parallax layers
+                createParallaxLayers();
+                
+                // Initialize GSAP ScrollTrigger for parallax
+                if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                    gsap.registerPlugin(ScrollTrigger);
+                    
+                    // Parallax background effect
+                    gsap.to('#parallaxBg', {
+                        backgroundPosition: '50% 100%',
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: 'body',
+                            start: 'top top',
+                            end: 'bottom bottom',
+                            scrub: 0.5
+                        }
+                    });
+                    
+                    // Parallax for hero section
+                    const heroBg = document.querySelector('.hero-bg');
+                    if (heroBg) {
+                        gsap.to(heroBg, {
+                            yPercent: 20,
+                            ease: 'none',
+                            scrollTrigger: {
+                                trigger: '.hero',
+                                start: 'top top',
+                                end: 'bottom top',
+                                scrub: true
+                            }
+                        });
+                    }
+                    
+                    // Parallax for login card
+                    const loginCard = document.querySelector('.login-card');
+                    if (loginCard) {
+                        gsap.fromTo(loginCard,
+                            { y: 50 },
+                            {
+                                y: 0,
+                                scrollTrigger: {
+                                    trigger: loginCard,
+                                    start: 'top 80%',
+                                    end: 'top 20%',
+                                    scrub: 1,
+                                    toggleActions: 'play none none reverse'
+                                }
+                            }
+                        );
+                    }
+                    
+                    // Parallax for security items
+                    const securityItems = document.querySelectorAll('.security-item');
+                    securityItems.forEach((item, i) => {
+                        gsap.fromTo(item,
+                            { y: 30 },
+                            {
+                                y: 0,
+                                scrollTrigger: {
+                                    trigger: item,
+                                    start: 'top 90%',
+                                    end: 'top 40%',
+                                    scrub: 0.8,
+                                    toggleActions: 'play none none reverse'
+                                }
+                            }
+                        );
+                    });
+                    
+                    console.log('Parallax scrolling initialized');
+                } else {
+                    console.warn('GSAP or ScrollTrigger not available - using fallback parallax');
+                    initFallbackParallax();
+                }
+            }
+        }
+        
+        // Fallback parallax for when GSAP is not available
+        function initFallbackParallax() {
+            const parallaxBg = document.getElementById('parallaxBg');
+            
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled * -0.5;
+                
+                if (parallaxBg) {
+                    parallaxBg.style.transform = 'translate3d(0px, ' + rate + 'px, 0px)';
+                }
+            });
+        }
+        
+        // Create parallax layers
+        function createParallaxLayers() {
+            const parallaxContainer = document.body;
+            const layers = 5;
+            
+            for (let i = 0; i < layers; i++) {
+                const layer = document.createElement('div');
+                layer.className = 'parallax-layer';
+                layer.style.zIndex = '-1';
+                layer.style.top = '0';
+                layer.style.left = '0';
+                layer.style.width = '100%';
+                layer.style.height = '100%';
+                layer.style.opacity = 0.1 + (i * 0.05);
+                
+                // Different effects for different layers
+                switch(i) {
+                    case 0:
+                        // Top layer - subtle gradient
+                        layer.style.background = 'radial-gradient(circle at 10% 20%, var(--primary-blue) 0%, transparent 40%)';
+                        break;
+                    case 1:
+                        // Middle layer - gold accent
+                        layer.style.background = 'radial-gradient(circle at 90% 80%, var(--accent-gold) 0%, transparent 30%)';
+                        break;
+                    case 2:
+                        // Bottom layer - blue accent
+                        layer.style.background = 'radial-gradient(circle at 50% 50%, var(--secondary-blue) 0%, transparent 50%)';
+                        break;
+                    case 3:
+                        // Pattern overlay
+                        layer.style.backgroundImage = 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0,0 L100,100 M100,0 L0,100\' stroke=\'%23d4af37\' stroke-width=\'0.5\' opacity=\'0.1\'/%3E%3C/svg%3E")';
+                        layer.style.backgroundSize = '100px 100px';
+                        break;
+                    case 4:
+                        // Grid overlay
+                        layer.style.backgroundImage = 'linear-gradient(rgba(212, 175, 55, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(212, 175, 55, 0.1) 1px, transparent 1px)';
+                        layer.style.backgroundSize = '50px 50px';
+                        break;
+                }
+                
+                parallaxContainer.appendChild(layer);
+                
+                // Apply different parallax speeds to each layer
+                if (typeof gsap !== 'undefined') {
+                    gsap.to(layer, {
+                        y: (i + 1) * 50,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: 'body',
+                            start: 'top top',
+                            end: 'bottom bottom',
+                            scrub: 0.5 * (i + 1)
+                        }
+                    });
+                }
+            }
+        }
+
         // Modern Scroll Animations
         function initScrollAnimations() {
             const revealElements = document.querySelectorAll('.reveal-element');
@@ -1098,96 +1466,160 @@
             });
         }
 
-        // Modern Authentication Modal
-        function showAuthModal() {
-            const modalHTML = `
-                <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                        <div class="modal-content" style="border-radius: 20px; overflow: hidden; border: none;">
-                            <div class="modal-body p-0">
-                                <div class="auth-container" style="padding: 40px 30px; text-align: center;">
-                                    <div class="auth-icon mb-4">
-                                        <div style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                            <i class="fas fa-user-graduate fa-2x" style="color: var(--accent-gold);"></i>
-                                        </div>
-                                    </div>
-                                    <h4 style="color: var(--primary-blue); margin-bottom: 10px; font-weight: 600;">School Authentication</h4>
-                                    <p style="color: var(--text-dark); opacity: 0.8; margin-bottom: 30px; font-size: 0.9rem;">
-                                        Sign in with your Alliance Academy credentials
-                                    </p>
-                                    <div class="auth-form">
-                                        <div class="form-group" style="margin-bottom: 20px;">
-                                            <input type="text" class="form-control" id="authUsername" placeholder="Username" style="border-radius: 10px; border: 2px solid #e9ecef; padding: 12px 15px; font-size: 0.9rem;">
-                                        </div>
-                                        <div class="form-group" style="margin-bottom: 25px;">
-                                            <input type="password" class="form-control" id="authPassword" placeholder="Password" style="border-radius: 10px; border: 2px solid #e9ecef; padding: 12px 15px; font-size: 0.9rem;">
-                                        </div>
-                                        <button id="authSubmit" class="btn btn-primary btn-block" style="background: linear-gradient(135deg, var(--accent-gold), var(--light-gold)); border: none; border-radius: 10px; padding: 12px; font-weight: 600; color: var(--primary-blue);">
-                                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
-                                        </button>
-                                    </div>
-                                    <div class="auth-note mt-4">
-                                        <small style="color: var(--text-dark); opacity: 0.6; display: block;">
-                                            <i class="fas fa-info-circle me-1"></i>
-                                            Demo: Any credentials will work
-                                        </small>
-                                    </div>
+        // Modern Authentication Modal with Black Background
+function showAuthModal() {
+    const modalHTML = `
+        <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content" style="
+                    border-radius: 20px; 
+                    overflow: hidden; 
+                    border: none;
+                    background: #000000;
+                    color: #ffffff;
+                ">
+                    <div class="modal-body p-0">
+                        <div class="auth-container" style="
+                            padding: 40px 30px; 
+                            text-align: center;
+                            background: #000000;
+                        ">
+                            <div class="auth-icon mb-4">
+                                <div style="
+                                    width: 80px; 
+                                    height: 80px; 
+                                    margin: 0 auto; 
+                                    background: linear-gradient(135deg, #1a3a8f, #2a4bab); 
+                                    border-radius: 50%; 
+                                    display: flex; 
+                                    align-items: center; 
+                                    justify-content: center;
+                                ">
+                                    <i class="fas fa-user-graduate fa-2x" style="color: var(--accent-gold);"></i>
                                 </div>
+                            </div>
+                            <h4 style="
+                                color: var(--accent-gold); 
+                                margin-bottom: 10px; 
+                                font-weight: 600;
+                                font-family: 'Playfair Display', serif;
+                            ">
+                                School Authentication
+                            </h4>
+                            <p style="
+                                color: #e0e7ff; 
+                                opacity: 0.8; 
+                                margin-bottom: 30px; 
+                                font-size: 0.9rem;
+                            ">
+                                Sign in with your Alliance Academy credentials
+                            </p>
+                            <div class="auth-form">
+                                <div class="form-group" style="margin-bottom: 20px;">
+                                    <input type="text" class="form-control" id="authUsername" placeholder="Username" style="
+                                        border-radius: 10px; 
+                                        border: 2px solid #333333; 
+                                        padding: 12px 15px; 
+                                        font-size: 0.9rem; 
+                                        background: #111111; 
+                                        color: #ffffff;
+                                    ">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 25px;">
+                                    <input type="password" class="form-control" id="authPassword" placeholder="Password" style="
+                                        border-radius: 10px; 
+                                        border: 2px solid #333333; 
+                                        padding: 12px 15px; 
+                                        font-size: 0.9rem; 
+                                        background: #111111; 
+                                        color: #ffffff;
+                                    ">
+                                </div>
+                                <button id="authSubmit" class="btn btn-primary btn-block" style="
+                                    background: linear-gradient(135deg, var(--accent-gold), var(--light-gold)); 
+                                    border: none; 
+                                    border-radius: 10px; 
+                                    padding: 12px; 
+                                    font-weight: 600; 
+                                    color: var(--primary-blue);
+                                ">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                                </button>
+                            </div>
+                            <div class="auth-note mt-4">
+                                <small style="color: #b8c1ec; opacity: 0.6; display: block;">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Demo: Any credentials will work
+                                </small>
                             </div>
                         </div>
                     </div>
                 </div>
-            `;
+            </div>
+        </div>
+    `;
+    
+    // Add modal to page
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Show modal with animation
+    const modal = $('#authModal');
+    
+    // Style modal backdrop to be darker
+    $('.modal-backdrop').css({
+        'background-color': 'rgba(0, 0, 0, 0.9)',
+        'opacity': '1'
+    });
+    
+    modal.modal('show');
+    
+    // Handle form submission
+    document.getElementById('authSubmit').addEventListener('click', function() {
+        const username = document.getElementById('authUsername').value;
+        const password = document.getElementById('authPassword').value;
+        
+        if (username && password) {
+            // Store authentication
+            localStorage.setItem('aai_authenticated', 'true');
+            localStorage.setItem('aai_username', username);
             
-            // Add modal to page
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            // Animate success
+            this.innerHTML = '<i class="fas fa-check me-2"></i>Success!';
+            this.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
             
-            // Show modal with animation
-            const modal = $('#authModal');
-            modal.modal('show');
+            // Close and redirect
+            setTimeout(() => {
+                modal.modal('hide');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 300);
+            }, 1000);
+        } else {
+            // Shake animation for error
+            this.innerHTML = '<i class="fas fa-exclamation me-2"></i>Please fill both fields';
+            this.style.background = 'linear-gradient(135deg, #dc3545, #e35d6a)';
             
-            // Style modal backdrop
-            $('.modal-backdrop').addClass('show');
-            
-            // Handle form submission
-            document.getElementById('authSubmit').addEventListener('click', function() {
-                const username = document.getElementById('authUsername').value;
-                const password = document.getElementById('authPassword').value;
-                
-                if (username && password) {
-                    // Store authentication
-                    localStorage.setItem('aai_authenticated', 'true');
-                    localStorage.setItem('aai_username', username);
-                    
-                    // Animate success
-                    this.innerHTML = '<i class="fas fa-check me-2"></i>Success!';
-                    this.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
-                    
-                    // Close and redirect
-                    setTimeout(() => {
-                        modal.modal('hide');
-                        setTimeout(() => {
-                            window.location.href = 'index.html';
-                        }, 300);
-                    }, 1000);
-                } else {
-                    // Shake animation for error
-                    this.innerHTML = '<i class="fas fa-exclamation me-2"></i>Please fill both fields';
-                    this.style.background = 'linear-gradient(135deg, #dc3545, #e35d6a)';
-                    
-                    setTimeout(() => {
-                        this.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Sign In';
-                        this.style.background = 'linear-gradient(135deg, var(--accent-gold), var(--light-gold))';
-                    }, 1500);
-                }
-            });
-            
-            // Clean up modal on close
-            modal.on('hidden.bs.modal', function() {
-                $('#authModal').remove();
-                $('.modal-backdrop').remove();
-            });
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Sign In';
+                this.style.background = 'linear-gradient(135deg, var(--accent-gold), var(--light-gold))';
+            }, 1500);
         }
+    });
+    
+    // Clean up modal on close
+    modal.on('hidden.bs.modal', function() {
+        $('#authModal').remove();
+        $('.modal-backdrop').remove();
+    });
+    
+    // Also make the modal backdrop dark when it appears
+    modal.on('shown.bs.modal', function() {
+        $('.modal-backdrop').css({
+            'background-color': 'rgba(0, 0, 0, 0.9)',
+            'opacity': '1'
+        });
+    });
+}
 
         // Set active nav item
         function setActiveNavItem() {
@@ -1210,6 +1642,8 @@
             document.getElementById('loadingBar').style.width = '30%';
             
             // Initialize all components
+            initDarkMode();
+            initParallaxScrolling();
             initScrollAnimations();
             initSmoothScroll();
             initNavbarScroll();

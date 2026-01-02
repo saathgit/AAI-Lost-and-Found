@@ -31,6 +31,20 @@
         --warning: #ffc107;
     }
 
+    /* Dark Mode Theme */
+    .dark-mode {
+        --primary-blue: #020409;
+        --secondary-blue: #090f22;
+        --accent-gold: #d4af37;
+        --light-gold: #e6c34f;
+        --light-blue: #0a0f1f;
+        --white: #ffffff;
+        --black: #000000;
+        --text-dark: #e0e7ff;
+        --success: #28a745;
+        --warning: #ffc107;
+    }
+
     * {
         margin: 0;
         padding: 0;
@@ -49,6 +63,7 @@
         flex-direction: column;
         min-height: 100vh;
         overflow-x: hidden;
+        transition: background-color 0.5s ease, color 0.5s ease;
     }
 
     /* Modern Navigation - Inspired by juice.agency */
@@ -72,6 +87,103 @@
         background-color: rgba(2, 42, 117, 0.95) !important;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
         border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    }
+
+    .dark-mode .navbar.scrolled {
+        background-color: rgba(10, 15, 31, 0.95) !important;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    /* Parallax Elements */
+    .parallax-layer {
+        position: absolute;
+        will-change: transform;
+        pointer-events: none;
+    }
+
+    .parallax-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: 
+            radial-gradient(circle at 20% 30%, rgba(2, 42, 117, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+    }
+
+    .dark-mode .parallax-bg {
+        background: 
+            radial-gradient(circle at 20% 30%, rgba(26, 58, 143, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+    }
+
+    /* Dark Mode Toggle Button */
+    .theme-toggle-container {
+        position: relative;
+        margin-left: 15px;
+    }
+
+    .theme-toggle-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(212, 175, 55, 0.3);
+        color: var(--accent-gold);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        font-size: 1.2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .theme-toggle-btn:hover {
+        background: rgba(212, 175, 55, 0.2);
+        transform: rotate(30deg) scale(1.1);
+        border-color: var(--accent-gold);
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .theme-toggle-btn .fa-sun {
+        display: none;
+    }
+
+    .dark-mode .theme-toggle-btn .fa-sun {
+        display: block;
+    }
+
+    .dark-mode .theme-toggle-btn .fa-moon {
+        display: none;
+    }
+
+    .theme-toggle-tooltip {
+        position: absolute;
+        bottom: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--primary-blue);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        pointer-events: none;
+        z-index: 1001;
+    }
+
+    .theme-toggle-btn:hover .theme-toggle-tooltip {
+        opacity: 1;
+        visibility: visible;
+        bottom: -30px;
     }
 
     .navbar-brand {
@@ -467,6 +579,10 @@
         overflow: hidden;
     }
 
+    .dark-mode .quick-actions {
+        background-color: #0a0f1f;
+    }
+
     .quick-actions::before {
         content: '';
         position: absolute;
@@ -484,7 +600,7 @@
     }
 
     .section-title h2 {
-        color: var(--primary-blue);
+        color: #5971bd;
         font-family: 'Playfair Display', serif;
         font-size: 3rem;
         margin-bottom: 1.5rem;
@@ -515,6 +631,10 @@
         opacity: 0.9;
     }
 
+    .dark-mode .section-title .lead {
+        color: #e0e7ff;
+    }
+
     /* Modern Action Cards */
     .action-card {
         background: rgba(255, 255, 255, 0.95);
@@ -535,6 +655,14 @@
         border: 1px solid rgba(255, 255, 255, 0.2);
         transform: translateY(50px);
         opacity: 0;
+    }
+
+    .dark-mode .action-card {
+        background: rgba(26, 32, 48, 0.95);
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .action-card.visible {
@@ -569,6 +697,12 @@
             0 0 0 1px rgba(212, 175, 55, 0.1);
     }
 
+    .dark-mode .action-card:hover {
+        box-shadow: 
+            0 40px 80px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(212, 175, 55, 0.2);
+    }
+
     .action-icon {
         font-size: 4rem;
         color: var(--accent-gold);
@@ -598,8 +732,16 @@
         letter-spacing: -0.3px;
     }
 
+    .dark-mode .action-card h4 {
+        color: #e0e7ff;
+    }
+
     .action-card:hover h4 {
         color: var(--secondary-blue);
+    }
+
+    .dark-mode .action-card:hover h4 {
+        color: #c0c7ff;
     }
 
     .action-card p {
@@ -607,6 +749,10 @@
         line-height: 1.7;
         font-size: 1.1rem;
         opacity: 0.9;
+    }
+
+    .dark-mode .action-card p {
+        color: #b8c1ec;
     }
 
     .action-card:hover .action-icon {
@@ -620,6 +766,10 @@
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         position: relative;
         overflow: hidden;
+    }
+
+    .dark-mode .features {
+        background: linear-gradient(135deg, #121826 0%, #0a0f1f 100%);
     }
 
     .features::after {
@@ -654,6 +804,14 @@
         opacity: 0;
     }
 
+    .dark-mode .feature-card {
+        background: rgba(26, 32, 48, 0.95);
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     .feature-card.visible {
         transform: translateY(0);
         opacity: 1;
@@ -686,6 +844,12 @@
             0 0 0 1px rgba(212, 175, 55, 0.1);
     }
 
+    .dark-mode .feature-card:hover {
+        box-shadow: 
+            0 40px 80px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(212, 175, 55, 0.2);
+    }
+
     .feature-icon {
         font-size: 4rem;
         color: var(--accent-gold);
@@ -708,8 +872,16 @@
         letter-spacing: -0.3px;
     }
 
+    .dark-mode .feature-card h3 {
+        color: #e0e7ff;
+    }
+
     .feature-card:hover h3 {
         color: var(--secondary-blue);
+    }
+
+    .dark-mode .feature-card:hover h3 {
+        color: #c0c7ff;
     }
 
     .feature-card p {
@@ -717,6 +889,10 @@
         line-height: 1.7;
         font-size: 1.1rem;
         opacity: 0.9;
+    }
+
+    .dark-mode .feature-card p {
+        color: #b8c1ec;
     }
 
     .feature-card:hover .feature-icon {
@@ -731,6 +907,10 @@
         padding: 120px 0;
         position: relative;
         overflow: hidden;
+    }
+
+    .dark-mode .stats {
+        background: linear-gradient(135deg, #1a2a5f 0%, #0a1a4f 100%);
     }
 
     .stats-bg {
@@ -790,6 +970,10 @@
         overflow: hidden;
     }
 
+    .dark-mode .community-section {
+        background: linear-gradient(135deg, #0a0f1f 0%, #121a35 100%);
+    }
+
     .community-content {
         position: relative;
         z-index: 2;
@@ -839,11 +1023,19 @@
         font-weight: 600;
     }
 
+    .dark-mode .step-content h4 {
+        color: #e0e7ff;
+    }
+
     .step-content p {
         color: var(--text-dark);
         line-height: 1.7;
         font-size: 1.1rem;
         opacity: 0.9;
+    }
+
+    .dark-mode .step-content p {
+        color: #b8c1ec;
     }
 
     /* Enhanced Recent Items Section - Inspired by superpower.com */
@@ -852,6 +1044,10 @@
         background: linear-gradient(135deg, var(--white) 0%, var(--light-blue) 100%);
         position: relative;
         overflow: hidden;
+    }
+
+    .dark-mode .recent-items {
+        background: linear-gradient(135deg, #0a0f1f 0%, #121826 100%);
     }
 
     .recent-items::before {
@@ -864,6 +1060,10 @@
         background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.02"><path fill="%23000f3d" d="M500,100 Q650,200 500,400 Q350,600 500,700 Q650,600 500,400 Q350,200 500,100Z"/></svg>');
         background-size: cover;
         animation: float 20s ease-in-out infinite;
+    }
+
+    .dark-mode .recent-items::before {
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.05"><path fill="%23e0e7ff" d="M500,100 Q650,200 500,400 Q350,600 500,700 Q650,600 500,400 Q350,200 500,100Z"/></svg>');
     }
 
     @keyframes float {
@@ -915,6 +1115,14 @@
         opacity: 0;
     }
 
+    .dark-mode .item-card-enhanced {
+        background: rgba(26, 32, 48, 0.95);
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     .item-card-enhanced.visible {
         transform: translateY(0);
         opacity: 1;
@@ -945,6 +1153,12 @@
         box-shadow: 
             0 40px 80px rgba(0, 0, 0, 0.15),
             0 0 0 1px rgba(212, 175, 55, 0.1);
+    }
+
+    .dark-mode .item-card-enhanced:hover {
+        box-shadow: 
+            0 40px 80px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(212, 175, 55, 0.2);
     }
 
     .item-image-container {
@@ -1037,8 +1251,16 @@
         font-weight: 600;
     }
 
+    .dark-mode .item-title-enhanced {
+        color: #e0e7ff;
+    }
+
     .item-card-enhanced:hover .item-title-enhanced {
         color: var(--secondary-blue);
+    }
+
+    .dark-mode .item-card-enhanced:hover .item-title-enhanced {
+        color: #c0c7ff;
     }
 
     .item-meta {
@@ -1054,6 +1276,10 @@
         gap: 10px;
         color: var(--secondary-blue);
         font-size: 1rem;
+    }
+
+    .dark-mode .item-meta-item {
+        color: #b8c1ec;
     }
 
     .item-meta-item i {
@@ -1172,6 +1398,10 @@
         margin-top: auto;
         position: relative;
         overflow: hidden;
+    }
+
+    .dark-mode footer {
+        background-color: #0a1a4f;
     }
 
     footer::before {
@@ -1310,6 +1540,16 @@
             margin: 5px 0;
             text-align: center;
         }
+        
+        .theme-toggle-container {
+            margin-left: 10px;
+        }
+        
+        .theme-toggle-btn {
+            width: 45px;
+            height: 45px;
+            font-size: 1rem;
+        }
     }
 
     /* Loading Animations */
@@ -1327,6 +1567,11 @@
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
     }
 
+    .dark-mode .item-card-skeleton {
+        background: #1a2030;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
     .skeleton-image {
         width: 100%;
         height: 160px;
@@ -1336,12 +1581,20 @@
         animation: loading 1.5s infinite;
     }
 
+    .dark-mode .skeleton-image {
+        background: linear-gradient(90deg, #2a2f3f 25%, #3a3f4f 50%, #2a2f3f 75%);
+    }
+
     .skeleton-text {
         height: 12px;
         background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
         border-radius: 6px;
         margin-bottom: 10px;
         animation: loading 1.5s infinite;
+    }
+
+    .dark-mode .skeleton-text {
+        background: linear-gradient(90deg, #2a2f3f 25%, #3a3f4f 50%, #2a2f3f 75%);
     }
 
     .skeleton-text.short {
@@ -1477,6 +1730,14 @@
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
+    .dark-mode .chatbot-window {
+        background: rgba(26, 32, 48, 0.95);
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     .chatbot-window.active {
         display: flex;
         transform: translateY(0) scale(1);
@@ -1556,6 +1817,10 @@
         gap: 18px;
     }
 
+    .dark-mode .chatbot-messages {
+        background: #0a0f1f;
+    }
+
     .message {
         max-width: 88%;
         padding: 18px;
@@ -1585,6 +1850,12 @@
         color: var(--text-dark);
     }
 
+    .dark-mode .message.bot {
+        background: #1a2030;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #e0e7ff;
+    }
+
     .message.user {
         align-self: flex-end;
         background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
@@ -1601,6 +1872,11 @@
         align-items: center;
     }
 
+    .dark-mode .chatbot-input {
+        background: #1a2030;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     .chatbot-input input {
         flex: 1;
         padding: 15px 20px;
@@ -1613,9 +1889,19 @@
         background: var(--light-blue);
     }
 
+    .dark-mode .chatbot-input input {
+        background: #0a0f1f;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        color: #e0e7ff;
+    }
+
     .chatbot-input input:focus {
         border-color: var(--accent-gold);
         background: var(--white);
+    }
+
+    .dark-mode .chatbot-input input:focus {
+        background: #1a2030;
     }
 
     .chatbot-send {
@@ -1653,11 +1939,20 @@
         gap: 12px;
     }
 
+    .dark-mode .quick-questions {
+        background: #1a2030;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     .quick-questions-title {
         font-size: 0.85rem;
         color: var(--secondary-blue);
         margin-bottom: 5px;
         font-weight: 600;
+    }
+
+    .dark-mode .quick-questions-title {
+        color: #b8c1ec;
     }
 
     .quick-question {
@@ -1670,6 +1965,12 @@
         transition: all 0.3s ease;
         text-align: left;
         color: var(--text-dark);
+    }
+
+    .dark-mode .quick-question {
+        background: #0a0f1f;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #e0e7ff;
     }
 
     .quick-question:hover {
@@ -1723,6 +2024,9 @@
 <body>
     <!-- Loading Bar -->
     <div class="loading-bar" id="loadingBar"></div>
+    
+    <!-- Parallax Background -->
+    <div class="parallax-bg" id="parallaxBg"></div>
 
     <!-- Modern Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -1762,6 +2066,13 @@
                         <a class="nav-link" href="#" id="logoutBtn" style="color: var(--light-gold) !important;">
                             <i class="fas fa-sign-out-alt me-1"></i>Logout
                         </a>
+                    </li>
+                    <li class="nav-item theme-toggle-container">
+                        <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Dark Mode">
+                            <i class="fas fa-moon"></i>
+                            <i class="fas fa-sun"></i>
+                            <span class="theme-toggle-tooltip">Toggle Dark Mode</span>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -2098,6 +2409,12 @@
         setActiveNavItem();
         initChatbot();
         
+        // Initialize Dark Mode
+        initDarkMode();
+        
+        // Initialize Parallax
+        initParallaxScrolling();
+        
         // Authentication check
         const isAuthenticated = localStorage.getItem('aai_authenticated');
         if (!isAuthenticated) {
@@ -2124,6 +2441,199 @@
             }, 300);
         }, 1000);
     });
+
+    // Dark Mode Functionality
+    function initDarkMode() {
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        // Set initial theme
+        if (currentTheme === 'dark' || (prefersDarkScheme.matches && currentTheme !== 'light')) {
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.body.classList.remove('dark-mode');
+            localStorage.setItem('theme', 'light');
+        }
+        
+        // Toggle theme on button click
+        themeToggleBtn.addEventListener('click', function() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            
+            if (isDarkMode) {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+                console.log('Switched to light mode');
+            } else {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+                console.log('Switched to dark mode');
+            }
+        });
+        
+        // Listen for system theme changes
+        prefersDarkScheme.addEventListener('change', function(e) {
+            if (!localStorage.getItem('theme')) {
+                if (e.matches) {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                }
+            }
+        });
+    }
+
+    // Parallax Scrolling Functionality
+    function initParallaxScrolling() {
+        // Only run parallax on desktop for performance
+        if (window.innerWidth > 768) {
+            // Create parallax layers
+            createParallaxLayers();
+            
+            // Initialize GSAP ScrollTrigger for parallax
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+                
+                // Parallax background effect
+                gsap.to('#parallaxBg', {
+                    backgroundPosition: '50% 100%',
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: 'body',
+                        start: 'top top',
+                        end: 'bottom bottom',
+                        scrub: 0.5
+                    }
+                });
+                
+                // Parallax for hero section
+                const heroBg = document.querySelector('.hero-bg');
+                if (heroBg) {
+                    gsap.to(heroBg, {
+                        yPercent: 20,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: '.hero',
+                            start: 'top top',
+                            end: 'bottom top',
+                            scrub: true
+                        }
+                    });
+                }
+                
+                // Parallax for action cards on scroll
+                gsap.utils.toArray('.action-card, .feature-card, .item-card-enhanced').forEach((card, i) => {
+                    gsap.fromTo(card,
+                        { y: 50 },
+                        {
+                            y: 0,
+                            scrollTrigger: {
+                                trigger: card,
+                                start: 'top 80%',
+                                end: 'top 20%',
+                                scrub: 1,
+                                toggleActions: 'play none none reverse'
+                            }
+                        }
+                    );
+                });
+                
+                // Parallax for stats section
+                const statsBg = document.querySelector('.stats-bg');
+                if (statsBg) {
+                    gsap.to(statsBg, {
+                        rotation: 360,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: '.stats',
+                            start: 'top bottom',
+                            end: 'bottom top',
+                            scrub: 1
+                        }
+                    });
+                }
+                
+                console.log('Parallax scrolling initialized');
+            } else {
+                console.warn('GSAP or ScrollTrigger not available - using fallback parallax');
+                initFallbackParallax();
+            }
+        }
+    }
+    
+    // Fallback parallax for when GSAP is not available
+    function initFallbackParallax() {
+        const parallaxBg = document.getElementById('parallaxBg');
+        
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            
+            if (parallaxBg) {
+                parallaxBg.style.transform = 'translate3d(0px, ' + rate + 'px, 0px)';
+            }
+        });
+    }
+    
+    // Create parallax layers
+    function createParallaxLayers() {
+        const parallaxContainer = document.body;
+        const layers = 5;
+        
+        for (let i = 0; i < layers; i++) {
+            const layer = document.createElement('div');
+            layer.className = 'parallax-layer';
+            layer.style.zIndex = '-1';
+            layer.style.top = '0';
+            layer.style.left = '0';
+            layer.style.width = '100%';
+            layer.style.height = '100%';
+            layer.style.opacity = 0.1 + (i * 0.05);
+            
+            // Different effects for different layers
+            switch(i) {
+                case 0:
+                    // Top layer - subtle gradient
+                    layer.style.background = 'radial-gradient(circle at 10% 20%, var(--primary-blue) 0%, transparent 40%)';
+                    break;
+                case 1:
+                    // Middle layer - gold accent
+                    layer.style.background = 'radial-gradient(circle at 90% 80%, var(--accent-gold) 0%, transparent 30%)';
+                    break;
+                case 2:
+                    // Bottom layer - blue accent
+                    layer.style.background = 'radial-gradient(circle at 50% 50%, var(--secondary-blue) 0%, transparent 50%)';
+                    break;
+                case 3:
+                    // Pattern overlay
+                    layer.style.backgroundImage = 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0,0 L100,100 M100,0 L0,100\' stroke=\'%23d4af37\' stroke-width=\'0.5\' opacity=\'0.1\'/%3E%3C/svg%3E")';
+                    layer.style.backgroundSize = '100px 100px';
+                    break;
+                case 4:
+                    // Grid overlay
+                    layer.style.backgroundImage = 'linear-gradient(rgba(212, 175, 55, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(212, 175, 55, 0.1) 1px, transparent 1px)';
+                    layer.style.backgroundSize = '50px 50px';
+                    break;
+            }
+            
+            parallaxContainer.appendChild(layer);
+            
+            // Apply different parallax speeds to each layer
+            if (typeof gsap !== 'undefined') {
+                gsap.to(layer, {
+                    y: (i + 1) * 50,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: 'body',
+                        start: 'top top',
+                        end: 'bottom bottom',
+                        scrub: 0.5 * (i + 1)
+                    }
+                });
+            }
+        }
+    }
 
     // Modern Scroll Animations
     function initScrollAnimations() {
@@ -2244,58 +2754,99 @@
     }
 
     // Enhanced Recent Items with Horizontal Scroll
-    function loadRecentItems() {
-        const container = document.getElementById('recentItemsScroll');
-        if (!container) return;
-        
-        // Load items from localStorage
-        let storedItems = JSON.parse(localStorage.getItem('lostFoundItems') || '[]');
-        
-        // Sort by timestamp (newest first) and get the 6 most recent items
-        const recentItems = storedItems
-            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-            .slice(0, 6);
-        
-        // Clear loading skeleton
-        container.innerHTML = '';
-        
-        // Create enhanced item cards
-        recentItems.forEach((item, index) => {
-            const itemCard = document.createElement('a');
-            itemCard.href = `browse.html#item-${item.id}`;
-            itemCard.className = `item-card-enhanced reveal-element`;
-            itemCard.innerHTML = `
-                <div class="item-image-container">
-                    <img src="${item.image}" alt="${item.title}" class="item-image" loading="lazy">
-                    <div class="item-overlay">
-                        <button class="view-item-btn">View Details</button>
-                    </div>
-                </div>
-                <div class="item-info-enhanced">
-                    <span class="item-category-badge">${item.category.toUpperCase()}</span>
-                    <h4 class="item-title-enhanced">${item.title}</h4>
-                    <div class="item-meta">
-                        <div class="item-meta-item">
-                            <i class="fas fa-calendar"></i>
-                            <span>Found: ${formatRecentItemDate(item.dateFound)}</span>
-                        </div>
-                        <div class="item-meta-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>${formatRecentItemLocation(item.location)}</span>
-                        </div>
-                    </div>
-                    <span class="item-status">
-                        <i class="fas fa-check-circle"></i>
-                        Available for Claim
-                    </span>
-                </div>
-            `;
-            container.appendChild(itemCard);
-        });
-        
-        // Initialize scroll controls
-        initScrollControls();
+function loadRecentItems() {
+    const container = document.getElementById('recentItemsScroll');
+    if (!container) return;
+    
+    // Load items from localStorage
+    let storedItems = JSON.parse(localStorage.getItem('lostFoundItems') || '[]');
+    
+    console.log('Loading recent items from localStorage:', storedItems.length);
+    
+    // Sort by timestamp (newest first) and get the 6 most recent items
+    const recentItems = storedItems
+        .sort((a, b) => new Date(b.timestamp || b.dateFound) - new Date(a.timestamp || a.dateFound))
+        .slice(0, 6);
+    
+    console.log('Recent items to display:', recentItems);
+    
+    // Clear loading skeleton
+    container.innerHTML = '';
+    
+    if (recentItems.length === 0) {
+        // Show empty state
+        container.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-search mb-4" style="font-size: 3rem; color: var(--accent-gold); opacity: 0.5;"></i>
+                <h4 style="color: var(--primary-blue);">No Items Found Yet</h4>
+                <p class="text-muted">No items have been reported yet. Check back soon!</p>
+                <a href="report.html" class="view-all-btn mt-3">
+                    <i class="fas fa-plus me-2"></i>Be the First to Report
+                </a>
+            </div>
+        `;
+        // Hide scroll controls
+        document.querySelector('.scroll-controls').style.display = 'none';
+        return;
     }
+    
+    // Create enhanced item cards
+    recentItems.forEach((item, index) => {
+        const itemCard = document.createElement('a');
+        itemCard.href = `browse.html#item-${item.id}`;
+        itemCard.className = `item-card-enhanced reveal-element`;
+        itemCard.style.animationDelay = `${index * 0.1}s`;
+        itemCard.innerHTML = `
+            <div class="item-image-container">
+                <img src="${item.image}" alt="${item.title}" class="item-image" loading="lazy">
+                <div class="item-overlay">
+                    <button class="view-item-btn">View Details</button>
+                </div>
+            </div>
+            <div class="item-info-enhanced">
+                <span class="item-category-badge">${formatCategory(item.category)}</span>
+                <h4 class="item-title-enhanced">${item.title}</h4>
+                <div class="item-meta">
+                    <div class="item-meta-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>Found: ${formatRecentItemDate(item.dateFound)}</span>
+                    </div>
+                    <div class="item-meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${formatRecentItemLocation(item.location)}</span>
+                    </div>
+                </div>
+                <span class="item-status">
+                    <i class="fas fa-check-circle"></i>
+                    Available for Claim
+                </span>
+            </div>
+        `;
+        container.appendChild(itemCard);
+        
+        // Make it visible with animation
+        setTimeout(() => {
+            itemCard.classList.add('visible');
+        }, 500 + (index * 100));
+    });
+    
+    // Initialize scroll controls
+    setTimeout(() => {
+        initScrollControls();
+    }, 1000);
+}
+
+// Helper function for category formatting
+function formatCategory(category) {
+    const categories = {
+        'electronics': 'ELECTRONICS',
+        'clothing': 'CLOTHING',
+        'books': 'BOOKS',
+        'accessories': 'ACCESSORIES',
+        'other': 'OTHER'
+    };
+    return categories[category] || category.toUpperCase();
+}
 
     // Helper function for recent items date formatting
     function formatRecentItemDate(dateString) {

@@ -1,0 +1,3787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found - Alliance Academy For Innovation</title>
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%230A2463'/><path d='M30,70 L45,30 L55,30 L70,70 L62,70 L59,60 L41,60 L38,70 Z' fill='%23f0b429'/><rect x='44' y='55' width='12' height='8' fill='%230A2463'/></svg>">
+<meta name="theme-color" content="#0A2463">
+
+    <!-- Firebase App -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Ensure loading bar is always on top */
+.loading-bar {
+    z-index: 99999 !important;
+    position: fixed !important;
+}
+    :root {
+        --primary-blue: #022A75;
+        --secondary-blue: #001c70;
+        --accent-gold: #d4af37;
+        --light-gold: #e6c34f;
+        --light-blue: #fafdffc1;
+        --white: #ffffff;
+        --black: #000000;
+        --text-dark: #000936;
+        --success: #28a745;
+        --warning: #ffc107;
+        --text-size: 1rem;
+    }
+
+    /* Dark Mode Theme */
+    .dark-mode {
+        --primary-blue: #020409;
+        --secondary-blue: #090f22;
+        --accent-gold: #d4af37;
+        --light-gold: #e6c34f;
+        --light-blue: #0a0f1f;
+        --white: #ffffff;
+        --black: #000000;
+        --text-dark: #e0e7ff;
+        --success: #28a745;
+        --warning: #ffc107;
+    }
+
+    /* Text size classes */
+    .text-small {
+        --text-size: 0.875rem;
+    }
+    
+    .text-large {
+        --text-size: 1.125rem;
+    }
+    
+    .text-xlarge {
+        --text-size: 1.25rem;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-size: var(--text-size);
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: 'Georgia', serif;
+        background-color: var(--light-blue);
+        color: var(--text-dark);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: hidden;
+        transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    /* Modern Navigation - Inspired by juice.agency */
+    .navbar {
+        background-color: transparent !important;
+        font-size: 17px;
+        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 20px 0;
+        min-height: 90px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        backdrop-filter: blur(0px);
+    } 
+
+    .navbar.scrolled {
+        padding: 15px 0;
+        backdrop-filter: blur(15px);
+        background-color: rgba(2, 42, 117, 0.95) !important;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    }
+
+    .dark-mode .navbar.scrolled {
+        background-color: rgba(10, 15, 31, 0.95) !important;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    /* Parallax Elements */
+.parallax-layer {
+    position: absolute;
+    will-change: transform;
+    pointer-events: none;
+}
+
+.parallax-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(2, 42, 117, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+}
+
+.dark-mode .parallax-bg {
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(26, 58, 143, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+}
+/* ========== VIDEO BACKGROUND (Matches Login Page) ========== */
+.video-bg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+/* Video should be at normal opacity */
+.video-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    opacity: 1; /* FULL opacity - overlay will make it subtle */
+    z-index: 1;
+}
+
+/* TRANSPARENT OVERLAY (like login page) */
+.video-bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* EXACT same as login page: semi-transparent gradient */
+    /* Same as login page */
+background: linear-gradient(135deg, rgba(2, 42, 117, 0.6) 0%, rgba(0, 28, 112, 0.65) 100%);
+    z-index: 2; /* Overlay ABOVE video but BELOW text */
+    pointer-events: none;
+}
+
+/* Force dark mode override */
+body.dark-mode .video-bg-overlay {
+    background: linear-gradient(135deg, rgba(10, 15, 31, 0.85) 0%, rgba(18, 24, 38, 0.9) 100%) !important;
+}
+
+/* Features section specific */
+body.dark-mode .features .video-bg-overlay {
+    background: linear-gradient(135deg, 
+        rgba(10, 15, 31, 0.8) 0%, 
+        rgba(2, 3, 6, 0.85) 100%) !important;
+}
+
+/* Features section overlay (slightly different) */
+.features .video-bg-overlay {
+    background: 
+        linear-gradient(135deg, 
+            rgba(2, 42, 117, 0.8) 0%, 
+            rgba(0, 28, 112, 0.85) 100%);
+}
+
+/* Section positioning */
+.hero.with-video-bg,
+.features.with-video-bg {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero.with-video-bg {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+/* Content stays above everything */
+.hero-content,
+.features .container {
+    position: relative;
+    z-index: 3; /* Above overlay and video */
+}
+
+/* Loading indicator */
+.video-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--accent-gold);
+    font-size: 2rem;
+    z-index: 2; /* Between video and overlay */
+    opacity: 0.7;
+}
+
+    /* Settings Button - Replacing Theme Toggle */
+    .settings-container {
+        position: relative;
+        margin-left: 15px;
+    }
+
+    .settings-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(212, 175, 55, 0.3);
+        color: var(--accent-gold);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        font-size: 1.2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .settings-btn:hover {
+        background: rgba(212, 175, 55, 0.2);
+        transform: rotate(30deg) scale(1.1);
+        border-color: var(--accent-gold);
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .settings-tooltip {
+        position: absolute;
+        bottom: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--primary-blue);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        pointer-events: none;
+        z-index: 1001;
+    }
+
+    .settings-btn:hover .settings-tooltip {
+        opacity: 1;
+        visibility: visible;
+        bottom: -30px;
+    }
+
+    .navbar-brand {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--accent-gold) !important;
+        font-size: 1.8rem;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 8px 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transform: translateY(0);
+    }
+
+    /* Logo Animation */
+    .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo {
+        width: 50px;
+        height: 50px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .logo-box {
+        width: 40px;
+        height: 35px;
+        background: var(--primary-blue);
+        border: 2px solid var(--accent-gold);
+        border-radius: 6px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .logo-box::before {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        right: 2px;
+        bottom: 2px;
+        background: 
+            linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%),
+            repeating-linear-gradient(0deg, 
+                rgba(255,255,255,0.1) 0px, 
+                rgba(255,255,255,0.1) 1px, 
+                transparent 1px, 
+                transparent 4px
+            );
+        border-radius: 4px;
+    }
+
+    .logo-items {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 25px;
+    }
+
+    .logo-book {
+        position: absolute;
+        width: 12px;
+        height: 15px;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 2px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        transition: transform 0.3s ease;
+    }
+
+    .logo-book:nth-child(1) {
+        top: 2px;
+        left: 4px;
+        transform: rotate(-5deg) translateY(0);
+    }
+
+    .logo-book:nth-child(2) {
+        top: 5px;
+        left: 10px;
+        transform: rotate(3deg) translateY(0);
+        background: #e9ecef;
+    }
+
+    .logo-book:nth-child(3) {
+        top: 8px;
+        left: 16px;
+        transform: rotate(-2deg) translateY(0);
+        background: #ffffff;
+    }
+
+    .logo:hover .logo-book:nth-child(1) {
+        transform: rotate(-8deg) translateY(-2px);
+    }
+
+    .logo:hover .logo-book:nth-child(2) {
+        transform: rotate(5deg) translateY(-1px);
+    }
+
+    .logo:hover .logo-book:nth-child(3) {
+        transform: rotate(-5deg) translateY(-3px);
+    }
+
+    .logo-magnifier {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        width: 20px;
+        height: 20px;
+        animation: float-magnifier 3s ease-in-out infinite;
+    }
+
+    .magnifier-handle {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        width: 8px;
+        height: 8px;
+        background: var(--accent-gold);
+        border-radius: 50%;
+        transform: rotate(45deg);
+    }
+
+    .magnifier-handle::before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 12px;
+        height: 3px;
+        background: var(--accent-gold);
+        border-radius: 2px;
+        transform: rotate(-45deg);
+        transform-origin: left center;
+    }
+
+    .magnifier-glass {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 16px;
+        height: 16px;
+        border: 2px solid var(--accent-gold);
+        border-radius: 50%;
+        background: rgba(212, 175, 55, 0.1);
+    }
+
+    .magnifier-glass::before {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 6px;
+        height: 6px;
+        background: var(--accent-gold);
+        border-radius: 50%;
+        opacity: 0.6;
+    }
+
+    @keyframes float-magnifier {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-3px) rotate(5deg);
+        }
+    }
+
+    .navbar-brand:hover .logo {
+        transform: scale(1.1) rotate(-5deg);
+    }
+
+    .navbar-brand:hover .logo-magnifier {
+        animation-duration: 1.5s;
+    }
+
+    .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+    }
+
+    .brand-main {
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+
+    .brand-sub {
+        font-size: 0.7rem;
+        font-weight: 400;
+        opacity: 0.9;
+        letter-spacing: 0.5px;
+    }
+
+    .navbar-nav .nav-item .nav-link {
+        color: var(--white) !important;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 10px 20px !important;
+        position: relative;
+        font-weight: 500;
+        border-radius: 8px;
+        margin: 0 5px;
+        font-size: 1rem;
+        letter-spacing: 0.3px;
+        opacity: 0.9;
+    }
+
+    .navbar-nav .nav-item .nav-link:hover {
+        color: var(--accent-gold) !important;
+        background: rgba(212, 175, 55, 0.1);
+        transform: translateY(-2px);
+        opacity: 1;
+    }
+
+    .navbar-nav .nav-item .nav-link::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+    .navbar-nav .nav-item .nav-link:hover::before {
+        width: 70%;
+    }
+
+    .navbar-nav .nav-item.active .nav-link {
+        color: var(--accent-gold) !important;
+        background: rgba(212, 175, 55, 0.15);
+        font-weight: 600;
+        opacity: 1;
+    }
+
+    .navbar-nav .nav-item.active .nav-link::before {
+        width: 80%;
+        background: var(--accent-gold);
+    }
+
+    /* Modern Hero Section - Inspired by augen.pro */
+    .hero {
+        background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+        color: var(--white);
+        padding: 180px 0 120px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .hero-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(100, 200, 255, 0.1) 0%, transparent 50%);
+        opacity: 0.8;
+        animation: bg-pulse 15s ease-in-out infinite alternate;
+    }
+
+    @keyframes bg-pulse {
+        0% {
+            transform: scale(1) rotate(0deg);
+            opacity: 0.6;
+        }
+        100% {
+            transform: scale(1.1) rotate(1deg);
+            opacity: 0.9;
+        }
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 3;
+        transform: translateY(30px);
+        opacity: 0;
+        animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.5s;
+    }
+
+    @keyframes fadeUp {
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 4.5rem;
+        margin-bottom: 2rem;
+        color: var(--accent-gold);
+        position: relative;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .hero-subtitle {
+        font-size: 1.4rem;
+        margin-bottom: 3rem;
+        opacity: 0;
+        animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
+        font-weight: 300;
+        letter-spacing: 0.3px;
+        line-height: 1.6;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        color: rgba(255, 255, 255, 0.95);
+    }
+
+    .hero-cta {
+        opacity: 0;
+        animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.1s;
+    }
+
+    .scroll-indicator {
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        animation: fadeIn 0.5s ease forwards 2s;
+    }
+
+    .scroll-indicator span {
+        display: block;
+        width: 24px;
+        height: 40px;
+        border: 2px solid rgba(212, 175, 55, 0.5);
+        border-radius: 12px;
+        position: relative;
+    }
+
+    .scroll-indicator span::before {
+        content: '';
+        position: absolute;
+        top: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 10px;
+        background: var(--accent-gold);
+        border-radius: 2px;
+        animation: scrollDown 2s infinite;
+    }
+
+    @keyframes scrollDown {
+        0% {
+            transform: translateX(-50%) translateY(0);
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(-50%) translateY(20px);
+            opacity: 0;
+        }
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Modern Quick Actions - Inspired by superpower.com */
+    .quick-actions {
+        padding: 120px 0;
+        background-color: var(--white);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dark-mode .quick-actions {
+        background-color: #0a0f1f;
+    }
+
+    .quick-actions::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 4rem;
+        position: relative;
+    }
+
+    .section-title h2 {
+        color: #5971bd;
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        display: inline-block;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .section-title h2::after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+        border-radius: 2px;
+    }
+
+    .section-title .lead {
+        font-size: 1.3rem;
+        color: var(--secondary-blue);
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+        opacity: 0.9;
+    }
+
+    .dark-mode .section-title .lead {
+        color: #e0e7ff;
+    }
+
+    /* Modern Action Cards */
+    .action-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 50px 40px;
+        text-align: center;
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.08),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        height: 100%;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    .dark-mode .action-card {
+        background: rgba(26, 32, 48, 0.95);
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .action-card.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .action-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+        z-index: 2;
+    }
+
+    .action-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .action-card:hover {
+        transform: translateY(-15px);
+        border-color: var(--accent-gold);
+        text-decoration: none;
+        color: inherit;
+        box-shadow: 
+            0 40px 80px rgba(0, 0, 0, 0.12),
+            0 0 0 1px rgba(212, 175, 55, 0.1);
+    }
+
+    .dark-mode .action-card:hover {
+        box-shadow: 
+            0 40px 80px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(212, 175, 55, 0.2);
+    }
+
+    .action-icon {
+        font-size: 4rem;
+        color: var(--accent-gold);
+        margin-bottom: 30px;
+        display: inline-block;
+        transition: all 0.4s ease;
+        position: relative;
+        transform: scale(0.8);
+        opacity: 0;
+        animation: scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
+    }
+
+    @keyframes scaleIn {
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .action-card h4 {
+        color: var(--primary-blue);
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+    }
+
+    .dark-mode .action-card h4 {
+        color: #e0e7ff;
+    }
+
+    .action-card:hover h4 {
+        color: var(--secondary-blue);
+    }
+
+    .dark-mode .action-card:hover h4 {
+        color: #c0c7ff;
+    }
+
+    .action-card p {
+        color: var(--text-dark);
+        line-height: 1.7;
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    .dark-mode .action-card p {
+        color: #b8c1ec;
+    }
+
+    .action-card:hover .action-icon {
+        transform: scale(1.1) rotate(5deg);
+        color: var(--light-gold);
+    }
+
+    /* Modern Features Section - Inspired by juice.agency */
+    .features {
+        padding: 120px 0;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dark-mode .features {
+        background: linear-gradient(135deg, #121826 0%, #0a0f1f 100%);
+    }
+
+    .features::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -10%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(2, 42, 117, 0.05) 0%, transparent 70%);
+    }
+
+    /* Modern Feature Cards */
+    .feature-card {
+        background: rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 50px 40px;
+        text-align: center;
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.08),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        height: 100%;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    .dark-mode .feature-card {
+        background: rgba(26, 32, 48, 0.55);
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .feature-card.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+        z-index: 2;
+    }
+
+    .feature-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-15px);
+        border-color: var(--accent-gold);
+        text-decoration: none;
+        color: inherit;
+        box-shadow: 
+            0 40px 80px rgba(0, 0, 0, 0.12),
+            0 0 0 1px rgba(212, 175, 55, 0.1);
+    }
+
+    .dark-mode .feature-card:hover {
+        box-shadow: 
+            0 40px 80px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(212, 175, 55, 0.2);
+    }
+
+    .feature-icon {
+        font-size: 4rem;
+        color: var(--accent-gold);
+        margin-bottom: 30px;
+        display: inline-block;
+        transition: all 0.4s ease;
+        position: relative;
+        transform: scale(0.8);
+        opacity: 0;
+        animation: scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
+    }
+
+    .feature-card h3 {
+        color: var(--primary-blue);
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+    }
+
+    .dark-mode .feature-card h3 {
+        color: #e0e7ff;
+    }
+
+    .feature-card:hover h3 {
+        color: var(--secondary-blue);
+    }
+
+    .dark-mode .feature-card:hover h3 {
+        color: #c0c7ff;
+    }
+
+    .feature-card p {
+        color: var(--text-dark);
+        line-height: 1.7;
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    .dark-mode .feature-card p {
+        color: #b8c1ec;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: scale(1.1) rotate(5deg);
+        color: var(--light-gold);
+    }
+
+    /* Target the actual Font Awesome icons inside the containers */
+.action-icon i,
+.feature-icon i {
+    font-size: 5rem; /* Adjust this value to make icons bigger */
+    display: inline-block;
+    line-height: 1;
+}
+
+/* Optional: Make them even bigger on hover */
+.action-card:hover .action-icon i,
+.feature-card:hover .feature-icon i {
+    font-size: 5.5rem;
+    transform: rotate(5deg);
+}
+
+    /* Modern Stats Section - Inspired by superpower.com */
+    .stats {
+        background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
+        color: var(--white);
+        padding: 120px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dark-mode .stats {
+        background: linear-gradient(135deg, #1a2a5f 0%, #0a1a4f 100%);
+    }
+
+    .stats-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.03"><circle fill="%23d4af37" cx="500" cy="500" r="400"/></svg>');
+        background-size: cover;
+        animation: rotate 30s linear infinite;
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .stat-item {
+        text-align: center;
+        position: relative;
+        padding: 30px 20px;
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    .stat-item.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .stat-number {
+        font-size: 4.5rem;
+        font-weight: bold;
+        color: var(--accent-gold);
+        display: block;
+        margin-bottom: 15px;
+        font-family: 'Playfair Display', serif;
+        position: relative;
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        position: relative;
+        font-weight: 500;
+    }
+
+    /* Modern Community Section - Inspired by augen.pro */
+    .community-section {
+        padding: 120px 0;
+        background: linear-gradient(135deg, var(--light-blue) 0%, #e8f4ff 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dark-mode .community-section {
+        background: linear-gradient(135deg, #0a0f1f 0%, #121a35 100%);
+    }
+
+    .community-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .community-steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+        margin-top: 60px;
+    }
+
+    .community-step {
+        text-align: center;
+        padding: 0 20px;
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    .community-step.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .step-number {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        color: var(--primary-blue);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0 auto 30px;
+        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        position: relative;
+        z-index: 2;
+    }
+
+    .step-content h4 {
+        color: var(--primary-blue);
+        margin-bottom: 20px;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    .dark-mode .step-content h4 {
+        color: #e0e7ff;
+    }
+
+    .step-content p {
+        color: var(--text-dark);
+        line-height: 1.7;
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    .dark-mode .step-content p {
+        color: #b8c1ec;
+    }
+
+    /* Enhanced Recent Items Section - Inspired by superpower.com */
+    .recent-items {
+        padding: 120px 0;
+        background: linear-gradient(135deg, var(--white) 0%, var(--light-blue) 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dark-mode .recent-items {
+        background: linear-gradient(135deg, #0a0f1f 0%, #121826 100%);
+    }
+
+    .recent-items::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.02"><path fill="%23000f3d" d="M500,100 Q650,200 500,400 Q350,600 500,700 Q650,600 500,400 Q350,200 500,100Z"/></svg>');
+        background-size: cover;
+        animation: float 20s ease-in-out infinite;
+    }
+
+    .dark-mode .recent-items::before {
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.05"><path fill="%23e0e7ff" d="M500,100 Q650,200 500,400 Q350,600 500,700 Q650,600 500,400 Q350,200 500,100Z"/></svg>');
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-20px) rotate(1deg);
+        }
+    }
+
+    /* Horizontal Scrolling Container */
+    .items-scroll-container {
+        position: relative;
+        padding: 40px 0 60px;
+    }
+
+    .items-scroll-track {
+        display: flex;
+        gap: 30px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding: 30px 20px 50px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .items-scroll-track::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Modern Item Cards */
+    .item-card-enhanced {
+        flex: 0 0 380px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.12),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        position: relative;
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    .dark-mode .item-card-enhanced {
+        background: rgba(26, 32, 48, 0.95);
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .item-card-enhanced.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .item-card-enhanced::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+        z-index: 2;
+    }
+
+    .item-card-enhanced:hover::before {
+        transform: scaleX(1);
+    }
+
+    .item-card-enhanced:hover {
+        transform: translateY(-15px);
+        border-color: var(--accent-gold);
+        text-decoration: none;
+        color: inherit;
+        box-shadow: 
+            0 40px 80px rgba(0, 0, 0, 0.15),
+            0 0 0 1px rgba(212, 175, 55, 0.1);
+    }
+
+    .dark-mode .item-card-enhanced:hover {
+        box-shadow: 
+            0 40px 80px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(212, 175, 55, 0.2);
+    }
+
+    .item-image-container {
+        position: relative;
+        width: 100%;
+        height: 280px;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+    }
+
+    .item-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: all 0.6s ease;
+    }
+
+    .item-card-enhanced:hover .item-image {
+        transform: scale(1.05);
+    }
+
+    .item-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, transparent 0%, rgba(0, 15, 61, 0.7) 100%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .item-card-enhanced:hover .item-overlay {
+        opacity: 1;
+    }
+
+    .view-item-btn {
+        background: var(--accent-gold);
+        color: var(--primary-blue);
+        border: none;
+        padding: 14px 28px;
+        border-radius: 25px;
+        font-weight: bold;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .item-card-enhanced:hover .view-item-btn {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .item-info-enhanced {
+        padding: 30px;
+        position: relative;
+    }
+
+    .item-category-badge {
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        color: var(--primary-blue);
+        padding: 10px 18px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        display: inline-block;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .item-card-enhanced:hover .item-category-badge {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+    }
+
+    .item-title-enhanced {
+        font-family: 'Playfair Display', serif;
+        color: var(--primary-blue);
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+        line-height: 1.3;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+
+    .dark-mode .item-title-enhanced {
+        color: #e0e7ff;
+    }
+
+    .item-card-enhanced:hover .item-title-enhanced {
+        color: var(--secondary-blue);
+    }
+
+    .dark-mode .item-card-enhanced:hover .item-title-enhanced {
+        color: #c0c7ff;
+    }
+
+    .item-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .item-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--secondary-blue);
+        font-size: 1rem;
+    }
+
+    .dark-mode .item-meta-item {
+        color: #b8c1ec;
+    }
+
+    .item-meta-item i {
+        color: var(--accent-gold);
+        width: 18px;
+        font-size: 1.1rem;
+    }
+
+    .item-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+        padding: 8px 16px;
+        border-radius: 15px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        border: 1px solid rgba(40, 167, 69, 0.2);
+    }
+
+    /* Scroll Controls */
+    .scroll-controls {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 40px;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.5s;
+    }
+
+    .scroll-btn {
+        background: var(--accent-gold);
+        color: var(--primary-blue);
+        border: none;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .scroll-btn:hover {
+        background: var(--light-gold);
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+    }
+
+    .scroll-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: scale(1);
+    }
+
+    /* View All Button */
+    .view-all-container {
+        text-align: center;
+        margin-top: 30px;
+        position: relative;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.7s;
+    }
+
+    .view-all-btn {
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        color: var(--primary-blue);
+        border: none;
+        padding: 18px 45px;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.4s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1.2rem;
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .view-all-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: left 0.6s;
+    }
+
+    .view-all-btn:hover::before {
+        left: 100%;
+    }
+
+    .view-all-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(212, 175, 55, 0.4);
+        text-decoration: none;
+        color: var(--primary-blue);
+    }
+
+    /* Modern Reviews Section */
+    .reviews-section {
+        padding: 120px 0;
+        background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dark-mode .reviews-section {
+        background: linear-gradient(135deg, #1a2a5f 0%, #0a1a4f 100%);
+    }
+
+    .reviews-container {
+        position: relative;
+        overflow: hidden;
+        padding: 40px 0;
+    }
+
+    .reviews-track {
+        display: flex;
+        gap: 40px;
+        animation: scrollReviews 40s linear infinite;
+        padding: 20px 0;
+    }
+
+    .review-card {
+        flex: 0 0 350px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.15),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        transition: all 0.4s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .dark-mode .review-card {
+        background: rgba(26, 32, 48, 0.95);
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    .review-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 
+            0 30px 80px rgba(0, 0, 0, 0.2),
+            0 0 0 1px rgba(212, 175, 55, 0.2);
+    }
+
+    .review-header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .review-avatar {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid var(--accent-gold);
+    }
+
+    .review-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .review-info h4 {
+        color: var(--primary-blue);
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 5px;
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+    .dark-mode .review-info h4 {
+        color: #e0e7ff;
+    }
+
+    .review-info .review-role {
+        color: var(--secondary-blue);
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .dark-mode .review-info .review-role {
+        color: #b8c1ec;
+    }
+
+    .review-stars {
+        color: var(--accent-gold);
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+    }
+
+    .review-content {
+        color: var(--text-dark);
+        line-height: 1.7;
+        font-size: 1.1rem;
+        font-style: italic;
+        position: relative;
+        padding-left: 20px;
+        border-left: 3px solid var(--accent-gold);
+    }
+
+    .dark-mode .review-content {
+        color: #e0e7ff;
+    }
+
+    .review-content::before {
+        content: '"';
+        font-size: 3rem;
+        color: var(--accent-gold);
+        position: absolute;
+        left: -10px;
+        top: -15px;
+        opacity: 0.3;
+        font-family: 'Georgia', serif;
+    }
+
+    @keyframes scrollReviews {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(calc(-350px * 3 - 40px * 3));
+        }
+    }
+
+    .reviews-section:hover .reviews-track {
+        animation-play-state: running;
+    }
+
+    /* Modern Footer - Inspired by juice.agency */
+    footer {
+        background-color: var(--primary-blue);
+        color: var(--white);
+        padding: 80px 0 30px;
+        margin-top: auto;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dark-mode footer {
+        background-color: #0a1a4f;
+    }
+
+    footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        margin-bottom: 60px;
+    }
+
+    .footer-brand {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .footer-links-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 15px;
+    }
+
+    .footer-link {
+        color: var(--accent-gold);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        padding: 8px 0;
+        position: relative;
+        display: inline-block;
+    }
+
+    .footer-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 1px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--accent-gold);
+        transition: width 0.3s ease;
+    }
+
+    .footer-link:hover {
+        color: var(--light-gold);
+        text-decoration: none;
+    }
+
+    .footer-link:hover::after {
+        width: 100%;
+    }
+
+    .footer-bottom {
+        padding-top: 30px;
+        border-top: 1px solid rgba(212, 175, 55, 0.2);
+        text-align: center;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .hero h1 {
+            font-size: 3.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .footer-content {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+        }
+        
+        .review-card {
+            flex: 0 0 300px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero {
+            padding: 150px 0 80px;
+            min-height: auto;
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+        }
+        
+        .action-card,
+        .feature-card {
+            padding: 40px 25px;
+        }
+        
+        .community-steps {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+        
+        .item-card-enhanced {
+            flex: 0 0 320px;
+        }
+        
+        .item-image-container {
+            height: 220px;
+        }
+        
+        .scroll-btn {
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+        }
+        
+        .navbar-nav .nav-link {
+            margin: 5px 0;
+            text-align: center;
+        }
+        
+        .settings-container {
+            margin-left: 10px;
+        }
+        
+        .settings-btn {
+            width: 45px;
+            height: 45px;
+            font-size: 1rem;
+        }
+        
+        .review-card {
+            flex: 0 0 280px;
+            padding: 30px;
+        }
+        
+        .review-avatar {
+            width: 60px;
+            height: 60px;
+        }
+    }
+
+    /* Loading Animations */
+    .items-loading {
+        display: flex;
+        gap: 25px;
+        padding: 20px 10px;
+    }
+
+    .item-card-skeleton {
+        flex: 0 0 320px;
+        background: var(--white);
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    .dark-mode .item-card-skeleton {
+        background: #1a2030;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .skeleton-image {
+        width: 100%;
+        height: 160px;
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        border-radius: 12px;
+        margin-bottom: 20px;
+        animation: loading 1.5s infinite;
+    }
+
+    .dark-mode .skeleton-image {
+        background: linear-gradient(90deg, #2a2f3f 25%, #3a3f4f 50%, #2a2f3f 75%);
+    }
+
+    .skeleton-text {
+        height: 12px;
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        border-radius: 6px;
+        margin-bottom: 10px;
+        animation: loading 1.5s infinite;
+    }
+
+    .dark-mode .skeleton-text {
+        background: linear-gradient(90deg, #2a2f3f 25%, #3a3f4f 50%, #2a2f3f 75%);
+    }
+
+    .skeleton-text.short {
+        width: 60%;
+    }
+
+    .skeleton-text.medium {
+        width: 80%;
+    }
+
+    @keyframes loading {
+        0% { background-position: -200px 0; }
+        100% { background-position: calc(200px + 100%) 0; }
+    }
+
+    /* Scroll Reveal Animations */
+    .reveal-element {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-element.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Loading Bar */
+    .loading-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+        z-index: 9999;
+        transition: width 0.3s ease;
+    }
+
+    /* Settings Modal */
+    .settings-modal .modal-content {
+        background: var(--light-blue);
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .dark-mode .settings-modal .modal-content {
+        background: #0a0f1f;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .settings-modal .modal-header {
+        background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+        color: white;
+        border-radius: 20px 20px 0 0;
+        padding: 25px 30px;
+        border-bottom: 3px solid var(--accent-gold);
+    }
+
+    .settings-modal .modal-title {
+        font-family: 'Playfair Display', serif;
+        color: var(--accent-gold);
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .settings-modal .modal-body {
+        padding: 30px;
+    }
+
+    .settings-option {
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 15px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(0, 15, 61, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .dark-mode .settings-option {
+        background: rgba(26, 32, 48, 0.8);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .settings-option:hover {
+        background: rgba(255, 255, 255, 0.9);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .dark-mode .settings-option:hover {
+        background: rgba(26, 32, 48, 0.9);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .settings-option h5 {
+        color: var(--primary-blue);
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .dark-mode .settings-option h5 {
+        color: #e0e7ff;
+    }
+
+    .settings-option h5 i {
+        color: var(--accent-gold);
+    }
+
+    .theme-toggle-group,
+    .language-toggle-group,
+    .text-size-group {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .theme-btn,
+    .language-btn,
+    .text-size-btn {
+        flex: 1;
+        min-width: 120px;
+        padding: 12px 20px;
+        border: 2px solid rgba(212, 175, 55, 0.3);
+        background: rgba(255, 255, 255, 0.5);
+        color: var(--primary-blue);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .dark-mode .theme-btn,
+    .dark-mode .language-btn,
+    .dark-mode .text-size-btn {
+        background: rgba(255, 255, 255, 0.1);
+        color: #e0e7ff;
+    }
+
+    .theme-btn:hover,
+    .language-btn:hover,
+    .text-size-btn:hover {
+        border-color: var(--accent-gold);
+        background: rgba(212, 175, 55, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .theme-btn.active,
+    .language-btn.active,
+    .text-size-btn.active {
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        color: var(--primary-blue);
+        border-color: var(--accent-gold);
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .theme-btn i,
+    .language-btn i {
+        margin-right: 8px;
+    }
+
+    /* Back to Top Button */
+    .back-to-top {
+        position: fixed;
+        left: 30px;
+        bottom: 30px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        border: 3px solid var(--secondary-blue);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+    }
+
+    .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+        transform: translateY(-5px) scale(1.1);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .back-to-top i {
+        font-size: 1.5rem;
+        color: var(--primary-blue);
+        transition: transform 0.3s ease;
+    }
+
+    .back-to-top:hover i {
+        transform: scale(1.2);
+    }
+
+    /* Modern Chatbot Styles */
+    .chatbot-container {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 10000;
+        font-family: 'Georgia', serif;
+    }
+
+    .chatbot-button {
+        width: 85px;
+        height: 85px;
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        border: 3px solid var(--secondary-blue);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .chatbot-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border-radius: 50%;
+    }
+
+    .chatbot-button:hover::before {
+        opacity: 0.2;
+    }
+
+    .chatbot-button:hover {
+        transform: scale(1.15) rotate(15deg);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .chatbot-button i {
+        font-size: 1.8rem;
+        color: var(--primary-blue);
+        position: relative;
+        z-index: 2;
+        transition: transform 0.3s ease;
+    }
+
+    .chatbot-button:hover i {
+        transform: scale(1.15);
+    }
+
+    .chatbot-button.pulse {
+        animation: chatbot-pulse 1.5s infinite;
+    }
+
+    @keyframes chatbot-pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 15px rgba(212, 175, 55, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+        }
+    }
+
+    .chatbot-window {
+        position: absolute;
+        bottom: 90px;
+        right: 0;
+        width: 450px;
+        height: 650px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.2),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        transform: translateY(20px) scale(0.95);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .dark-mode .chatbot-window {
+        background: rgba(26, 32, 48, 0.95);
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .chatbot-window.active {
+        display: flex;
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    .chatbot-header {
+        background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+        color: var(--white);
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        position: relative;
+    }
+
+    .chatbot-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+    }
+
+    .chatbot-avatar {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid var(--white);
+    }
+
+    .chatbot-avatar i {
+        font-size: 1.5rem;
+        color: var(--primary-blue);
+    }
+
+    .chatbot-header-info h4 {
+        margin: 0;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.2rem;
+        color: var(--accent-gold);
+    }
+
+    .chatbot-header-info p {
+        margin: 2px 0 0 0;
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    .chatbot-close {
+        background: none;
+        border: none;
+        color: var(--white);
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin-left: auto;
+        transition: color 0.3s ease;
+    }
+
+    .chatbot-close:hover {
+        color: var(--accent-gold);
+    }
+
+    .chatbot-messages {
+        flex: 1;
+        padding: 25px;
+        overflow-y: auto;
+        background: var(--light-blue);
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .dark-mode .chatbot-messages {
+        background: #0a0f1f;
+    }
+
+    .message {
+        max-width: 88%;
+        padding: 18px;
+        border-radius: 18px;
+        line-height: 1.5;
+        font-size: 1.02rem;
+        animation: messageSlide 0.3s ease-out;
+        position: relative;
+    }
+
+    @keyframes messageSlide {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .message.bot {
+        align-self: flex-start;
+        background: var(--white);
+        border: 1px solid rgba(0, 15, 61, 0.1);
+        border-bottom-left-radius: 5px;
+        color: var(--text-dark);
+    }
+
+    .dark-mode .message.bot {
+        background: #1a2030;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #e0e7ff;
+    }
+
+    .message.user {
+        align-self: flex-end;
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        color: var(--primary-blue);
+        border-bottom-right-radius: 5px;
+    }
+
+    .chatbot-input {
+        padding: 25px;
+        background: var(--white);
+        border-top: 1px solid rgba(0, 15, 61, 0.1);
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .dark-mode .chatbot-input {
+        background: #1a2030;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .chatbot-input input {
+        flex: 1;
+        padding: 15px 20px;
+        border: 2px solid rgba(0, 15, 61, 0.1);
+        border-radius: 25px;
+        outline: none;
+        font-family: 'Georgia', serif;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: var(--light-blue);
+    }
+
+    .dark-mode .chatbot-input input {
+        background: #0a0f1f;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        color: #e0e7ff;
+    }
+
+    .chatbot-input input:focus {
+        border-color: var(--accent-gold);
+        background: var(--white);
+    }
+
+    .dark-mode .chatbot-input input:focus {
+        background: #1a2030;
+    }
+
+    .chatbot-send {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        border: none;
+        border-radius: 50%;
+        color: var(--primary-blue);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+    }
+
+    .chatbot-send:hover {
+        transform: scale(1.1);
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+    }
+
+    .chatbot-send:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .quick-questions {
+        padding: 20px 25px;
+        background: var(--white);
+        border-top: 1px solid rgba(0, 15, 61, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .dark-mode .quick-questions {
+        background: #1a2030;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .quick-questions-title {
+        font-size: 0.85rem;
+        color: var(--secondary-blue);
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .dark-mode .quick-questions-title {
+        color: #b8c1ec;
+    }
+
+    .quick-question {
+        background: var(--light-blue);
+        border: 1px solid rgba(0, 15, 61, 0.1);
+        border-radius: 15px;
+        padding: 12px 18px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: left;
+        color: var(--text-dark);
+    }
+
+    .dark-mode .quick-question {
+        background: #0a0f1f;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #e0e7ff;
+    }
+
+    .quick-question:hover {
+        background: var(--accent-gold);
+        color: var(--primary-blue);
+        border-color: var(--accent-gold);
+        transform: translateX(5px);
+    }
+
+    @media (max-width: 768px) {
+        .chatbot-container {
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .chatbot-window {
+            width: 400px;
+            height: 580px;
+            right: -10px;
+        }
+
+        .chatbot-button {
+            width: 65px;
+            height: 65px;
+        }
+
+        .chatbot-button i {
+            font-size: 1.6rem;
+        }
+        
+        .back-to-top {
+            left: 20px;
+            bottom: 20px;
+            width: 50px;
+            height: 50px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .chatbot-container {
+            bottom: 15px;
+            right: 15px;
+        }
+
+        .chatbot-window {
+            width: 350px;
+            height: 520px;
+            right: -20px;
+        }
+
+        .chatbot-button {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .back-to-top {
+            left: 15px;
+            bottom: 15px;
+            width: 45px;
+            height: 45px;
+        }
+        
+        .theme-btn,
+        .language-btn,
+        .text-size-btn {
+            min-width: 100px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <!-- Loading Bar -->
+    <div class="loading-bar" id="loadingBar"></div>
+    
+    <!-- Parallax Background -->
+    <div class="parallax-bg" id="parallaxBg"></div>
+    
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <!-- Modern Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="logo-container">
+                    <div class="logo">
+                        <div class="logo-box">
+                            <div class="logo-items">
+                                <div class="logo-book"></div>
+                                <div class="logo-book"></div>
+                                <div class="logo-book"></div>
+                            </div>
+                        </div>
+                        <div class="logo-magnifier">
+                            <div class="magnifier-glass"></div>
+                            <div class="magnifier-handle"></div>
+                        </div>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-main">AAI Lost & Found</span>
+                        <span class="brand-sub">Alliance Academy For Innovation</span>
+                    </div>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="browse.html">Browse Items</a></li>
+                    <li class="nav-item"><a class="nav-link" href="report.html">Report Found</a></li>
+                    <li class="nav-item"><a class="nav-link" href="claim.html">Claim Item</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutBtn" style="color: var(--light-gold) !important;">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
+                    </li>
+                    <li class="nav-item settings-container">
+                        <button class="settings-btn" id="settingsBtn" title="Settings">
+                            <i class="fas fa-cog"></i>
+                            <span class="settings-tooltip">Settings</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+ <!-- ========== HERO SECTION ========== -->
+<section class="hero with-video-bg" id="hero-section" style="position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden;">
+    <!-- Video Background Container -->
+    <div class="video-bg-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
+        <!-- Video element -->
+        <video class="video-bg" autoplay muted loop playsinline preload="auto" 
+               style="position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover; opacity: 1; z-index: 1;">
+            <!-- Your GitHub Video -->
+            <source src="https://raw.githubusercontent.com/saathgit/aai-videos/main/DJI_0014.mp4" type="video/mp4">
+            
+            <!-- Fallback stock video -->
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-university-campus-41775-large.mp4" type="video/mp4">
+        </video>
+        
+        <!-- Loading indicator -->
+        <div class="video-loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #d4af37; font-size: 2rem; z-index: 2;">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        
+        <!-- LIGHTER OVERLAY (More video visible) -->
+        <div class="video-bg-overlay" 
+             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+                    background: linear-gradient(135deg, rgba(2, 42, 117, 0.7) 0%, rgba(0, 28, 112, 0.75) 100%);
+                    z-index: 2; pointer-events: none;"></div>
+    </div>
+    
+    <!-- Content Container -->
+    <div class="container" style="position: relative; z-index: 3;">
+        <div class="hero-content">
+            <h1 data-en="Find What You've Lost" data-es="Encuentra Lo Que Perdiste">Find What You've Lost</h1>
+            <p class="hero-subtitle" data-en="Alliance Academy For Innovation's official lost and found system - connecting students with their missing belongings" data-es="Sistema oficial de objetos perdidos de Alliance Academy For Innovation - conectando estudiantes con sus pertenencias perdidas">
+                Alliance Academy For Innovation's official lost and found system - 
+                connecting students with their missing belongings
+            </p>
+            <div class="hero-cta">
+                <a href="#quick-actions" class="btn btn-lg btn-login" style="background: linear-gradient(135deg, #d4af37, #e6c34f); color: #022A75; border: none; padding: 16px 40px; border-radius: 50px; font-weight: 600; text-decoration: none;">
+                    <i class="fas fa-arrow-down me-2"></i><span data-en="Get Started" data-es="Comenzar">Get Started</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-indicator">
+        <span></span>
+    </div>
+</section>
+
+<script>
+// Add this script to handle video loading
+document.addEventListener('DOMContentLoaded', function() {
+    const heroVideo = document.querySelector('#hero-section .video-bg');
+    const heroLoading = document.querySelector('#hero-section .video-loading');
+
+    
+    if (heroVideo) {
+        // Wait for video to load
+        heroVideo.addEventListener('loadeddata', function() {
+            // Set playback rate (0.5 = half speed, 0.75 = 75% speed, etc.)
+            heroVideo.playbackRate = 0.55; // 75% of original speed
+            
+            console.log('Hero video slowed to:', heroVideo.playbackRate + 'x speed');
+        });
+        
+        // Also set it immediately in case event already fired
+        setTimeout(() => {
+            if (heroVideo.readyState >= 2) { // HAVE_CURRENT_DATA or more
+                heroVideo.playbackRate = 0.75;
+            }
+        }, 1000);
+    }
+    
+    if (heroVideo) {
+        // Remove loading spinner when video loads
+        heroVideo.addEventListener('loadeddata', function() {
+            console.log('Hero video loaded successfully');
+            if (heroLoading) {
+                heroLoading.style.opacity = '0';
+                setTimeout(() => {
+                    heroLoading.style.display = 'none';
+                }, 500);
+            }
+        });
+        
+        // Handle video errors
+        heroVideo.addEventListener('error', function(e) {
+            console.error('Hero video failed to load:', e);
+            if (heroLoading) {
+                heroLoading.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                heroLoading.style.color = '#e6c34f';
+            }
+            
+            // Try to play fallback
+            const sources = heroVideo.querySelectorAll('source');
+            if (sources.length > 1) {
+                console.log('Switching to fallback video...');
+                heroVideo.src = sources[1].src;
+                heroVideo.load();
+            }
+        });
+        
+        // Force video to play
+        setTimeout(() => {
+            heroVideo.play().catch(err => {
+                console.log('Autoplay blocked, will play on interaction');
+                document.addEventListener('click', function playOnce() {
+                    heroVideo.play();
+                    document.removeEventListener('click', playOnce);
+                }, { once: true });
+            });
+        }, 1000);
+    }
+});
+</script>
+
+    <!-- Modern Quick Actions Section -->
+    <section id="quick-actions" class="quick-actions">
+        <div class="container">
+            <div class="section-title reveal-element">
+                <h2 data-en="Quick Actions" data-es="Acciones Rápidas">Quick Actions</h2>
+                <p class="lead" data-en="Get started with these common tasks" data-es="Comienza con estas tareas comunes">Get started with these common tasks</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <a href="browse.html" class="action-card reveal-element">
+                        <div class="action-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h4 data-en="Search Items" data-es="Buscar Artículos">Search Items</h4>
+                        <p data-en="Look through all found items to see if your lost belongings have been turned in." data-es="Revisa todos los artículos encontrados para ver si tus pertenencias perdidas han sido entregadas.">Look through all found items to see if your lost belongings have been turned in.</p>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="report.html" class="action-card reveal-element">
+                        <div class="action-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h4 data-en="Report Found Item" data-es="Reportar Artículo Encontrado">Report Found Item</h4>
+                        <p data-en="Found something that doesn't belong to you? Report it here with photos." data-es="¿Encontraste algo que no te pertenece? Repórtalo aquí con fotos.">Found something that doesn't belong to you? Report it here with photos.</p>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="claim.html" class="action-card reveal-element">
+                        <div class="action-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h4 data-en="Claim an Item" data-es="Reclamar un Artículo">Claim an Item</h4>
+                        <p data-en="Found your item? Submit a claim request to get it back." data-es="¿Encontraste tu artículo? Envía una solicitud de reclamación para recuperarlo.">Found your item? Submit a claim request to get it back.</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+ <!-- ========== FEATURES SECTION ========== -->
+<section class="features with-video-bg" id="features-section" style="position: relative; overflow: hidden; padding: 120px 0;">
+    <!-- Video Background Container -->
+    <div class="video-bg-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
+        <!-- Video element -->
+        <video class="video-bg" autoplay muted loop playsinline preload="auto" 
+               style="position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover; opacity: 1; z-index: 1;">
+            <!-- Your GitHub Video -->
+            <source src="https://raw.githubusercontent.com/saathgit/aai-videos/main/Lost%20n%20Found%20Video.mp4" type="video/mp4">
+            
+            <!-- Fallback stock video -->
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-stack-of-books-on-a-shelf-41780-large.mp4" type="video/mp4">
+        </video>
+        
+        <!-- Loading indicator -->
+        <div class="video-loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #d4af37; font-size: 2rem; z-index: 2;">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        
+        <!-- LIGHTER OVERLAY (More video visible) -->
+        <div class="video-bg-overlay" 
+             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+                    background: linear-gradient(135deg, rgba(2, 42, 117, 0.65) 0%, rgba(0, 28, 112, 0.7) 100%);
+                    z-index: 2; pointer-events: none;"></div>
+    </div>
+    
+    <!-- Content Container -->
+    <div class="container" style="position: relative; z-index: 3;">
+        <div class="section-title reveal-element">
+            <h2 data-en="How It Works" data-es="Cómo Funciona">How It Works</h2>
+            <p class="lead" data-en="Simple steps to recover your lost belongings" data-es="Pasos simples para recuperar tus pertenencias perdidas">Simple steps to recover your lost belongings</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="feature-card reveal-element">
+                    <div class="feature-icon">
+                        <i class="fas fa-binoculars"></i>
+                    </div>
+                    <h3 data-en="1. Search & Browse" data-es="1. Buscar y Explorar">1. Search & Browse</h3>
+                    <p data-en="Use our search tools to look through all found items. Filter by category, date found, or location to quickly find what you're looking for." data-es="Usa nuestras herramientas de búsqueda para revisar todos los artículos encontrados. Filtra por categoría, fecha encontrada o ubicación para encontrar rápidamente lo que buscas.">Use our search tools to look through all found items. Filter by category, date found, or location to quickly find what you're looking for.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card reveal-element">
+                    <div class="feature-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <h3 data-en="2. Submit Claim" data-es="2. Enviar Reclamación">2. Submit Claim</h3>
+                    <p data-en="Found your item? Submit a claim with details about when and where you lost it. We'll verify the information and contact you." data-es="¿Encontraste tu artículo? Envía una reclamación con detalles sobre cuándo y dónde lo perdiste. Verificaremos la información y te contactaremos.">Found your item? Submit a claim with details about when and where you lost it. We'll verify the information and contact you.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card reveal-element">
+                    <div class="feature-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3 data-en="3. Get Your Item Back" data-es="3. Recupera Tu Artículo">3. Get Your Item Back</h3>
+                    <p data-en="Once verified, coordinate pickup with our staff. Most items are returned within 24-48 hours of claim approval." data-es="Una vez verificado, coordina la recogida con nuestro personal. La mayoría de los artículos se devuelven en 24-48 horas después de la aprobación de la reclamación.">Once verified, coordinate pickup with our staff. Most items are returned within 24-48 hours of claim approval.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Add this script to handle features video loading
+document.addEventListener('DOMContentLoaded', function() {
+    const featuresVideo = document.querySelector('#features-section .video-bg');
+    const featuresLoading = document.querySelector('#features-section .video-loading');
+    
+    if (featuresVideo) {
+        // Fix filename - GitHub URLs need URL encoding for spaces
+        const sources = featuresVideo.querySelectorAll('source');
+        if (sources.length > 0 && sources[0].src.includes('Lost n Found Video.mp4')) {
+            // Fix the space in filename
+            sources[0].src = 'https://raw.githubusercontent.com/saathgit/aai-videos/main/Lost%20n%20Found%20Video.mp4';
+        }
+        
+        // Remove loading spinner when video loads
+        featuresVideo.addEventListener('loadeddata', function() {
+            console.log('Features video loaded successfully');
+            if (featuresLoading) {
+                featuresLoading.style.opacity = '0';
+                setTimeout(() => {
+                    featuresLoading.style.display = 'none';
+                }, 500);
+            }
+        });
+        
+        // Handle video errors
+        featuresVideo.addEventListener('error', function(e) {
+            console.error('Features video failed to load:', e);
+            if (featuresLoading) {
+                featuresLoading.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                featuresLoading.style.color = '#e6c34f';
+            }
+            
+            // Try to play fallback
+            const sources = featuresVideo.querySelectorAll('source');
+            if (sources.length > 1) {
+                console.log('Switching to fallback video...');
+                featuresVideo.src = sources[1].src;
+                featuresVideo.load();
+            }
+        });
+        
+        // Lazy load - only play when section is visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    featuresVideo.play().catch(err => {
+                        console.log('Features video play blocked');
+                    });
+                } else {
+                    featuresVideo.pause();
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        observer.observe(document.getElementById('features-section'));
+    }
+});
+</script>
+
+    <!-- Modern Stats Section -->
+    <section class="stats">
+        <div class="stats-bg"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item reveal-element">
+                        <span class="stat-number" id="itemsFound">127</span>
+                        <span class="stat-label" data-en="Items Found" data-es="Artículos Encontrados">Items Found</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item reveal-element">
+                        <span class="stat-number" id="itemsReturned">89</span>
+                        <span class="stat-label" data-en="Items Returned" data-es="Artículos Devueltos">Items Returned</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item reveal-element">
+                        <span class="stat-number" id="activeUsers">342</span>
+                        <span class="stat-label" data-en="Active Users" data-es="Usuarios Activos">Active Users</span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item reveal-element">
+                        <span class="stat-number" id="successRate">70%</span>
+                        <span class="stat-label" data-en="Success Rate" data-es="Tasa de Éxito">Success Rate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modern Community Section -->
+    <section class="community-section">
+        <div class="container">
+            <div class="community-content">
+                <div class="section-title reveal-element">
+                    <h2 data-en="Join Our Community" data-es="Únete a Nuestra Comunidad">Join Our Community</h2>
+                    <p class="lead" data-en="Together we can reunite more items with their owners" data-es="Juntos podemos reunir más artículos con sus dueños">Together we can reunite more items with their owners</p>
+                </div>
+                <div class="community-steps">
+                    <div class="community-step reveal-element">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4 data-en="Be Observant" data-es="Sé Observador">Be Observant</h4>
+                            <p data-en="Keep an eye out for misplaced items around campus. Your awareness can help reunite someone with their belongings." data-es="Mantén un ojo atento a los artículos extraviados en el campus. Tu conciencia puede ayudar a reunir a alguien con sus pertenencias.">Keep an eye out for misplaced items around campus. Your awareness can help reunite someone with their belongings.</p>
+                        </div>
+                    </div>
+                    <div class="community-step reveal-element">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4 data-en="Report Promptly" data-es="Reporta Prontamente">Report Promptly</h4>
+                            <p data-en="When you find something, report it immediately with clear photos and accurate location details." data-es="Cuando encuentres algo, repórtalo inmediatamente con fotos claras y detalles precisos de la ubicación.">When you find something, report it immediately with clear photos and accurate location details.</p>
+                        </div>
+                    </div>
+                    <div class="community-step reveal-element">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4 data-en="Spread the Word" data-es="Difunde la Palabra">Spread the Word</h4>
+                            <p data-en="Tell your friends and classmates about our lost and found system. The more people who know, the more items we can return." data-es="Cuéntales a tus amigos y compañeros sobre nuestro sistema de objetos perdidos. Cuanta más gente sepa, más artículos podremos devolver.">Tell your friends and classmates about our lost and found system. The more people who know, the more items we can return.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Recent Items Section -->
+    <section class="recent-items">
+        <div class="container">
+            <div class="section-title reveal-element">
+                <h2 data-en="Recently Found Items" data-es="Artículos Encontrados Recientemente">Recently Found Items</h2>
+                <p class="lead" data-en="Check if your lost item has been found recently" data-es="Verifica si tu artículo perdido ha sido encontrado recientemente">Check if your lost item has been found recently</p>
+            </div>
+            
+            <div class="items-scroll-container">
+                <div class="items-scroll-track" id="recentItemsScroll">
+                    <!-- Items will be loaded dynamically -->
+                    <div class="items-loading">
+                        <!-- Skeleton loading cards -->
+                        <div class="item-card-skeleton">
+                            <div class="skeleton-image"></div>
+                            <div class="skeleton-text short"></div>
+                            <div class="skeleton-text medium"></div>
+                            <div class="skeleton-text" style="width: 40%;"></div>
+                        </div>
+                        <div class="item-card-skeleton">
+                            <div class="skeleton-image"></div>
+                            <div class="skeleton-text short"></div>
+                            <div class="skeleton-text medium"></div>
+                            <div class="skeleton-text" style="width: 40%;"></div>
+                        </div>
+                        <div class="item-card-skeleton">
+                            <div class="skeleton-image"></div>
+                            <div class="skeleton-text short"></div>
+                            <div class="skeleton-text medium"></div>
+                            <div class="skeleton-text" style="width: 40%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Scroll Controls -->
+                <div class="scroll-controls">
+                    <button class="scroll-btn" id="scrollLeftBtn" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="scroll-btn" id="scrollRightBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="view-all-container">
+                <a href="browse.html" class="view-all-btn">
+                    <i class="fas fa-list me-2"></i><span data-en="View All Found Items" data-es="Ver Todos los Artículos Encontrados">View All Found Items</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modern Reviews Section -->
+    <section class="reviews-section">
+        <div class="container">
+            <div class="section-title reveal-element">
+                <h2 data-en="What Students Say" data-es="Lo Que Dicen los Estudiantes">What Students Say</h2>
+                <p class="lead" data-en="Hear from our community about their experiences" data-es="Escucha a nuestra comunidad sobre sus experiencias">Hear from our community about their experiences</p>
+            </div>
+            
+            <div class="reviews-container">
+                <div class="reviews-track" id="reviewsTrack">
+                    <!-- Reviews will be added dynamically -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modern Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="logo" style="width: 40px; height: 40px;">
+                            <div class="logo-box">
+                                <div class="logo-items">
+                                    <div class="logo-book"></div>
+                                    <div class="logo-book"></div>
+                                    <div class="logo-book"></div>
+                                </div>
+                            </div>
+                            <div class="logo-magnifier">
+                                <div class="magnifier-glass"></div>
+                                <div class="magnifier-handle"></div>
+                            </div>
+                        </div>
+                        <div class="brand-text">
+                            <span class="brand-main">AAI Lost & Found</span>
+                            <span class="brand-sub">Alliance Academy For Innovation</span>
+                        </div>
+                    </div>
+                    <p data-en="Helping reunite students with their belongings since 2024" data-es="Ayudando a reunir a estudiantes con sus pertenencias desde 2024">Helping reunite students with their belongings since 2024</p>
+                </div>
+                <div class="footer-links-grid">
+                    <a href="index.html" class="footer-link"><i class="fas fa-home me-1"></i> <span data-en="Home" data-es="Inicio">Home</span></a>
+                    <a href="browse.html" class="footer-link"><i class="fas fa-search me-1"></i> <span data-en="Browse" data-es="Explorar">Browse</span></a>
+                    <a href="report.html" class="footer-link"><i class="fas fa-plus me-1"></i> <span data-en="Report" data-es="Reportar">Report</span></a>
+                    <a href="claim.html" class="footer-link"><i class="fas fa-handshake me-1"></i> <span data-en="Claim" data-es="Reclamar">Claim</span></a>
+                    <a href="admin.html" class="footer-link"><i class="fas fa-cog me-1"></i> <span data-en="Admin" data-es="Administración">Admin</span></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Alliance Academy For Innovation. <span data-en="All rights reserved." data-es="Todos los derechos reservados.">All rights reserved.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Chatbot Widget -->
+    <div class="chatbot-container">
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div class="chatbot-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="chatbot-header-info">
+                    <h4>AAI Assistant</h4>
+                    <p data-en="How can I help you today?" data-es="¿Cómo puedo ayudarte hoy?">How can I help you today?</p>
+                </div>
+                <button class="chatbot-close" id="chatbotClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot" data-en="Hello! I'm the AAI Lost & Found assistant. I can help you search for items, report found items, or answer questions about the lost and found process." data-es="¡Hola! Soy el asistente de Objetos Perdidos de AAI. Puedo ayudarte a buscar artículos, reportar objetos encontrados o responder preguntas sobre el proceso de objetos perdidos.">
+                    Hello! I'm the AAI Lost & Found assistant. I can help you search for items, report found items, or answer questions about the lost and found process.
+                </div>
+            </div>
+            
+            <div class="quick-questions">
+                <div class="quick-questions-title" data-en="Quick Questions:" data-es="Preguntas Rápidas:">Quick Questions:</div>
+                <button class="quick-question" data-question="How do I search for a lost item?" data-en="How do I search for a lost item?" data-es="¿Cómo busco un artículo perdido?">How do I search for a lost item?</button>
+                <button class="quick-question" data-question="What should I do if I found an item?" data-en="What should I do if I found an item?" data-es="¿Qué debo hacer si encontré un artículo?">What should I do if I found an item?</button>
+                <button class="quick-question" data-question="How long are items kept?" data-en="How long are items kept?" data-es="¿Cuánto tiempo se guardan los artículos?">How long are items kept?</button>
+            </div>
+            
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Type your message..." data-en-placeholder="Type your message..." data-es-placeholder="Escribe tu mensaje..." maxlength="500">
+                <button class="chatbot-send" id="chatbotSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="chatbot-button pulse" id="chatbotButton">
+            <i class="fas fa-comments"></i>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal fade settings-modal" id="settingsModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-cog me-2"></i><span data-en="Settings" data-es="Configuración">Settings</span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-option">
+                        <h5><i class="fas fa-palette"></i> <span data-en="Theme" data-es="Tema">Theme</span></h5>
+                        <div class="theme-toggle-group">
+                            <button class="theme-btn active" data-theme="light">
+                                <i class="fas fa-sun"></i> <span data-en="Light" data-es="Claro">Light</span>
+                            </button>
+                            <button class="theme-btn" data-theme="dark">
+                                <i class="fas fa-moon"></i> <span data-en="Dark" data-es="Oscuro">Dark</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <h5><i class="fas fa-language"></i> <span data-en="Language" data-es="Idioma">Language</span></h5>
+                        <div class="language-toggle-group">
+                            <button class="language-btn active" data-lang="en">
+                                <i class="fas fa-globe-americas"></i> <span>English</span>
+                            </button>
+                            <button class="language-btn" data-lang="es">
+                                <i class="fas fa-globe-americas"></i> <span>Español</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-option">
+                        <h5><i class="fas fa-text-height"></i> <span data-en="Text Size" data-es="Tamaño del Texto">Text Size</span></h5>
+                        <div class="text-size-group">
+                            <button class="text-size-btn" data-size="small">
+                                <span data-en="Small" data-es="Pequeño">Small</span>
+                            </button>
+                            <button class="text-size-btn active" data-size="normal">
+                                <span data-en="Normal" data-es="Normal">Normal</span>
+                            </button>
+                            <button class="text-size-btn" data-size="large">
+                                <span data-en="Large" data-es="Grande">Large</span>
+                            </button>
+                            <button class="text-size-btn" data-size="xlarge">
+                                <span data-en="Extra Large" data-es="Extra Grande">Extra Large</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> <span data-en="Close" data-es="Cerrar">Close</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+   <script>
+// ========== MAIN INITIALIZATION ==========
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loading...');
+    
+    // 1. Show initial loading bar
+    const loadingBar = document.getElementById('loadingBar');
+    if (loadingBar) loadingBar.style.width = '30%';
+    
+    // 2. Check authentication
+    const isAuthenticated = localStorage.getItem('aai_authenticated');
+    if (!isAuthenticated) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // 3. Initialize immediately visible elements
+    initNavbarScroll();
+    setActiveNavItem();
+    initBackToTop();
+    
+    // 4. Load user preferences
+    loadUserPreferences();
+    
+    // 5. Load content
+    loadContent();
+    
+    // 6. Setup logout
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('aai_authenticated');
+            localStorage.removeItem('aai_username');
+            window.location.href = 'login.html';
+        });
+    }
+});
+
+// ========== BASIC FUNCTIONS ==========
+function initNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+}
+
+function setActiveNavItem() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    
+    navLinks.forEach(link => {
+        const linkPage = link.getAttribute('href');
+        link.parentElement.classList.toggle('active', linkPage === currentPage);
+    });
+}
+
+function initBackToTop() {
+    const backToTopBtn = document.getElementById('backToTop');
+    if (!backToTopBtn) return;
+    
+    window.addEventListener('scroll', function() {
+        backToTopBtn.classList.toggle('visible', window.pageYOffset > 300);
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
+function loadUserPreferences() {
+    // Theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+    }
+    
+    // Language
+    const savedLang = localStorage.getItem('language') || 'en';
+    setLanguage(savedLang);
+    
+    // Text size
+    const savedSize = localStorage.getItem('textSize') || 'normal';
+    setTextSize(savedSize);
+}
+
+function setLanguage(lang) {
+    localStorage.setItem('language', lang);
+    
+    document.querySelectorAll('[data-en], [data-es]').forEach(element => {
+        if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
+            element.placeholder = element.getAttribute(`data-${lang}-placeholder`) || element.getAttribute(`data-${lang}`);
+        } else {
+            element.textContent = element.getAttribute(`data-${lang}`) || element.textContent;
+        }
+    });
+}
+
+function setTextSize(size) {
+    document.body.classList.remove('text-small', 'text-large', 'text-xlarge');
+    if (size !== 'normal') {
+        document.body.classList.add(`text-${size}`);
+    }
+    localStorage.setItem('textSize', size);
+}
+
+function toggleTheme(theme) {
+    if (theme === 'dark') {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+    localStorage.setItem('theme', theme);
+}
+
+// ========== CONTENT LOADING ==========
+function loadContent() {
+    const loadingBar = document.getElementById('loadingBar');
+    
+    // Load videos
+    setTimeout(() => {
+        initVideos();
+        if (loadingBar) loadingBar.style.width = '50%';
+    }, 300);
+    
+    // Load recent items
+    setTimeout(() => {
+        loadRecentItems();
+        if (loadingBar) loadingBar.style.width = '70%';
+    }, 600);
+    
+    // Load animations and other features
+    setTimeout(() => {
+        initScrollAnimations();
+        initReviews();
+        animateStats();
+        initChatbot();
+        if (loadingBar) loadingBar.style.width = '90%';
+    }, 900);
+    
+    // Complete loading
+    setTimeout(() => {
+        if (loadingBar) {
+            loadingBar.style.width = '100%';
+            setTimeout(() => {
+                loadingBar.style.opacity = '0';
+                setTimeout(() => {
+                    loadingBar.style.display = 'none';
+                }, 500);
+            }, 300);
+        }
+        initSettings();
+        initParallaxScrolling();
+        console.log('Page fully loaded');
+    }, 1200);
+}
+
+// ========== VIDEO HANDLING ==========
+function initVideos() {
+    // Hero video
+    const heroVideo = document.querySelector('#hero-section .video-bg');
+    if (heroVideo) {
+        heroVideo.play().catch(e => {
+            console.log('Hero video autoplay blocked');
+        });
+        
+        heroVideo.addEventListener('loadeddata', function() {
+            const loader = this.closest('.video-bg-container').querySelector('.video-loading');
+            if (loader) loader.style.opacity = '0';
+        });
+    }
+}
+
+// ========== RECENT ITEMS ==========
+function loadRecentItems() {
+    try {
+        const container = document.getElementById('recentItemsScroll');
+        if (!container) return;
+        
+        // Clear loading skeleton
+        const skeleton = container.querySelector('.items-loading');
+        if (skeleton) skeleton.style.display = 'none';
+        
+        // Get items from localStorage
+        const storedItems = JSON.parse(localStorage.getItem('lostFoundItems') || '[]');
+        
+        if (storedItems.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--primary-blue);">
+                    <i class="fas fa-search mb-3" style="font-size: 2rem;"></i>
+                    <p data-en="No items found yet" data-es="Aún no hay artículos">No items found yet</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Show recent items
+        const recentItems = storedItems.slice(0, 6);
+        container.innerHTML = '';
+        
+        recentItems.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'item-card-enhanced';
+            card.style.animationDelay = `${index * 0.1}s`;
+            card.innerHTML = `
+                <div class="item-image-container">
+                    <img src="${item.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjI0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzIwIiBoZWlnaHQ9IjI0MCIgZmlsbD0iIzAyMkE3NSIvPjx0ZXh0IHg9IjE2MCIgeT0iMTIwIiBmb250LWZhbWlseT0iR2VvcmdpYSIgZm9udC1zaXplPSIxNiIgZmlsbD0iI2Q0YWYzNyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SXRlbSBJbWFnZTwvdGV4dD48L3N2Zz4='}" 
+                         alt="${item.title || 'Item'}" 
+                         class="item-image">
+                </div>
+                <div class="item-info-enhanced">
+                    <span class="item-category-badge">${item.category || 'General'}</span>
+                    <h4 class="item-title-enhanced">${item.title || 'Unnamed Item'}</h4>
+                    <div class="item-meta">
+                        <div class="item-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            ${item.dateFound || 'Recently'}
+                        </div>
+                        <div class="item-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            ${item.location || 'Unknown'}
+                        </div>
+                    </div>
+                    <span class="item-status">
+                        <i class="fas fa-check-circle"></i>
+                        ${item.status === 'claimed' ? 'Claimed' : 'Available'}
+                    </span>
+                </div>
+            `;
+            container.appendChild(card);
+            
+            // Make clickable
+            card.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = 'browse.html';
+            });
+            
+            // Animate in
+            setTimeout(() => card.classList.add('visible'), 100 * index);
+        });
+        
+        // Initialize scroll controls
+        setTimeout(initScrollControls, 500);
+        
+    } catch (error) {
+        console.error('Error loading items:', error);
+    }
+}
+
+function initScrollControls() {
+    const track = document.getElementById('recentItemsScroll');
+    const leftBtn = document.getElementById('scrollLeftBtn');
+    const rightBtn = document.getElementById('scrollRightBtn');
+    
+    if (!track || !leftBtn || !rightBtn) return;
+    
+    function updateButtons() {
+        leftBtn.disabled = track.scrollLeft <= 10;
+        rightBtn.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 10;
+    }
+    
+    leftBtn.addEventListener('click', () => track.scrollBy({ left: -350, behavior: 'smooth' }));
+    rightBtn.addEventListener('click', () => track.scrollBy({ left: 350, behavior: 'smooth' }));
+    track.addEventListener('scroll', updateButtons);
+    updateButtons();
+}
+
+// ========== ANIMATIONS ==========
+function initScrollAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.reveal-element').forEach(el => observer.observe(el));
+}
+
+function animateStats() {
+    const statElements = {
+        itemsFound: 127,
+        itemsReturned: 89,
+        activeUsers: 342,
+        successRate: 70
+    };
+
+    // Get the stats section
+    const statsSection = document.querySelector('.stats');
+    if (!statsSection) return;
+    
+    // Check if animation has already run
+    let hasAnimated = false;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !hasAnimated) {
+                hasAnimated = true;
+                
+                Object.keys(statElements).forEach(statId => {
+                    const element = document.getElementById(statId);
+                    if (!element) return;
+                    
+                    const target = statElements[statId];
+                    const isPercentage = statId === 'successRate';
+                    
+                    let current = 0;
+                    const duration = 2000; // 2 seconds total
+                    const increment = target / (duration / 30); // 30ms interval
+                    
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(timer);
+                        }
+                        element.textContent = isPercentage ? 
+                            `${Math.floor(current)}%` : 
+                            Math.floor(current);
+                    }, 30);
+                });
+                
+                // Stop observing after animation
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.3, // Trigger when 30% of the element is visible
+        rootMargin: '0px 0px -100px 0px' // Trigger 100px before entering viewport
+    });
+
+    // Start observing
+    observer.observe(statsSection);
+    console.log('Stats animation observer initialized');
+}
+
+// ========== REVIEWS ==========
+function initReviews() {
+    const reviews = [
+        {
+            name: "Aneesh Chodipalli",
+            role: "12th Grade Student",
+            stars: 5,
+            content: "I lost my laptop charger and thought it was gone forever. Thanks to this system, it was returned to me within 2 days!",
+            avatar: "https://i.postimg.cc/PJ5LMwh6/Aneesh.avif"
+        },
+        {
+            name: "Officer Maloney",
+            role: "Deputy Sherriff of School",
+            stars: 4,
+            content: "Found someone's calculator and reported it. The owner was so grateful! It feels good to help others.",
+            avatar: "https://i.postimg.cc/DzQ8kgwD/Officer-Maloney.avif"
+        },
+        {
+            name: "Anya Baddam",
+            role: "10th Grade Student",
+            stars: 5,
+            content: "The search feature is amazing! I found my lost jacket by filtering by location. So convenient!",
+            avatar: "https://i.postimg.cc/Qt4NhnGq/Anya.avif"
+        }
+    ];
+    
+    const track = document.getElementById('reviewsTrack');
+    if (!track) return;
+    
+    reviews.forEach(review => {
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        card.innerHTML = `
+            <div class="review-header">
+                <div class="review-avatar">
+                    <img src="${review.avatar}" alt="${review.name}" loading="lazy">
+                </div>
+                <div class="review-info">
+                    <h4>${review.name}</h4>
+                    <div class="review-role">${review.role}</div>
+                </div>
+            </div>
+            <div class="review-stars">
+                ${'★'.repeat(review.stars)}${'☆'.repeat(5 - review.stars)}
+            </div>
+            <div class="review-content">
+                ${review.content}
+            </div>
+        `;
+        track.appendChild(card);
+    });
+    
+    // Duplicate for seamless scrolling
+    const cards = track.querySelectorAll('.review-card');
+    cards.forEach(card => {
+        const clone = card.cloneNode(true);
+        track.appendChild(clone);
+    });
+}
+
+// ========== CHATBOT ==========
+function initChatbot() {
+    const chatbotButton = document.getElementById('chatbotButton');
+    const chatbotWindow = document.getElementById('chatbotWindow');
+    const chatbotClose = document.getElementById('chatbotClose');
+    const chatbotInput = document.getElementById('chatbotInput');
+    const chatbotSend = document.getElementById('chatbotSend');
+    const chatbotMessages = document.getElementById('chatbotMessages');
+    
+    if (!chatbotButton || !chatbotWindow) return;
+    
+    chatbotButton.addEventListener('click', () => {
+        chatbotWindow.classList.toggle('active');
+        chatbotButton.classList.remove('pulse');
+    });
+    
+    chatbotClose.addEventListener('click', () => {
+        chatbotWindow.classList.remove('active');
+    });
+    
+    chatbotSend.addEventListener('click', sendMessage);
+    chatbotInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+    
+    function sendMessage() {
+        const message = chatbotInput.value.trim();
+        if (!message) return;
+        
+        addMessage(message, 'user');
+        chatbotInput.value = '';
+        
+        setTimeout(() => {
+            addMessage("Thanks for your message! This is a demo chatbot. In a real system, I'd help you search for lost items or report found ones.", 'bot');
+        }, 1000);
+    }
+    
+    function addMessage(text, sender) {
+        const msg = document.createElement('div');
+        msg.className = `message ${sender}`;
+        msg.textContent = text;
+        chatbotMessages.appendChild(msg);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+    
+    // Quick questions
+    document.querySelectorAll('.quick-question').forEach(btn => {
+        btn.addEventListener('click', function() {
+            chatbotInput.value = this.textContent;
+            sendMessage();
+        });
+    });
+}
+
+// ========== SETTINGS ==========
+function initSettings() {
+    const settingsBtn = document.getElementById('settingsBtn');
+    if (!settingsBtn) return;
+    
+    settingsBtn.addEventListener('click', () => {
+        $('#settingsModal').modal('show');
+    });
+    
+    // Theme buttons
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            toggleTheme(this.getAttribute('data-theme'));
+        });
+    });
+    
+    // Language buttons
+    document.querySelectorAll('.language-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            setLanguage(this.getAttribute('data-lang'));
+        });
+    });
+    
+    // Text size buttons
+    document.querySelectorAll('.text-size-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.text-size-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            setTextSize(this.getAttribute('data-size'));
+        });
+    });
+    
+    // Set initial active states
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.querySelector(`.theme-btn[data-theme="${currentTheme}"]`)?.classList.add('active');
+    
+    const currentLang = localStorage.getItem('language') || 'en';
+    document.querySelector(`.language-btn[data-lang="${currentLang}"]`)?.classList.add('active');
+    
+    const currentSize = localStorage.getItem('textSize') || 'normal';
+    document.querySelector(`.text-size-btn[data-size="${currentSize}"]`)?.classList.add('active');
+}
+
+// ========== PARALLAX ==========
+function initParallaxScrolling() {
+    // Only run parallax on desktop for performance
+    if (window.innerWidth > 768) {
+        console.log('Initializing full parallax effects...');
+        
+        // Create parallax layers
+        createParallaxLayers();
+        
+        // Initialize GSAP ScrollTrigger for parallax
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Parallax background effect
+            gsap.to('#parallaxBg', {
+                backgroundPosition: '50% 100%',
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: 'body',
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 0.5
+                }
+            });
+            
+            // Parallax for hero section
+            const heroBg = document.querySelector('.hero-bg');
+            if (heroBg) {
+                gsap.to(heroBg, {
+                    yPercent: 20,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: '.hero',
+                        start: 'top top',
+                        end: 'bottom top',
+                        scrub: true
+                    }
+                });
+            }
+            
+            // Parallax for action cards on scroll
+            gsap.utils.toArray('.action-card, .feature-card, .item-card-enhanced').forEach((card, i) => {
+                gsap.fromTo(card,
+                    { y: 50 },
+                    {
+                        y: 0,
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top 80%',
+                            end: 'top 20%',
+                            scrub: 1,
+                            toggleActions: 'play none none reverse'
+                        }
+                    }
+                );
+            });
+            
+            // Parallax for stats section
+            const statsBg = document.querySelector('.stats-bg');
+            if (statsBg) {
+                gsap.to(statsBg, {
+                    rotation: 360,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: '.stats',
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 1
+                    }
+                });
+            }
+            
+            console.log('Full parallax scrolling initialized with GSAP');
+        } else {
+            console.warn('GSAP or ScrollTrigger not available - using fallback parallax');
+            initFallbackParallax();
+        }
+    } else {
+        console.log('Mobile device - parallax disabled for performance');
+    }
+}
+
+// Restore the createParallaxLayers function
+function createParallaxLayers() {
+    const parallaxContainer = document.body;
+    const layers = 5;
+    
+    // Clear existing layers first
+    document.querySelectorAll('.parallax-layer').forEach(layer => layer.remove());
+    
+    for (let i = 0; i < layers; i++) {
+        const layer = document.createElement('div');
+        layer.className = 'parallax-layer';
+        layer.style.zIndex = '-1';
+        layer.style.top = '0';
+        layer.style.left = '0';
+        layer.style.width = '100%';
+        layer.style.height = '100%';
+        layer.style.opacity = 0.1 + (i * 0.05);
+        layer.style.position = 'absolute';
+        layer.style.pointerEvents = 'none';
+        
+        // Different effects for different layers
+        switch(i) {
+            case 0:
+                // Top layer - subtle gradient
+                layer.style.background = 'radial-gradient(circle at 10% 20%, var(--primary-blue) 0%, transparent 40%)';
+                break;
+            case 1:
+                // Middle layer - gold accent
+                layer.style.background = 'radial-gradient(circle at 90% 80%, var(--accent-gold) 0%, transparent 30%)';
+                break;
+            case 2:
+                // Bottom layer - blue accent
+                layer.style.background = 'radial-gradient(circle at 50% 50%, var(--secondary-blue) 0%, transparent 50%)';
+                break;
+            case 3:
+                // Pattern overlay
+                layer.style.backgroundImage = 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0,0 L100,100 M100,0 L0,100\' stroke=\'%23d4af37\' stroke-width=\'0.5\' opacity=\'0.1\'/%3E%3C/svg%3E")';
+                layer.style.backgroundSize = '100px 100px';
+                break;
+            case 4:
+                // Grid overlay
+                layer.style.backgroundImage = 'linear-gradient(rgba(212, 175, 55, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(212, 175, 55, 0.1) 1px, transparent 1px)';
+                layer.style.backgroundSize = '50px 50px';
+                break;
+        }
+        
+        parallaxContainer.appendChild(layer);
+        
+        // Apply different parallax speeds to each layer
+        if (typeof gsap !== 'undefined') {
+            gsap.to(layer, {
+                y: (i + 1) * 50,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: 'body',
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 0.5 * (i + 1)
+                }
+            });
+        }
+    }
+    console.log('Created parallax layers');
+}
+
+// Restore the fallback parallax
+function initFallbackParallax() {
+    const parallaxBg = document.getElementById('parallaxBg');
+    
+    if (parallaxBg) {
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            parallaxBg.style.transform = 'translate3d(0px, ' + rate + 'px, 0px)';
+        });
+    }
+}
+
+// ========== SCROLL TO TOP ON LOAD ==========
+window.addEventListener('load', function() {
+    setTimeout(() => window.scrollTo(0, 0), 100);
+});
+
+// Prevent scroll restoration
+if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
+}
+</script>
+</body>
+</html>

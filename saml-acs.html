@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Authentication - AAI Lost & Found</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #022A75 0%, #001c70 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .loading-container {
+            text-align: center;
+            background: white;
+            color: #022A75;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            max-width: 500px;
+            width: 90%;
+        }
+        .spinner {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #d4af37;
+        }
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container" id="loadingState">
+        <div class="spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        <h2>Verifying Your Credentials...</h2>
+        <p>Please wait while we authenticate you with Forsyth County Schools.</p>
+    </div>
+
+    <div class="loading-container" id="successState" style="display: none;">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h2>Authentication Successful!</h2>
+        <p>Welcome to AAI Lost & Found. Redirecting you now...</p>
+    </div>
+
+    <script>
+        // Handle SAML authentication response
+        document.addEventListener('DOMContentLoaded', function() {
+            // In a real SAML implementation, you would:
+            // 1. Parse the SAML response from ADFS
+            // 2. Validate the digital signature
+            // 3. Extract user attributes from the assertion
+            
+            // For this demo, we'll simulate successful authentication
+            // since ADFS doesn't provide a test environment
+            
+            simulateSAMLProcessing();
+        });
+        
+        function simulateSAMLProcessing() {
+            // Show processing state for 2 seconds
+            setTimeout(() => {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('successState').style.display = 'block';
+                
+                // Store authentication status
+                localStorage.setItem('aai_authenticated', 'true');
+                localStorage.setItem('aai_login_time', new Date().toISOString());
+                localStorage.setItem('aai_user_type', 'fcs_authenticated');
+                
+                // Redirect to main application after showing success
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            }, 2000);
+        }
+        
+        // Real SAML implementation would look like:
+    
+        function processSAMLResponse() {
+            // Get SAMLResponse from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const samlResponse = urlParams.get('SAMLResponse');
+            
+            if (!samlResponse) {
+                window.location.href = 'login.html?error=no_saml_response';
+                return;
+            }
+            
+            // Decode base64 SAML response
+            const decodedResponse = atob(samlResponse);
+            
+            // Parse XML and validate response
+            // This requires a proper SAML library like saml2-js
+            try {
+                const userAttributes = validateAndParseSAML(decodedResponse);
+                
+                if (userAttributes) {
+                    // Store user session
+                    localStorage.setItem('aai_authenticated', 'true');
+                    localStorage.setItem('aai_user_data', JSON.stringify(userAttributes));
+                    window.location.href = 'index.html';
+                } else {
+                    throw new Error('Invalid SAML response');
+                }
+            } catch (error) {
+                console.error('SAML processing error:', error);
+                window.location.href = 'login.html?error=auth_failed';
+            }
+        }
+    </script>
+</body>
+</html>

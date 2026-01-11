@@ -1,0 +1,2386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Item - AAI Lost & Found</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%230A2463'/><path d='M30,70 L45,30 L55,30 L70,70 L62,70 L59,60 L41,60 L38,70 Z' fill='%23f0b429'/><rect x='44' y='55' width='12' height='8' fill='%230A2463'/></svg>">
+<meta name="theme-color" content="#0A2463">
+
+    
+    <!-- Required Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <style>
+    :root {
+        --primary-blue: #022A75;
+        --secondary-blue: #001c70;
+        --accent-gold: #d4af37;
+        --light-gold: #e6c34f;
+        --light-blue: #fafdffc1;
+        --white: #ffffff;
+        --black: #000000;
+        --text-dark: #000936;
+        --success: #28a745;
+        --warning: #ffc107;
+        --danger: #dc3545;
+    }
+
+    /* Dark Mode Theme */
+    .dark-mode {
+        --primary-blue: #020409;
+        --secondary-blue: #090f22;
+        --accent-gold: #d4af37;
+        --light-gold: #e6c34f;
+        --light-blue: #0a0f1f;
+        --white: #ffffff;
+        --black: #000000;
+        --text-dark: #e0e7ff;
+        --success: #28a745;
+        --warning: #ffc107;
+        --danger: #dc3545;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: 'Georgia', serif;
+        background-color: var(--light-blue);
+        color: var(--text-dark);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: hidden;
+        transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    /* Parallax Elements */
+    .parallax-layer {
+        position: absolute;
+        will-change: transform;
+        pointer-events: none;
+    }
+
+    .parallax-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: 
+            radial-gradient(circle at 20% 30%, rgba(2, 42, 117, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+    }
+
+    .dark-mode .parallax-bg {
+        background: 
+            radial-gradient(circle at 20% 30%, rgba(26, 58, 143, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+    }
+
+    /* Dark Mode Toggle Button */
+    .theme-toggle-container {
+        position: relative;
+        margin-left: 15px;
+    }
+
+    .theme-toggle-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(212, 175, 55, 0.3);
+        color: var(--accent-gold);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        font-size: 1.2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .theme-toggle-btn:hover {
+        background: rgba(212, 175, 55, 0.2);
+        transform: rotate(30deg) scale(1.1);
+        border-color: var(--accent-gold);
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .theme-toggle-btn .fa-sun {
+        display: none;
+    }
+
+    .dark-mode .theme-toggle-btn .fa-sun {
+        display: block;
+    }
+
+    .dark-mode .theme-toggle-btn .fa-moon {
+        display: none;
+    }
+
+    .theme-toggle-tooltip {
+        position: absolute;
+        bottom: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--primary-blue);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        pointer-events: none;
+        z-index: 1001;
+    }
+
+    .theme-toggle-btn:hover .theme-toggle-tooltip {
+        opacity: 1;
+        visibility: visible;
+        bottom: -30px;
+    }
+
+    /* Modern Navigation */
+    .navbar {
+        background-color: transparent !important;
+        font-size: 17px;
+        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 20px 0;
+        min-height: 90px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        backdrop-filter: blur(0px);
+    } 
+
+    .navbar.scrolled {
+        padding: 15px 0;
+        backdrop-filter: blur(15px);
+        background-color: rgba(2, 42, 117, 0.95) !important;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    }
+
+    .dark-mode .navbar.scrolled {
+        background-color: rgba(10, 15, 31, 0.95) !important;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .navbar-brand {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--accent-gold) !important;
+        font-size: 1.8rem;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 8px 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transform: translateY(0);
+    }
+
+    /* Logo Animation */
+    .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo {
+        width: 50px;
+        height: 50px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .logo-box {
+        width: 40px;
+        height: 35px;
+        background: var(--primary-blue);
+        border: 2px solid var(--accent-gold);
+        border-radius: 6px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .logo-box::before {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        right: 2px;
+        bottom: 2px;
+        background: 
+            linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%),
+            repeating-linear-gradient(0deg, 
+                rgba(255,255,255,0.1) 0px, 
+                rgba(255,255,255,0.1) 1px, 
+                transparent 1px, 
+                transparent 4px
+            );
+        border-radius: 4px;
+    }
+
+    .logo-items {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 25px;
+    }
+
+    .logo-book {
+        position: absolute;
+        width: 12px;
+        height: 15px;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 2px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        transition: transform 0.3s ease;
+    }
+
+    .logo-book:nth-child(1) {
+        top: 2px;
+        left: 4px;
+        transform: rotate(-5deg) translateY(0);
+    }
+
+    .logo-book:nth-child(2) {
+        top: 5px;
+        left: 10px;
+        transform: rotate(3deg) translateY(0);
+        background: #e9ecef;
+    }
+
+    .logo-book:nth-child(3) {
+        top: 8px;
+        left: 16px;
+        transform: rotate(-2deg) translateY(0);
+        background: #ffffff;
+    }
+
+    .logo:hover .logo-book:nth-child(1) {
+        transform: rotate(-8deg) translateY(-2px);
+    }
+
+    .logo:hover .logo-book:nth-child(2) {
+        transform: rotate(5deg) translateY(-1px);
+    }
+
+    .logo:hover .logo-book:nth-child(3) {
+        transform: rotate(-5deg) translateY(-3px);
+    }
+
+    .logo-magnifier {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        width: 20px;
+        height: 20px;
+        animation: float-magnifier 3s ease-in-out infinite;
+    }
+
+    .magnifier-handle {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        width: 8px;
+        height: 8px;
+        background: var(--accent-gold);
+        border-radius: 50%;
+        transform: rotate(45deg);
+    }
+
+    .magnifier-handle::before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 12px;
+        height: 3px;
+        background: var(--accent-gold);
+        border-radius: 2px;
+        transform: rotate(-45deg);
+        transform-origin: left center;
+    }
+
+    .magnifier-glass {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 16px;
+        height: 16px;
+        border: 2px solid var(--accent-gold);
+        border-radius: 50%;
+        background: rgba(212, 175, 55, 0.1);
+    }
+
+    .magnifier-glass::before {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 6px;
+        height: 6px;
+        background: var(--accent-gold);
+        border-radius: 50%;
+        opacity: 0.6;
+    }
+
+    @keyframes float-magnifier {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-3px) rotate(5deg);
+        }
+    }
+
+    .navbar-brand:hover .logo {
+        transform: scale(1.1) rotate(-5deg);
+    }
+
+    .navbar-brand:hover .logo-magnifier {
+        animation-duration: 1.5s;
+    }
+
+    .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+    }
+
+    .brand-main {
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+
+    .brand-sub {
+        font-size: 0.7rem;
+        font-weight: 400;
+        opacity: 0.9;
+        letter-spacing: 0.5px;
+    }
+
+    .navbar-nav .nav-item .nav-link {
+        color: var(--white) !important;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 10px 20px !important;
+        position: relative;
+        font-weight: 500;
+        border-radius: 8px;
+        margin: 0 5px;
+        font-size: 1rem;
+        letter-spacing: 0.3px;
+        opacity: 0.9;
+    }
+
+    .navbar-nav .nav-item .nav-link:hover {
+        color: var(--accent-gold) !important;
+        background: rgba(212, 175, 55, 0.1);
+        transform: translateY(-2px);
+        opacity: 1;
+    }
+
+    .navbar-nav .nav-item .nav-link::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+    .navbar-nav .nav-item .nav-link:hover::before {
+        width: 70%;
+    }
+
+    .navbar-nav .nav-item.active .nav-link {
+        color: var(--accent-gold) !important;
+        background: rgba(212, 175, 55, 0.15);
+        font-weight: 600;
+        opacity: 1;
+    }
+
+    .navbar-nav .nav-item.active .nav-link::before {
+        width: 80%;
+        background: var(--accent-gold);
+    }
+
+    /* Modern Hero Section */
+    .claim-hero {
+        background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+        color: var(--white);
+        padding: 180px 0 100px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .claim-hero-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(100, 200, 255, 0.1) 0%, transparent 50%);
+        opacity: 0.8;
+        animation: bg-pulse 15s ease-in-out infinite alternate;
+    }
+
+    @keyframes bg-pulse {
+        0% {
+            transform: scale(1) rotate(0deg);
+            opacity: 0.6;
+        }
+        100% {
+            transform: scale(1.1) rotate(1deg);
+            opacity: 0.9;
+        }
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 3;
+        transform: translateY(30px);
+        opacity: 0;
+        animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.5s;
+    }
+
+    @keyframes fadeUp {
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .claim-hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--accent-gold);
+        position: relative;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .claim-hero .lead {
+        font-size: 1.3rem;
+        opacity: 0;
+        animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
+        font-weight: 300;
+        letter-spacing: 0.3px;
+        line-height: 1.6;
+        max-width: 700px;
+        margin: 0 auto 3rem;
+        color: rgba(255, 255, 255, 0.95);
+    }
+
+    /* Process Section */
+    .process-section {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dark-mode .process-section {
+        background: linear-gradient(135deg, #121826 0%, #0a0f1f 100%);
+    }
+
+    .process-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+    }
+
+    /* Glass Card */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 50px;
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.08),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    .dark-mode .glass-card {
+        background: rgba(26, 32, 48, 0.95);
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-card.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .glass-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+        z-index: 2;
+    }
+
+    .glass-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .glass-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--accent-gold);
+        box-shadow: 
+            0 40px 80px rgba(0, 0, 0, 0.12),
+            0 0 0 1px rgba(212, 175, 55, 0.1);
+    }
+
+    .dark-mode .glass-card:hover {
+        box-shadow: 
+            0 40px 80px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(212, 175, 55, 0.2);
+    }
+
+    /* Process Steps */
+    .process-steps {
+        display: flex;
+        justify-content: center;
+        margin: 60px 0;
+        position: relative;
+    }
+
+    .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+        margin: 0 30px;
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+    .step.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .step-number {
+        width: 80px;
+        height: 80px;
+        background: var(--light-blue);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: var(--text-dark);
+        margin-bottom: 15px;
+        border: 3px solid rgba(0, 9, 54, 0.1);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .dark-mode .step-number {
+        background: #1a2030;
+        color: #e0e7ff;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .step.active .step-number {
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        color: var(--primary-blue);
+        border-color: var(--accent-gold);
+        transform: scale(1.1);
+        box-shadow: 0 12px 35px rgba(212, 175, 55, 0.3);
+    }
+
+    .step-label {
+        font-weight: 600;
+        color: var(--text-dark);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .dark-mode .step-label {
+        color: #e0e7ff;
+    }
+
+    .step.active .step-label {
+        color: var(--accent-gold);
+        font-weight: 700;
+    }
+
+    .step-line {
+        position: absolute;
+        top: 40px;
+        left: 15%;
+        right: 15%;
+        height: 4px;
+        background: rgba(0, 9, 54, 0.1);
+        z-index: 1;
+        border-radius: 2px;
+    }
+
+    .dark-mode .step-line {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Form Section */
+    .form-section {
+        padding: 100px 0;
+        background: linear-gradient(135deg, var(--white) 0%, var(--light-blue) 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dark-mode .form-section {
+        background: linear-gradient(135deg, #0a0f1f 0%, #121826 100%);
+    }
+
+    .form-section::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -10%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(2, 42, 117, 0.05) 0%, transparent 70%);
+    }
+
+    /* Form Header */
+    .form-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .form-header-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        color: var(--primary-blue);
+        font-size: 3rem;
+        box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3);
+        transform: scale(0.8);
+        opacity: 0;
+        animation: scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
+    }
+
+    @keyframes scaleIn {
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .form-title {
+        font-family: 'Playfair Display', serif;
+        color: var(--primary-blue);
+        font-size: 2.8rem;
+        margin-bottom: 20px;
+        opacity: 0;
+        animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.5s;
+        font-weight: 700;
+    }
+
+    .dark-mode .form-title {
+        color: #e0e7ff;
+    }
+
+    .form-subtitle {
+        font-size: 1.2rem;
+        color: var(--text-dark);
+        max-width: 600px;
+        margin: 0 auto;
+        opacity: 0.8;
+        opacity: 0;
+        animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.7s;
+    }
+
+    /* Form Styles */
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 600;
+        color: var(--primary-blue);
+        margin-bottom: 10px;
+        font-size: 1rem;
+    }
+
+    .dark-mode .form-label {
+        color: #e0e7ff;
+    }
+
+    .form-label i {
+        margin-right: 8px;
+        color: var(--accent-gold);
+        width: 20px;
+    }
+
+    .form-control, .form-select {
+        width: 100%;
+        padding: 16px 20px;
+        border: 2px solid rgba(0, 15, 61, 0.1);
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .dark-mode .form-control,
+    .dark-mode .form-select {
+        background: rgba(26, 32, 48, 0.9);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        color: #e0e7ff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-control:focus, .form-select:focus {
+        outline: none;
+        border-color: var(--accent-gold);
+        box-shadow: 
+            0 10px 30px rgba(212, 175, 55, 0.15),
+            0 0 0 3px rgba(212, 175, 55, 0.1);
+        background: var(--white);
+        transform: translateY(-2px);
+    }
+
+    .dark-mode .form-control:focus,
+    .dark-mode .form-select:focus {
+        background: #1a2030;
+    }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    /* Verification Section */
+    .verification-section {
+        background: rgba(212, 175, 55, 0.05);
+        border-radius: 20px;
+        padding: 30px;
+        margin: 40px 0;
+        border: 2px solid rgba(212, 175, 55, 0.1);
+    }
+
+    .verification-title {
+        color: var(--accent-gold);
+        font-family: 'Playfair Display', serif;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Buttons */
+    .modern-btn {
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        color: var(--primary-blue);
+        border: none;
+        padding: 16px 40px;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 
+            0 8px 25px rgba(212, 175, 55, 0.3),
+            0 0 0 1px rgba(212, 175, 55, 0.1);
+        position: relative;
+        overflow: hidden;
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .modern-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: left 0.6s;
+    }
+
+    .modern-btn:hover::before {
+        left: 100%;
+    }
+
+    .modern-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 
+            0 15px 35px rgba(212, 175, 55, 0.4),
+            0 0 0 1px rgba(212, 175, 55, 0.2);
+    }
+
+    .modern-btn:active {
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        background: transparent;
+        color: var(--primary-blue);
+        border: 2px solid var(--primary-blue);
+        padding: 14px 35px;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        cursor: pointer;
+        font-size: 1.1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .dark-mode .btn-secondary {
+        color: #e0e7ff;
+        border: 2px solid #e0e7ff;
+    }
+
+    .btn-secondary:hover {
+        background: var(--primary-blue);
+        color: var(--white);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(2, 42, 117, 0.3);
+    }
+
+    .dark-mode .btn-secondary:hover {
+        background: #e0e7ff;
+        color: var(--primary-blue);
+    }
+
+    /* Checkbox */
+    .form-check {
+        margin-bottom: 20px;
+    }
+
+    .form-check-input {
+        width: 22px;
+        height: 22px;
+        border: 2px solid rgba(0, 15, 61, 0.2);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .dark-mode .form-check-input {
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .form-check-input:checked {
+        background-color: var(--accent-gold);
+        border-color: var(--accent-gold);
+    }
+
+    .form-check-label {
+        margin-left: 12px;
+        cursor: pointer;
+        color: var(--text-dark);
+        line-height: 1.5;
+    }
+
+    .dark-mode .form-check-label {
+        color: #e0e7ff;
+    }
+
+    /* Success Modal */
+    .success-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 15, 61, 0.85);
+        backdrop-filter: blur(20px);
+        z-index: 10000;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .success-modal.active {
+        display: flex;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .success-content {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 60px;
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        transform: scale(0.9) translateY(30px);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 
+            0 30px 80px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .dark-mode .success-content {
+        background: rgba(26, 32, 48, 0.95);
+        box-shadow: 
+            0 30px 80px rgba(0, 0, 0, 0.5),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .success-modal.active .success-content {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+
+    .success-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, var(--success), #34d058);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        color: var(--white);
+        font-size: 3.5rem;
+        box-shadow: 0 15px 35px rgba(40, 167, 69, 0.3);
+    }
+
+    .success-content h3 {
+        font-family: 'Playfair Display', serif;
+        color: var(--primary-blue);
+        margin-bottom: 20px;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .dark-mode .success-content h3 {
+        color: #e0e7ff;
+    }
+
+    .success-content p {
+        color: var(--text-dark);
+        line-height: 1.6;
+        margin-bottom: 30px;
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    /* Info Cards */
+    .info-cards {
+        margin-top: 40px;
+    }
+
+    .info-card {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .dark-mode .info-card {
+        background: rgba(26, 32, 48, 0.5);
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px);
+        background: rgba(212, 175, 55, 0.05);
+    }
+
+    .info-icon {
+        font-size: 2rem;
+        color: var(--accent-gold);
+        margin-right: 20px;
+        width: 50px;
+        text-align: center;
+    }
+
+    .info-content h6 {
+        color: var(--primary-blue);
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .dark-mode .info-content h6 {
+        color: #e0e7ff;
+    }
+
+    .info-content p {
+        color: var(--text-dark);
+        font-size: 0.9rem;
+        margin-bottom: 0;
+        opacity: 0.8;
+    }
+
+    /* Modern Footer */
+    footer {
+        background-color: var(--primary-blue);
+        color: var(--white);
+        padding: 80px 0 30px;
+        margin-top: auto;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dark-mode footer {
+        background-color: #0a1a4f;
+    }
+
+    footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        margin-bottom: 60px;
+    }
+
+    .footer-brand {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .footer-links-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 15px;
+    }
+
+    .footer-link {
+        color: var(--accent-gold);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        padding: 8px 0;
+        position: relative;
+        display: inline-block;
+    }
+
+    .footer-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 1px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--accent-gold);
+        transition: width 0.3s ease;
+    }
+
+    .footer-link:hover {
+        color: var(--light-gold);
+        text-decoration: none;
+    }
+
+    .footer-link:hover::after {
+        width: 100%;
+    }
+
+    .footer-bottom {
+        padding-top: 30px;
+        border-top: 1px solid rgba(212, 175, 55, 0.2);
+        text-align: center;
+    }
+
+    /* Loading Bar */
+    .loading-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+        z-index: 9999;
+        transition: width 0.3s ease;
+    }
+
+    /* Scroll Reveal Animations */
+    .reveal-element {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-element.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .claim-hero h1 {
+            font-size: 2.8rem;
+        }
+        
+        .claim-hero .lead {
+            font-size: 1.1rem;
+        }
+        
+        .form-title {
+            font-size: 2.2rem;
+        }
+        
+        .footer-content {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+        
+        .process-steps {
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .step {
+            margin: 0 15px;
+        }
+        
+        .step-line {
+            display: none;
+        }
+        
+        .glass-card {
+            padding: 40px 30px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .claim-hero {
+            padding: 160px 0 80px;
+            min-height: 60vh;
+        }
+        
+        .claim-hero h1 {
+            font-size: 2.4rem;
+        }
+        
+        .form-section {
+            padding: 60px 0;
+        }
+        
+        .form-title {
+            font-size: 1.8rem;
+        }
+        
+        .form-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            font-size: 1.2rem;
+        }
+        
+        .modern-btn, .btn-secondary {
+            padding: 14px 30px;
+            font-size: 1rem;
+        }
+        
+        .success-content {
+            padding: 40px 25px;
+        }
+        
+        .process-steps {
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .step {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .claim-hero h1 {
+            font-size: 2rem;
+        }
+        
+        .form-header-icon {
+            width: 80px;
+            height: 80px;
+            font-size: 2.5rem;
+        }
+        
+        .verification-section {
+            padding: 20px;
+        }
+        
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            font-size: 2.5rem;
+        }
+        
+        .navbar-nav .nav-link {
+            margin: 5px 0;
+            text-align: center;
+        }
+        
+        .theme-toggle-container {
+            margin-left: 10px;
+        }
+        
+        .theme-toggle-btn {
+            width: 45px;
+            height: 45px;
+            font-size: 1rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <!-- Loading Bar -->
+    <div class="loading-bar" id="loadingBar"></div>
+    
+    <!-- Parallax Background -->
+    <div class="parallax-bg" id="parallaxBg"></div>
+
+    <!-- Modern Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="logo-container">
+                    <div class="logo">
+                        <div class="logo-box">
+                            <div class="logo-items">
+                                <div class="logo-book"></div>
+                                <div class="logo-book"></div>
+                                <div class="logo-book"></div>
+                            </div>
+                        </div>
+                        <div class="logo-magnifier">
+                            <div class="magnifier-glass"></div>
+                            <div class="magnifier-handle"></div>
+                        </div>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-main">AAI Lost & Found</span>
+                        <span class="brand-sub">Alliance Academy For Innovation</span>
+                    </div>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="browse.html">Browse Items</a></li>
+                    <li class="nav-item"><a class="nav-link" href="report.html">Report Found</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="claim.html">Claim Item</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutBtn" style="color: var(--light-gold) !important;">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
+                    </li>
+                    <li class="nav-item theme-toggle-container">
+                        <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Dark Mode">
+                            <i class="fas fa-moon"></i>
+                            <i class="fas fa-sun"></i>
+                            <span class="theme-toggle-tooltip">Toggle Dark Mode</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modern Hero Section -->
+    <section class="claim-hero">
+        <div class="claim-hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1>Claim Your Lost Item</h1>
+                <p class="lead">
+                    Found your item? Start the verification process to get it back safely.
+                </p>
+                <div class="reveal-element">
+                    <a href="#claim-process" class="modern-btn">
+                        <i class="fas fa-arrow-down me-2"></i>Start Claim
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Claim Process Section -->
+    <section id="claim-process" class="process-section">
+        <div class="container">
+            <div class="section-title text-center reveal-element">
+                <h2>How to Claim Your Item</h2>
+                <p class="lead">Follow these simple steps to verify ownership and retrieve your lost item</p>
+            </div>
+            
+            <div class="process-steps">
+                <div class="step-line"></div>
+                <div class="step reveal-element active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Identify Item</div>
+                </div>
+                <div class="step reveal-element" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Submit Claim</div>
+                </div>
+                <div class="step reveal-element" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Verification</div>
+                </div>
+                <div class="step reveal-element" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Retrieve Item</div>
+                </div>
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="info-content">
+                            <h6>Find Your Item</h6>
+                            <p>Browse through found items to locate yours</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h6>Fill Details</h6>
+                            <p>Provide accurate item information</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="info-content">
+                            <h6>Get Verified</h6>
+                            <p>Staff will verify your ownership</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="info-content">
+                            <h6>Pick Up</h6>
+                            <p>Collect your item from the office</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="form-section">
+        <div class="container">
+            <!-- Form Header -->
+            <div class="form-header">
+                <div class="form-header-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h2 class="form-title">Submit Your Claim</h2>
+                <p class="form-subtitle">
+                    Provide details to verify your ownership. All information is kept secure and confidential.
+                </p>
+            </div>
+
+            <!-- Main Form -->
+            <div class="glass-card reveal-element">
+                <form id="claimForm">
+                    <!-- Item Information -->
+                    <h3 class="mb-4" style="color: var(--text-dark);">
+                        <i class="fas fa-cube me-2"></i>Item Information
+                    </h3>
+                    
+                    <div class="alert glass-card mb-4" style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.1);">
+    <i class="fas fa-info-circle me-2" style="color: var(--accent-gold);"></i>
+    <strong>Important:</strong> Please find your item in the <a href="browse.html" class="alert-link" style="color: var(--accent-gold); font-weight: 600;">Browse Items</a> section, click on "Details" to see the popup, and note the Item ID from there.
+</div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="itemId">
+                                <i class="fas fa-hashtag"></i>Item ID *
+                            </label>
+                            <input type="text" class="form-control" id="itemId" 
+                                   placeholder="Enter the Item ID (e.g., AAI-001)" required>
+                            <small class="form-text" style="color: var(--text-dark); opacity: 0.7;">Found on the item's details page</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="itemName">
+                                <i class="fas fa-tag"></i>Item Name *
+                            </label>
+                            <input type="text" class="form-control" id="itemName" 
+                                   placeholder="e.g., Black Jacket, Calculus Textbook" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Item Description -->
+                    <div class="form-group">
+                        <label class="form-label" for="itemDescription">
+                            <i class="fas fa-align-left"></i>Describe the Item *
+                        </label>
+                        <textarea class="form-control" id="itemDescription" rows="3"
+                                  placeholder="Please describe the item in detail as you remember it" required></textarea>
+                    </div>
+                    
+                    <!-- Verification Details -->
+                    <div class="verification-section">
+                        <h4 class="verification-title">
+                            <i class="fas fa-shield-alt"></i>Verification Details
+                        </h4>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="identifyingFeatures">
+                                <i class="fas fa-fingerprint"></i>Unique Identifying Features *
+                            </label>
+                            <textarea class="form-control" id="identifyingFeatures" rows="3"
+                                      placeholder="Describe any unique marks, damages, stickers, engravings, or contents that prove ownership" required></textarea>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="lostDate">
+                                    <i class="fas fa-calendar"></i>Date Lost *
+                                </label>
+                                <input type="date" class="form-control" id="lostDate" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="lostLocation">
+                                    <i class="fas fa-map-marker-alt"></i>Location Lost *
+                                </label>
+                                <select class="form-select" id="lostLocation" required>
+                                    <option value="">Select location</option>
+                                    <option value="main-hallway">Main Hallway</option>
+                                    <option value="library">Library</option>
+                                    <option value="cafeteria">Cafeteria</option>
+                                    <option value="gym">Gymnasium</option>
+                                    <option value="parking-lot">Parking Lot</option>
+                                    <option value="sports-field">Sports Field</option>
+                                    <option value="classroom">Classroom</option>
+                                    <option value="bus-stop">Bus Area</option>
+                                    <option value="other">Other Area</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Claimant Information -->
+                    <h3 class="mt-5 mb-4" style="color: var(--text-dark);">
+                        <i class="fas fa-user-circle me-2"></i>Your Information
+                    </h3>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="claimantName">
+                                <i class="fas fa-user"></i>Full Name *
+                            </label>
+                            <input type="text" class="form-control" id="claimantName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="claimantEmail">
+                                <i class="fas fa-envelope"></i>Email Address *
+                            </label>
+                            <input type="email" class="form-control" id="claimantEmail" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="claimantPhone">
+                                <i class="fas fa-phone"></i>Phone Number *
+                            </label>
+                            <input type="tel" class="form-control" id="claimantPhone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="claimantGrade">
+                                <i class="fas fa-graduation-cap"></i>Grade/Position *
+                            </label>
+                            <select class="form-select" id="claimantGrade" required>
+                                <option value="">Select one</option>
+                                <option value="9">9th Grade</option>
+                                <option value="10">10th Grade</option>
+                                <option value="11">11th Grade</option>
+                                <option value="12">12th Grade</option>
+                                <option value="teacher">Teacher</option>
+                                <option value="staff">Staff Member</option>
+                                <option value="parent">Parent</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="studentId">
+                            <i class="fas fa-id-card"></i>Student ID (if applicable)
+                        </label>
+                        <input type="text" class="form-control" id="studentId" 
+                               placeholder="For faster verification">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="additionalInfo">
+                            <i class="fas fa-sticky-note"></i>Additional Information
+                        </label>
+                        <textarea class="form-control" id="additionalInfo" rows="3"
+                                  placeholder="Any other information that might help verify your claim"></textarea>
+                    </div>
+                    
+                    <!-- Terms and Conditions -->
+                    <div class="form-check mt-4 mb-5">
+                        <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                        <label class="form-check-label" for="agreeTerms">
+                            <strong>I certify that:</strong> I am the rightful owner of this item, the information provided is accurate, 
+                            and I understand that providing false information may result in disciplinary action.
+                        </label>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button type="submit" class="modern-btn" id="submitBtn" style="padding: 18px 50px;">
+                            <i class="fas fa-paper-plane me-2"></i>Submit Claim Request
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Process Info -->
+            <div class="info-cards">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="info-content">
+                                <h6>Processing Time</h6>
+                                <p>Claims are typically processed within 24-48 hours during school days.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="info-content">
+                                <h6>Secure Process</h6>
+                                <p>All personal information is encrypted and protected.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modern Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="logo" style="width: 40px; height: 40px;">
+                            <div class="logo-box">
+                                <div class="logo-items">
+                                    <div class="logo-book"></div>
+                                    <div class="logo-book"></div>
+                                    <div class="logo-book"></div>
+                                </div>
+                            </div>
+                            <div class="logo-magnifier">
+                                <div class="magnifier-glass"></div>
+                                <div class="magnifier-handle"></div>
+                            </div>
+                        </div>
+                        <div class="brand-text">
+                            <span class="brand-main">AAI Lost & Found</span>
+                            <span class="brand-sub">Alliance Academy For Innovation</span>
+                        </div>
+                    </div>
+                    <p>Helping reunite students with their belongings since 2024</p>
+                </div>
+                <div class="footer-links-grid">
+                    <a href="index.html" class="footer-link"><i class="fas fa-home me-1"></i> Home</a>
+                    <a href="browse.html" class="footer-link"><i class="fas fa-search me-1"></i> Browse</a>
+                    <a href="report.html" class="footer-link"><i class="fas fa-flag me-1"></i> Report</a>
+                    <a href="claim.html" class="footer-link"><i class="fas fa-handshake me-1"></i> Claim</a>
+                    <a href="admin.html" class="footer-link"><i class="fas fa-cog me-1"></i> Admin</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Alliance Academy For Innovation. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-content">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3>Claim Submitted Successfully!</h3>
+            <p>Thank you for submitting your claim. Your request has been received and will be reviewed by our staff within 24-48 hours.</p>
+            <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+                <a href="browse.html" class="modern-btn">
+                    <i class="fas fa-search me-2"></i>Browse Items
+                </a>
+                <button class="btn-secondary" onclick="closeSuccessModal()">
+                    <i class="fas fa-plus me-2"></i>Submit Another Claim
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Required Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+    // Firebase Configuration (same as other pages)
+    const firebaseConfig = {
+        apiKey: "your-api-key-here",
+        authDomain: "aai-lost-found.firebaseapp.com",
+        projectId: "aai-lost-found",
+        storageBucket: "aai-lost-found.appspot.com",
+        messagingSenderId: "123456789",
+        appId: "your-app-id-here"
+    };
+
+    // Update the DOMContentLoaded event listener in claim.html
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Claim page loaded - initializing modern features');
+    
+    // Initialize loading bar
+    document.getElementById('loadingBar').style.width = '30%';
+    
+    // Initialize all features
+    initDarkMode();
+    initParallaxScrolling();
+    initScrollAnimations();
+    initNavbarScroll();
+    setActiveNavItem();
+    setupFormSubmission();
+    
+    // Set current date as default for lost date
+    document.getElementById('lostDate').valueAsDate = new Date();
+    
+    // Authentication check
+    const isAuthenticated = localStorage.getItem('aai_authenticated');
+    if (!isAuthenticated) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // Logout functionality
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('aai_authenticated');
+            localStorage.removeItem('aai_username');
+            window.location.href = 'login.html';
+        });
+    }
+    
+    // Check URL parameters for item pre-fill
+    const urlParams = new URLSearchParams(window.location.search);
+    const itemId = urlParams.get('item');
+    
+    if (itemId) {
+        console.log('Found item parameter in URL:', itemId);
+        
+        // Try to find item in localStorage to pre-fill
+        const items = JSON.parse(localStorage.getItem('lostFoundItems') || '[]');
+        const item = items.find(i => i.id === itemId);
+        
+        if (item) {
+            console.log('Found item for pre-fill:', item);
+            document.getElementById('itemId').value = item.id || '';
+            document.getElementById('itemName').value = item.title || '';
+            document.getElementById('itemDescription').value = item.description || '';
+            
+            // Show success message
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success mt-3';
+            alertDiv.innerHTML = `
+                <i class="fas fa-check-circle me-2"></i>
+                <strong>Item Found!</strong> The item "${item.title}" has been pre-filled. Please verify the details and complete the form.
+            `;
+            document.querySelector('.glass-card').insertBefore(alertDiv, document.querySelector('.glass-card h3'));
+        } else {
+            console.log(`Item ${itemId} not found in storage`);
+            // Show warning
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-warning mt-3';
+            alertDiv.innerHTML = `
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Note:</strong> Item ID "${itemId}" was not found. Please enter the correct Item ID from the Browse page.
+            `;
+            document.querySelector('.glass-card').insertBefore(alertDiv, document.querySelector('.glass-card h3'));
+        }
+    }
+    
+    // Complete loading
+    setTimeout(() => {
+        document.getElementById('loadingBar').style.width = '100%';
+        setTimeout(() => {
+            document.getElementById('loadingBar').style.opacity = '0';
+        }, 300);
+    }, 1000);
+
+    setupDataSync();
+
+});
+
+    // Dark Mode Functionality
+    function initDarkMode() {
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        // Set initial theme
+        if (currentTheme === 'dark' || (prefersDarkScheme.matches && currentTheme !== 'light')) {
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.body.classList.remove('dark-mode');
+            localStorage.setItem('theme', 'light');
+        }
+        
+        // Toggle theme on button click
+        themeToggleBtn.addEventListener('click', function() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            
+            if (isDarkMode) {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+                console.log('Switched to light mode');
+            } else {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+                console.log('Switched to dark mode');
+            }
+        });
+        
+        // Listen for system theme changes
+        prefersDarkScheme.addEventListener('change', function(e) {
+            if (!localStorage.getItem('theme')) {
+                if (e.matches) {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                }
+            }
+        });
+    }
+
+    // Parallax Scrolling Functionality
+    function initParallaxScrolling() {
+        // Only run parallax on desktop for performance
+        if (window.innerWidth > 768) {
+            // Create parallax layers
+            createParallaxLayers();
+            
+            // Initialize GSAP ScrollTrigger for parallax
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+                
+                // Parallax background effect
+                gsap.to('#parallaxBg', {
+                    backgroundPosition: '50% 100%',
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: 'body',
+                        start: 'top top',
+                        end: 'bottom bottom',
+                        scrub: 0.5
+                    }
+                });
+                
+                // Parallax for hero section
+                const heroBg = document.querySelector('.claim-hero-bg');
+                if (heroBg) {
+                    gsap.to(heroBg, {
+                        yPercent: 20,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: '.claim-hero',
+                            start: 'top top',
+                            end: 'bottom top',
+                            scrub: true
+                        }
+                    });
+                }
+                
+                // Parallax for glass cards on scroll
+                gsap.utils.toArray('.glass-card, .info-card').forEach((card, i) => {
+                    gsap.fromTo(card,
+                        { y: 50 },
+                        {
+                            y: 0,
+                            scrollTrigger: {
+                                trigger: card,
+                                start: 'top 80%',
+                                end: 'top 20%',
+                                scrub: 1,
+                                toggleActions: 'play none none reverse'
+                            }
+                        }
+                    );
+                });
+                
+                // Animate process steps on scroll
+                gsap.utils.toArray('.step').forEach((step, i) => {
+                    gsap.fromTo(step,
+                        { y: 30, opacity: 0 },
+                        {
+                            y: 0,
+                            opacity: 1,
+                            scrollTrigger: {
+                                trigger: step,
+                                start: 'top 80%',
+                                end: 'top 50%',
+                                toggleActions: 'play none none reverse',
+                                delay: i * 0.2
+                            }
+                        }
+                    );
+                });
+                
+                console.log('Parallax scrolling initialized');
+            } else {
+                console.warn('GSAP or ScrollTrigger not available - using fallback parallax');
+                initFallbackParallax();
+            }
+        }
+    }
+    
+    // Fallback parallax for when GSAP is not available
+    function initFallbackParallax() {
+        const parallaxBg = document.getElementById('parallaxBg');
+        
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            
+            if (parallaxBg) {
+                parallaxBg.style.transform = 'translate3d(0px, ' + rate + 'px, 0px)';
+            }
+        });
+    }
+    
+    // Create parallax layers
+    function createParallaxLayers() {
+        const parallaxContainer = document.body;
+        const layers = 5;
+        
+        for (let i = 0; i < layers; i++) {
+            const layer = document.createElement('div');
+            layer.className = 'parallax-layer';
+            layer.style.zIndex = '-1';
+            layer.style.top = '0';
+            layer.style.left = '0';
+            layer.style.width = '100%';
+            layer.style.height = '100%';
+            layer.style.opacity = 0.1 + (i * 0.05);
+            
+            // Different effects for different layers
+            switch(i) {
+                case 0:
+                    // Top layer - subtle gradient
+                    layer.style.background = 'radial-gradient(circle at 10% 20%, var(--primary-blue) 0%, transparent 40%)';
+                    break;
+                case 1:
+                    // Middle layer - gold accent
+                    layer.style.background = 'radial-gradient(circle at 90% 80%, var(--accent-gold) 0%, transparent 30%)';
+                    break;
+                case 2:
+                    // Bottom layer - blue accent
+                    layer.style.background = 'radial-gradient(circle at 50% 50%, var(--secondary-blue) 0%, transparent 50%)';
+                    break;
+                case 3:
+                    // Pattern overlay
+                    layer.style.backgroundImage = 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0,0 L100,100 M100,0 L0,100\' stroke=\'%23d4af37\' stroke-width=\'0.5\' opacity=\'0.1\'/%3E%3C/svg%3E")';
+                    layer.style.backgroundSize = '100px 100px';
+                    break;
+                case 4:
+                    // Grid overlay
+                    layer.style.backgroundImage = 'linear-gradient(rgba(212, 175, 55, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(212, 175, 55, 0.1) 1px, transparent 1px)';
+                    layer.style.backgroundSize = '50px 50px';
+                    break;
+            }
+            
+            parallaxContainer.appendChild(layer);
+            
+            // Apply different parallax speeds to each layer
+            if (typeof gsap !== 'undefined') {
+                gsap.to(layer, {
+                    y: (i + 1) * 50,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: 'body',
+                        start: 'top top',
+                        end: 'bottom bottom',
+                        scrub: 0.5 * (i + 1)
+                    }
+                });
+            }
+        }
+    }
+
+    // Scroll Animations
+    function initScrollAnimations() {
+        const revealElements = document.querySelectorAll('.reveal-element');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        revealElements.forEach(element => {
+            observer.observe(element);
+        });
+    }
+
+    // Navbar Scroll Effect
+    function initNavbarScroll() {
+        const navbar = document.querySelector('.navbar');
+        let lastScrollY = window.scrollY;
+        
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            
+            // Update loading bar
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (currentScrollY / scrollHeight) * 100;
+            document.getElementById('loadingBar').style.width = scrollPercent + '%';
+            
+            // Navbar background on scroll
+            if (currentScrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            // Hide/show navbar on scroll
+            if (currentScrollY > lastScrollY && currentScrollY > 200) {
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                navbar.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollY = currentScrollY;
+        });
+    }
+
+    // Set active nav item
+    function setActiveNavItem() {
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+        
+        navLinks.forEach(link => {
+            const linkPage = link.getAttribute('href');
+            if (linkPage === currentPage) {
+                link.parentElement.classList.add('active');
+            } else {
+                link.parentElement.classList.remove('active');
+            }
+        });
+    }
+
+    // Form Submission
+    function setupFormSubmission() {
+        document.getElementById('claimForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            submitBtn.disabled = true;
+            
+            // Collect form data
+            const formData = {
+                claimId: 'CLM-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase(),
+                itemId: document.getElementById('itemId').value.trim(),
+                itemName: document.getElementById('itemName').value.trim(),
+                itemDescription: document.getElementById('itemDescription').value.trim(),
+                identifyingFeatures: document.getElementById('identifyingFeatures').value.trim(),
+                lostDate: document.getElementById('lostDate').value,
+                lostLocation: document.getElementById('lostLocation').value,
+                claimantName: document.getElementById('claimantName').value.trim(),
+                claimantEmail: document.getElementById('claimantEmail').value.trim(),
+                claimantPhone: document.getElementById('claimantPhone').value.trim(),
+                claimantGrade: document.getElementById('claimantGrade').value,
+                studentId: document.getElementById('studentId').value.trim() || 'Not provided',
+                additionalInfo: document.getElementById('additionalInfo').value.trim() || 'No additional info',
+                status: 'pending',
+                dateSubmitted: new Date().toISOString(),
+                timestamp: new Date().getTime()
+            };
+            
+            console.log('Form data to save:', formData);
+            
+            // Save to localStorage
+            setTimeout(() => {
+                if (saveClaimToLocalStorage(formData)) {
+                    updateItemStatus(formData.itemId);
+                    showSuccessModal();
+                } else {
+                    alert('There was an error submitting your claim. Please try again.');
+                }
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
+        });
+    }
+
+    function validateForm() {
+        let isValid = true;
+        
+        // Clear previous errors
+        document.querySelectorAll('.error-message').forEach(error => error.remove());
+        document.querySelectorAll('.form-control, .form-select').forEach(field => {
+            field.style.borderColor = '';
+        });
+        
+        // Check required fields
+        const requiredFields = [
+            'itemId', 'itemName', 'itemDescription', 'identifyingFeatures',
+            'lostDate', 'lostLocation', 'claimantName', 'claimantEmail',
+            'claimantPhone', 'claimantGrade'
+        ];
+        
+        requiredFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (!field.value.trim()) {
+                showError(field, 'This field is required');
+                isValid = false;
+            }
+        });
+        
+        // Check email format
+        const emailField = document.getElementById('claimantEmail');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailField.value && !emailRegex.test(emailField.value)) {
+            showError(emailField, 'Please enter a valid email address');
+            isValid = false;
+        }
+        
+        // Check terms agreement
+        if (!document.getElementById('agreeTerms').checked) {
+            alert('Please agree to the terms and conditions');
+            isValid = false;
+        }
+        
+        return isValid;
+    }
+
+    function showError(field, message) {
+        field.style.borderColor = 'var(--danger)';
+        
+        // Remove any existing error message
+        const existingError = field.parentElement.querySelector('.error-message');
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        // Add error message
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message text-danger mt-2 small';
+        errorDiv.textContent = message;
+        field.parentElement.appendChild(errorDiv);
+        
+        // Scroll to error
+        field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function saveClaimToLocalStorage(data) {
+    try {
+        // Get existing claims or create empty array
+        let claims = JSON.parse(localStorage.getItem('claims') || '[]');
+        
+        // Add the new claim
+        claims.push(data);
+        
+        // Save back to localStorage
+        localStorage.setItem('claims', JSON.stringify(claims));
+        
+        // Create update timestamp
+        const updateTimestamp = Date.now().toString();
+        localStorage.setItem('lastDataUpdate', updateTimestamp);
+        
+        // Dispatch storage event
+        window.dispatchEvent(new StorageEvent('storage', {
+            key: 'claims',
+            newValue: JSON.stringify(claims),
+            oldValue: localStorage.getItem('claims'),
+            storageArea: localStorage
+        }));
+        
+        // Dispatch custom event
+        window.dispatchEvent(new CustomEvent('dataUpdated', {
+            detail: {
+                type: 'claimAdded',
+                claimId: data.id,
+                timestamp: updateTimestamp
+            }
+        }));
+        
+        console.log('✅ Claim saved successfully. ID:', data.id);
+        console.log('📊 Total claims in storage:', claims.length);
+        
+        return true;
+    } catch (error) {
+        console.error('❌ Error saving to localStorage:', error);
+        return false;
+    }
+}
+
+    // Update the updateItemStatus function in claim.html
+function updateItemStatus(itemId, status) {
+    try {
+        // Get existing items
+        let items = JSON.parse(localStorage.getItem('lostFoundItems') || '[]');
+        
+        // Find and update the item status
+        const itemIndex = items.findIndex(item => item.id === itemId);
+        if (itemIndex !== -1) {
+            items[itemIndex].status = status;
+            items[itemIndex].claimDate = new Date().toISOString();
+            items[itemIndex].lastUpdated = new Date().toISOString();
+            
+            // Save back to localStorage
+            localStorage.setItem('lostFoundItems', JSON.stringify(items));
+            
+            // Trigger update events
+            localStorage.setItem('lastDataUpdate', Date.now().toString());
+            
+            // Dispatch storage event
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'lostFoundItems',
+                newValue: JSON.stringify(items),
+                oldValue: localStorage.getItem('lostFoundItems'),
+                storageArea: localStorage
+            }));
+            
+            console.log(`✅ Updated item ${itemId} status to '${status}'`);
+        } else {
+            console.log(`⚠️ Item ${itemId} not found in storage`);
+        }
+    } catch (error) {
+        console.error('❌ Error updating item status:', error);
+    }
+}
+
+    function showSuccessModal() {
+        document.getElementById('successModal').classList.add('active');
+        
+        // Animate modal entrance
+        if (typeof gsap !== 'undefined') {
+            gsap.from('.success-content', {
+                duration: 0.6,
+                y: 50,
+                opacity: 0,
+                ease: "back.out(1.7)"
+            });
+        }
+    }
+
+    function closeSuccessModal() {
+        document.getElementById('successModal').classList.remove('active');
+        
+        // Reset form
+        document.getElementById('claimForm').reset();
+        
+        // Reset current date
+        document.getElementById('lostDate').valueAsDate = new Date();
+        
+        // Clear any error messages
+        document.querySelectorAll('.error-message').forEach(error => error.remove());
+        document.querySelectorAll('.form-control, .form-select').forEach(field => {
+            field.style.borderColor = '';
+        });
+        
+        // Scroll to top of form
+        document.getElementById('claim-process').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Handle page unloading
+    window.addEventListener('beforeunload', function() {
+        document.getElementById('loadingBar').style.width = '100%';
+    });
+
+// Scroll to top on page load
+window.addEventListener('beforeunload', function() {
+    window.scrollTo(0, 0);
+});
+
+// Also scroll to top when page loads
+window.addEventListener('load', function() {
+    window.scrollTo(0, 0);
+    // Small delay to ensure everything is loaded
+    setTimeout(function() {
+        window.scrollTo(0, 0);
+    }, 100);
+});
+
+// Scroll to top when coming from another page
+history.scrollRestoration = 'manual';
+
+function setupDataSync() {
+    console.log('Setting up data synchronization for claim page...');
+    
+    // Listen for storage events
+    window.addEventListener('storage', function(e) {
+        console.log('Storage event in claim:', e.key);
+        // We don't need to refresh data here, just log
+    });
+    
+    // Initialize last known update
+    window.lastKnownUpdate = localStorage.getItem('lastDataUpdate');
+}
+
+</script>
+</body>
+</html>

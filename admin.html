@@ -2038,334 +2038,338 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
     <script>
-    // Firebase Configuration (same as other pages)
-    const firebaseConfig = {
-        apiKey: "your-api-key-here",
-        authDomain: "aai-lost-found.firebaseapp.com",
-        projectId: "aai-lost-found",
-        storageBucket: "aai-lost-found.appspot.com",
-        messagingSenderId: "123456789",
-        appId: "your-app-id-here"
-    };
+// Firebase Configuration (same as other pages)
+const firebaseConfig = {
+    apiKey: "your-api-key-here",
+    authDomain: "aai-lost-found.firebaseapp.com",
+    projectId: "aai-lost-found",
+    storageBucket: "aai-lost-found.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "your-app-id-here"
+};
 
-    // Admin credentials (In a real app, this would be server-side)
-    const ADMIN_CREDENTIALS = [
-        { username: "admin", password: "admin123", name: "Main Administrator" },
-        { username: "staff", password: "staff123", name: "Staff Member" },
-        { username: "aai", password: "aai2025", name: "AAI Staff" }
-    ];
+// Admin credentials (In a real app, this would be server-side)
+const ADMIN_CREDENTIALS = [
+    { username: "admin", password: "admin123", name: "Main Administrator" },
+    { username: "staff", password: "staff123", name: "Staff Member" },
+    { username: "aai", password: "aai2025", name: "AAI Staff" }
+];
 
-    // Global variables
-    let allItems = [];
-    let allClaims = [];
-    let currentFilter = 'all';
-    let currentSearch = '';
-    let currentConfirmCallback = null;
+// Global variables
+let allItems = [];
+let allClaims = [];
+let currentFilter = 'all';
+let currentSearch = '';
+let currentConfirmCallback = null;
+let isProcessingAction = false;
 
-    // Initialize page
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('Admin page loaded - initializing modern features');
-        
-        // Initialize loading bar
-        document.getElementById('loadingBar').style.width = '30%';
-        
-        // Initialize all features
-        initDarkMode();
-        initParallaxScrolling();
-        initScrollAnimations();
-        initNavbarScroll();
-        setActiveNavItem();
-        checkLoginStatus();
-        setupEventListeners();
-        
-        
-        // Complete loading
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Admin page loaded - initializing modern features');
+    
+    // Initialize loading bar
+    document.getElementById('loadingBar').style.width = '30%';
+    
+    // Initialize all features
+    initDarkMode();
+    initParallaxScrolling();
+    initScrollAnimations();
+    initNavbarScroll();
+    setActiveNavItem();
+    checkLoginStatus();
+    setupEventListeners();
+    
+    // Complete loading
+    setTimeout(() => {
+        document.getElementById('loadingBar').style.width = '100%';
         setTimeout(() => {
-            document.getElementById('loadingBar').style.width = '100%';
-            setTimeout(() => {
-                document.getElementById('loadingBar').style.opacity = '0';
-            }, 300);
-        }, 1000);
+            document.getElementById('loadingBar').style.opacity = '0';
+        }, 300);
+    }, 1000);
 
-        setupDataSync();
-    });
+    setupDataSync();
+});
 
-    // Dark Mode Functionality
-    function initDarkMode() {
-        const themeToggleBtn = document.getElementById('themeToggleBtn');
-        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-        const currentTheme = localStorage.getItem('theme') || 'light';
+// Dark Mode Functionality
+function initDarkMode() {
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    // Set initial theme
+    if (currentTheme === 'dark' || (prefersDarkScheme.matches && currentTheme !== 'light')) {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+    }
+    
+    // Toggle theme on button click
+    themeToggleBtn.addEventListener('click', function() {
+        const isDarkMode = document.body.classList.contains('dark-mode');
         
-        // Set initial theme
-        if (currentTheme === 'dark' || (prefersDarkScheme.matches && currentTheme !== 'light')) {
-            document.body.classList.add('dark-mode');
-            localStorage.setItem('theme', 'dark');
-        } else {
+        if (isDarkMode) {
             document.body.classList.remove('dark-mode');
             localStorage.setItem('theme', 'light');
-        }
-        
-        // Toggle theme on button click
-        themeToggleBtn.addEventListener('click', function() {
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            
-            if (isDarkMode) {
-                document.body.classList.remove('dark-mode');
-                localStorage.setItem('theme', 'light');
-            } else {
-                document.body.classList.add('dark-mode');
-                localStorage.setItem('theme', 'dark');
-            }
-        });
-        
-        // Listen for system theme changes
-        prefersDarkScheme.addEventListener('change', function(e) {
-            if (!localStorage.getItem('theme')) {
-                if (e.matches) {
-                    document.body.classList.add('dark-mode');
-                } else {
-                    document.body.classList.remove('dark-mode');
-                }
-            }
-        });
-    }
-
-    // Parallax Scrolling Functionality
-    function initParallaxScrolling() {
-        // Only run parallax on desktop for performance
-        if (window.innerWidth > 768) {
-            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-                gsap.registerPlugin(ScrollTrigger);
-                
-                // Parallax background effect
-                gsap.to('#parallaxBg', {
-                    backgroundPosition: '50% 100%',
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: 'body',
-                        start: 'top top',
-                        end: 'bottom bottom',
-                        scrub: 0.5
-                    }
-                });
-                
-                console.log('Parallax scrolling initialized');
-            }
-        }
-    }
-
-    // Scroll Animations
-    function initScrollAnimations() {
-        const revealElements = document.querySelectorAll('.reveal-element');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
-        
-        revealElements.forEach(element => {
-            observer.observe(element);
-        });
-    }
-
-    // Navbar Scroll Effect
-    function initNavbarScroll() {
-        const navbar = document.querySelector('.navbar');
-        let lastScrollY = window.scrollY;
-        
-        window.addEventListener('scroll', () => {
-            const currentScrollY = window.scrollY;
-            
-            // Update loading bar
-            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = (currentScrollY / scrollHeight) * 100;
-            document.getElementById('loadingBar').style.width = scrollPercent + '%';
-            
-            // Navbar background on scroll
-            if (currentScrollY > 100) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-            
-            // Hide/show navbar on scroll
-            if (currentScrollY > lastScrollY && currentScrollY > 200) {
-                navbar.style.transform = 'translateY(-100%)';
-            } else {
-                navbar.style.transform = 'translateY(0)';
-            }
-            
-            lastScrollY = currentScrollY;
-        });
-    }
-
-    // Set active nav item
-    function setActiveNavItem() {
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
-        
-        navLinks.forEach(link => {
-            const linkPage = link.getAttribute('href');
-            if (linkPage === currentPage) {
-                link.parentElement.classList.add('active');
-            } else {
-                link.parentElement.classList.remove('active');
-            }
-        });
-    }
-
-    // Check login status
-    function checkLoginStatus() {
-        const isAdminLoggedIn = localStorage.getItem('adminLoggedIn');
-        const adminName = localStorage.getItem('adminName');
-        const loginTime = localStorage.getItem('adminLoginTime');
-        
-        if (isAdminLoggedIn === 'true' && adminName) {
-            showAdminDashboard(adminName, loginTime);
         } else {
-            showLoginSection();
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+    
+    // Listen for system theme changes
+    prefersDarkScheme.addEventListener('change', function(e) {
+        if (!localStorage.getItem('theme')) {
+            if (e.matches) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        }
+    });
+}
+
+// Parallax Scrolling Functionality
+function initParallaxScrolling() {
+    // Only run parallax on desktop for performance
+    if (window.innerWidth > 768) {
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Parallax background effect
+            gsap.to('#parallaxBg', {
+                backgroundPosition: '50% 100%',
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: 'body',
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 0.5
+                }
+            });
+            
+            console.log('Parallax scrolling initialized');
         }
     }
+}
 
-    // Show login section
-    function showLoginSection() {
-        document.getElementById('loginSection').style.display = 'block';
-        document.getElementById('adminSection').style.display = 'none';
-        document.getElementById('loginError').style.display = 'none';
-        
-        // Trigger animations
-        setTimeout(() => {
-            const revealElements = document.querySelectorAll('#loginSection .reveal-element');
-            revealElements.forEach(el => {
-                if (el.getBoundingClientRect().top < window.innerHeight - 100) {
-                    el.classList.add('visible');
-                }
-            });
-        }, 100);
-    }
-
-    // Show admin dashboard
-    function showAdminDashboard(adminName, loginTime) {
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('adminSection').style.display = 'block';
-        
-        // Set admin info
-        document.getElementById('adminName').textContent = adminName;
-        document.getElementById('lastLogin').textContent = loginTime || new Date().toLocaleString();
-        
-        // Load data
-        loadAllData();
-        loadItemsTable();
-        loadClaimsTable();
-        updateStats();
-        
-        // Trigger animations
-        setTimeout(() => {
-            const revealElements = document.querySelectorAll('#adminSection .reveal-element');
-            revealElements.forEach(el => {
-                if (el.getBoundingClientRect().top < window.innerHeight - 100) {
-                    el.classList.add('visible');
-                }
-            });
-        }, 100);
-    }
-
-    // Setup event listeners
-    function setupEventListeners() {
-        // Login form
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleLogin();
-        });
-
-        // Item search
-        document.getElementById('itemSearch').addEventListener('input', function(e) {
-            currentSearch = e.target.value.toLowerCase();
-            loadItemsTable();
-        });
-
-        // Claim search
-        document.getElementById('claimSearch').addEventListener('input', function(e) {
-            loadClaimsTable();
-        });
-
-        // Logout button in header
-        document.getElementById('logoutButton').addEventListener('click', function(e) {
-            e.preventDefault();
-            logout();
-        });
-
-        // Logout button in navbar
-        document.getElementById('logoutBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            logout();
-        });
-    }
-
-    // Handle login
-    function handleLogin() {
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value;
-        const loginButton = document.getElementById('loginButton');
-        const errorDiv = document.getElementById('loginError');
-        
-        // Show loading state
-        const originalText = loginButton.innerHTML;
-        loginButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Logging in...';
-        loginButton.disabled = true;
-        
-        // Simulate API call delay
-        setTimeout(() => {
-            const admin = ADMIN_CREDENTIALS.find(cred => 
-                cred.username === username && cred.password === password
-            );
-            
-            if (admin) {
-                // Successful login
-                localStorage.setItem('adminLoggedIn', 'true');
-                localStorage.setItem('adminName', admin.name);
-                localStorage.setItem('adminLoginTime', new Date().toLocaleString());
-                
-                showAdminDashboard(admin.name, new Date().toLocaleString());
-                errorDiv.style.display = 'none';
-            } else {
-                // Failed login
-                errorDiv.style.display = 'block';
-                document.getElementById('errorMessage').textContent = 'Invalid username or password';
+// Scroll Animations
+function initScrollAnimations() {
+    const revealElements = document.querySelectorAll('.reveal-element');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
             }
-            
-            // Reset button
-            loginButton.innerHTML = originalText;
-            loginButton.disabled = false;
-        }, 1000);
-    }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    revealElements.forEach(element => {
+        observer.observe(element);
+    });
+}
 
-    // Logout function
-    function logout() {
-        localStorage.removeItem('adminLoggedIn');
-        localStorage.removeItem('adminName');
-        localStorage.removeItem('adminLoginTime');
+// Navbar Scroll Effect
+function initNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
+    let lastScrollY = window.scrollY;
+    
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        
+        // Update loading bar
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (currentScrollY / scrollHeight) * 100;
+        document.getElementById('loadingBar').style.width = scrollPercent + '%';
+        
+        // Navbar background on scroll
+        if (currentScrollY > 100) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+        
+        // Hide/show navbar on scroll
+        if (currentScrollY > lastScrollY && currentScrollY > 200) {
+            navbar.style.transform = 'translateY(-100%)';
+        } else {
+            navbar.style.transform = 'translateY(0)';
+        }
+        
+        lastScrollY = currentScrollY;
+    });
+}
+
+// Set active nav item
+function setActiveNavItem() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    
+    navLinks.forEach(link => {
+        const linkPage = link.getAttribute('href');
+        if (linkPage === currentPage) {
+            link.parentElement.classList.add('active');
+        } else {
+            link.parentElement.classList.remove('active');
+        }
+    });
+}
+
+// Check login status
+function checkLoginStatus() {
+    const isAdminLoggedIn = localStorage.getItem('adminLoggedIn');
+    const adminName = localStorage.getItem('adminName');
+    const loginTime = localStorage.getItem('adminLoginTime');
+    
+    if (isAdminLoggedIn === 'true' && adminName) {
+        showAdminDashboard(adminName, loginTime);
+    } else {
         showLoginSection();
-        
-        // Clear login form
-        document.getElementById('loginForm').reset();
-        
-        // Show logout success message
-        showSuccessModal('Logged Out', 'You have been successfully logged out.');
     }
+}
 
-    // Load all data from localStorage
-    function loadAllData() {
+// Show login section
+function showLoginSection() {
+    document.getElementById('loginSection').style.display = 'block';
+    document.getElementById('adminSection').style.display = 'none';
+    document.getElementById('loginError').style.display = 'none';
+    
+    // Trigger animations
+    setTimeout(() => {
+        const revealElements = document.querySelectorAll('#loginSection .reveal-element');
+        revealElements.forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight - 100) {
+                el.classList.add('visible');
+            }
+        });
+    }, 100);
+}
+
+// Show admin dashboard
+function showAdminDashboard(adminName, loginTime) {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('adminSection').style.display = 'block';
+    
+    // Set admin info
+    document.getElementById('adminName').textContent = adminName;
+    document.getElementById('lastLogin').textContent = loginTime || new Date().toLocaleString();
+    
+    // Load data
+    loadAllData();
+    loadItemsTable();
+    loadClaimsTable();
+    updateStats();
+    
+    // Trigger animations
+    setTimeout(() => {
+        const revealElements = document.querySelectorAll('#adminSection .reveal-element');
+        revealElements.forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight - 100) {
+                el.classList.add('visible');
+            }
+        });
+    }, 100);
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    // Login form
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleLogin();
+    });
+
+    // Item search
+    document.getElementById('itemSearch').addEventListener('input', function(e) {
+        currentSearch = e.target.value.toLowerCase();
+        loadItemsTable();
+    });
+
+    // Claim search
+    document.getElementById('claimSearch').addEventListener('input', function(e) {
+        loadClaimsTable();
+    });
+
+    // Logout button in header
+    document.getElementById('logoutButton').addEventListener('click', function(e) {
+        e.preventDefault();
+        logout();
+    });
+
+    // Logout button in navbar
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        logout();
+    });
+}
+
+// Handle login
+function handleLogin() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const loginButton = document.getElementById('loginButton');
+    const errorDiv = document.getElementById('loginError');
+    
+    // Show loading state
+    const originalText = loginButton.innerHTML;
+    loginButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Logging in...';
+    loginButton.disabled = true;
+    
+    // Simulate API call delay
+    setTimeout(() => {
+        const admin = ADMIN_CREDENTIALS.find(cred => 
+            cred.username === username && cred.password === password
+        );
+        
+        if (admin) {
+            // Successful login
+            localStorage.setItem('adminLoggedIn', 'true');
+            localStorage.setItem('adminName', admin.name);
+            localStorage.setItem('adminLoginTime', new Date().toLocaleString());
+            
+            showAdminDashboard(admin.name, new Date().toLocaleString());
+            errorDiv.style.display = 'none';
+        } else {
+            // Failed login
+            errorDiv.style.display = 'block';
+            document.getElementById('errorMessage').textContent = 'Invalid username or password';
+        }
+        
+        // Reset button
+        loginButton.innerHTML = originalText;
+        loginButton.disabled = false;
+    }, 1000);
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('adminLoggedIn');
+    localStorage.removeItem('adminName');
+    localStorage.removeItem('adminLoginTime');
+    showLoginSection();
+    
+    // Clear login form
+    document.getElementById('loginForm').reset();
+    
+    // Show logout success message
+    showSuccessModal('Logged Out', 'You have been successfully logged out.');
+}
+
+// Load all data from localStorage
+function loadAllData() {
+    try {
         // Load items
-        try {
-            const storedItems = localStorage.getItem('lostFoundItems');
-            allItems = storedItems ? JSON.parse(storedItems) : [];
+        const storedItems = localStorage.getItem('lostFoundItems');
+        if (storedItems) {
+            allItems = JSON.parse(storedItems);
+            
+            // Validate and clean up items
+            allItems = allItems.filter(item => item && item.title);
             
             // Add IDs if missing
             allItems = allItems.map((item, index) => ({
@@ -2373,64 +2377,141 @@
                 id: item.id || `item_${Date.now()}_${index}`,
                 status: item.status || 'available'
             }));
-        } catch (error) {
-            console.error('Error loading items:', error);
+        } else {
             allItems = [];
         }
-
-        // Load claims
-        try {
-            const storedClaims = localStorage.getItem('claims');
-            allClaims = storedClaims ? JSON.parse(storedClaims) : [];
-        } catch (error) {
-            console.error('Error loading claims:', error);
-            allClaims = [];
-        }
+    } catch (error) {
+        console.error('Error loading items:', error);
+        allItems = [];
     }
 
-    // IMPROVED: Save all data to localStorage and notify other pages
+    try {
+        // Load claims
+        const storedClaims = localStorage.getItem('claims');
+        if (storedClaims) {
+            allClaims = JSON.parse(storedClaims);
+            
+            // Validate and clean up claims
+            allClaims = allClaims.filter(claim => claim && (claim.itemId || claim.itemName));
+            
+            // Add IDs if missing
+            allClaims = allClaims.map((claim, index) => ({
+                ...claim,
+                id: claim.id || `claim_${Date.now()}_${index}`,
+                status: claim.status || 'pending'
+            }));
+        } else {
+            allClaims = [];
+        }
+    } catch (error) {
+        console.error('Error loading claims:', error);
+        allClaims = [];
+    }
+    
+    console.log('Loaded data:', { items: allItems.length, claims: allClaims.length });
+}
+
 function saveAllData() {
-    console.log('💾 Saving all data from admin...');
+    console.log('💾 saveAllData() called - Admin page');
     
-    // Save items and claims to localStorage
-    localStorage.setItem('lostFoundItems', JSON.stringify(allItems));
-    localStorage.setItem('claims', JSON.stringify(allClaims));
+    // Prevent multiple simultaneous saves
+    if (window.isSavingData) {
+        console.log('⏳ Save already in progress, skipping');
+        return false;
+    }
     
-    // Create a unique timestamp for the update
-    const updateTimestamp = Date.now().toString();
-    localStorage.setItem('lastDataUpdate', updateTimestamp);
+    window.isSavingData = true;
     
-    // Create custom event data
-    const eventData = {
-        source: 'admin',
-        timestamp: updateTimestamp,
-        itemCount: allItems.length,
-        claimCount: allClaims.length,
-        action: 'save'
-    };
+    try {
+        // Save to localStorage
+        localStorage.setItem('lostFoundItems', JSON.stringify(allItems));
+        localStorage.setItem('claims', JSON.stringify(allClaims));
+        
+        // Create a unique timestamp
+        const timestamp = Date.now();
+        const updateTime = timestamp.toString();
+        localStorage.setItem('lastDataUpdate', updateTime);
+        
+        // Create a more detailed timestamp for tracking
+        const detailedTimestamp = {
+            time: timestamp,
+            source: 'admin',
+            items: allItems.length,
+            claims: allClaims.length,
+            action: 'save'
+        };
+        localStorage.setItem('lastDetailedUpdate', JSON.stringify(detailedTimestamp));
+        
+        console.log('✅ Data saved successfully:', detailedTimestamp);
+        
+        // Dispatch multiple events for better compatibility
+        dispatchDataUpdateEvents(detailedTimestamp);
+        
+        return true;
+        
+    } catch (error) {
+        console.error('❌ Error saving data:', error);
+        showErrorModal('Failed to save data. Please try again.');
+        return false;
+        
+    } finally {
+        window.isSavingData = false;
+    }
+}
+
+// NEW FUNCTION: Dispatch all update events
+function dispatchDataUpdateEvents(details) {
+    console.log('📢 Dispatching update events...');
     
-    // Dispatch custom event
+    // 1. Custom event for same-page communication
     const updateEvent = new CustomEvent('dataUpdated', {
-        detail: eventData
+        detail: {
+            source: 'admin',
+            timestamp: details.time,
+            itemCount: details.items,
+            claimCount: details.claims,
+            action: details.action
+        }
     });
     window.dispatchEvent(updateEvent);
     
-    console.log('✅ Data saved and event dispatched:', eventData);
+    // 2. Force refresh event
+    const forceEvent = new CustomEvent('forceRefresh');
+    window.dispatchEvent(forceEvent);
     
-    // Update stats
-    updateStats();
+    // 3. Storage event simulation (for cross-tab)
+    try {
+        // This simulates what happens when localStorage changes in another tab
+        const storageEvent = new StorageEvent('storage', {
+            key: 'lastDataUpdate',
+            newValue: details.time.toString(),
+            oldValue: localStorage.getItem('lastDataUpdate'),
+            url: window.location.href
+        });
+        window.dispatchEvent(storageEvent);
+    } catch (e) {
+        console.log('⚠️ Could not create storage event (expected in some browsers)');
+    }
     
-    return true;
-        
-        console.log('Data saved and events dispatched:', {
-        items: allItems.length,
-        claims: allClaims.length,
-        timestamp: updateTimestamp
+    // 4. Dispatch for specific data changes
+    const itemsEvent = new StorageEvent('storage', {
+        key: 'lostFoundItems',
+        newValue: JSON.stringify(allItems)
     });
+    window.dispatchEvent(itemsEvent);
+    
+    const claimsEvent = new StorageEvent('storage', {
+        key: 'claims',
+        newValue: JSON.stringify(allClaims)
+    });
+    window.dispatchEvent(claimsEvent);
+    
+    console.log('✅ All update events dispatched');
 }
 
-    // Update stats
-    function updateStats() {
+// Update stats
+function updateStats() {
+    try {
         const totalItems = allItems.length;
         const availableItems = allItems.filter(item => item.status === 'available').length;
         const claimedItems = allItems.filter(item => item.status === 'claimed').length;
@@ -2440,12 +2521,25 @@ function saveAllData() {
         document.getElementById('availableItems').textContent = availableItems;
         document.getElementById('claimedItems').textContent = claimedItems;
         document.getElementById('pendingClaims').textContent = pendingClaims;
+    } catch (error) {
+        console.error('Error updating stats:', error);
     }
+}
 
-    // Load items table
-    function loadItemsTable() {
+// Load items table
+function loadItemsTable() {
+    try {
         const tableBody = document.getElementById('itemsTableBody');
         const noItemsMessage = document.getElementById('noItemsMessage');
+        
+        // Clear table
+        tableBody.innerHTML = '';
+        
+        if (!allItems || allItems.length === 0) {
+            tableBody.style.display = 'none';
+            noItemsMessage.style.display = 'block';
+            return;
+        }
         
         // Filter items
         let filteredItems = [...allItems];
@@ -2464,9 +2558,6 @@ function saveAllData() {
                 (item.location && item.location.toLowerCase().includes(currentSearch))
             );
         }
-        
-        // Clear table
-        tableBody.innerHTML = '';
         
         if (filteredItems.length === 0) {
             tableBody.style.display = 'none';
@@ -2524,13 +2615,26 @@ function saveAllData() {
         // Reset select all checkbox
         document.getElementById('selectAllItems').checked = false;
         updateDeleteButton();
+    } catch (error) {
+        console.error('Error loading items table:', error);
     }
+}
 
-    // Load claims table
-    function loadClaimsTable() {
+// Load claims table
+function loadClaimsTable() {
+    try {
         const tableBody = document.getElementById('claimsTableBody');
         const noClaimsMessage = document.getElementById('noClaimsMessage');
         const searchTerm = document.getElementById('claimSearch').value.toLowerCase();
+        
+        // Clear table
+        tableBody.innerHTML = '';
+        
+        if (!allClaims || allClaims.length === 0) {
+            tableBody.style.display = 'none';
+            noClaimsMessage.style.display = 'block';
+            return;
+        }
         
         // Filter claims
         let filteredClaims = [...allClaims];
@@ -2543,9 +2647,6 @@ function saveAllData() {
                 (claim.id && claim.id.toLowerCase().includes(searchTerm))
             );
         }
-        
-        // Clear table
-        tableBody.innerHTML = '';
         
         if (filteredClaims.length === 0) {
             tableBody.style.display = 'none';
@@ -2600,396 +2701,457 @@ function saveAllData() {
             
             tableBody.appendChild(row);
         });
+    } catch (error) {
+        console.error('Error loading claims table:', error);
     }
+}
 
-    // Filter items by status
-    function filterItems(status) {
-        currentFilter = status;
-        
-        // Update active button
-        document.querySelectorAll('.btn-group .btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        event.target.classList.add('active');
-        
-        loadItemsTable();
-    }
-
-    // Clear search
-    function clearSearch() {
-        document.getElementById('itemSearch').value = '';
-        currentSearch = '';
-        loadItemsTable();
-    }
-
-    // Clear claim search
-    function clearClaimSearch() {
-        document.getElementById('claimSearch').value = '';
-        loadClaimsTable();
-    }
-
-    // Toggle select all items
-    function toggleSelectAllItems(checked) {
-        const checkboxes = document.querySelectorAll('.item-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = checked;
-        });
-        updateDeleteButton();
-    }
-
-    // Update delete button state
-    function updateDeleteButton() {
-        const checkboxes = document.querySelectorAll('.item-checkbox:checked');
-        const deleteBtn = document.getElementById('deleteSelectedBtn');
-        deleteBtn.disabled = checkboxes.length === 0;
-    }
-
-    // Delete selected items
-    function deleteSelectedItems() {
-        const checkboxes = document.querySelectorAll('.item-checkbox:checked');
-        const itemIds = Array.from(checkboxes).map(cb => cb.value);
-        
-        if (itemIds.length === 0) return;
-        
-        showConfirmModal(
-            `Delete ${itemIds.length} selected item(s)?`,
-            'This action cannot be undone.',
-            () => {
-                // Remove items
-                allItems = allItems.filter(item => !itemIds.includes(item.id));
-                
-                // Remove associated claims
-                allClaims = allClaims.filter(claim => !itemIds.includes(claim.itemId));
-                
-                // Save data
-                saveAllData();
-                loadItemsTable();
-                loadClaimsTable();
-                
-                showSuccessModal('Items Deleted', `${itemIds.length} item(s) have been deleted successfully.`);
-            }
-        );
-    }
-
-    // View item details
-    function viewItem(itemId) {
-        const item = allItems.find(i => i.id === itemId);
-        if (!item) return;
-        
-        const modalContent = `
-            <div class="modal-header">
-                <h3>Item Details</h3>
-                <button class="modal-close" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <strong>Title:</strong><br>
-                        ${item.title || 'N/A'}
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <strong>Category:</strong><br>
-                        ${formatCategory(item.category)}
-                    </div>
-                    <div class="col-12 mb-3">
-                        <strong>Description:</strong><br>
-                        ${item.description || 'No description provided'}
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <strong>Date Found:</strong><br>
-                        ${item.dateFound ? formatDate(item.dateFound) : 'Unknown'}
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <strong>Location:</strong><br>
-                        ${formatLocation(item.location)}
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <strong>Status:</strong><br>
-                        <span class="status-badge status-${item.status || 'available'}">
-                            ${(item.status || 'available').charAt(0).toUpperCase() + (item.status || 'available').slice(1)}
-                        </span>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <strong>Found By:</strong><br>
-                        ${item.foundBy || 'Unknown'}
-                    </div>
-                    ${item.contact ? `
-                    <div class="col-12 mb-3">
-                        <strong>Contact:</strong><br>
-                        ${item.contact}
-                    </div>
-                    ` : ''}
-                    ${item.additionalNotes ? `
-                    <div class="col-12 mb-3">
-                        <strong>Additional Notes:</strong><br>
-                        ${item.additionalNotes}
-                    </div>
-                    ` : ''}
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
-                    <i class="fas fa-times me-1"></i>Close
-                </button>
-                <button class="modal-btn modal-btn-primary" onclick="editItem('${itemId}')">
-                    <i class="fas fa-edit me-1"></i>Edit Item
-                </button>
-            </div>
-        `;
-        
-        showModal(modalContent);
-    }
-
-    // Edit item
-    function editItem(itemId) {
-        const item = allItems.find(i => i.id === itemId);
-        if (!item) return;
-        
-        const modalContent = `
-            <div class="modal-header">
-                <h3>Edit Item</h3>
-                <button class="modal-close" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editItemForm">
-                    <input type="hidden" id="editItemId" value="${itemId}">
-                    
-                    <div class="form-group">
-                        <label for="editTitle">Title *</label>
-                        <input type="text" class="form-control" id="editTitle" value="${item.title || ''}" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="editCategory">Category</label>
-                        <select class="form-control" id="editCategory">
-                            <option value="electronics" ${item.category === 'electronics' ? 'selected' : ''}>Electronics</option>
-                            <option value="clothing" ${item.category === 'clothing' ? 'selected' : ''}>Clothing</option>
-                            <option value="books" ${item.category === 'books' ? 'selected' : ''}>Books</option>
-                            <option value="accessories" ${item.category === 'accessories' ? 'selected' : ''}>Accessories</option>
-                            <option value="personal" ${item.category === 'personal' ? 'selected' : ''}>Personal Items</option>
-                            <option value="other" ${!item.category || item.category === 'other' ? 'selected' : ''}>Other</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="editDescription">Description</label>
-                        <textarea class="form-control" id="editDescription" rows="3">${item.description || ''}</textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="editStatus">Status</label>
-                        <select class="form-control" id="editStatus">
-                            <option value="available" ${item.status === 'available' ? 'selected' : ''}>Available</option>
-                            <option value="pending" ${item.status === 'pending' ? 'selected' : ''}>Pending</option>
-                            <option value="claimed" ${item.status === 'claimed' ? 'selected' : ''}>Claimed</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="editLocation">Location Found</label>
-                        <select class="form-control" id="editLocation">
-                            <option value="main-hallway" ${item.location === 'main-hallway' ? 'selected' : ''}>Main Hallway</option>
-                            <option value="cafeteria" ${item.location === 'cafeteria' ? 'selected' : ''}>Cafeteria</option>
-                            <option value="library" ${item.location === 'library' ? 'selected' : ''}>Library</option>
-                            <option value="gym" ${item.location === 'gym' ? 'selected' : ''}>Gym</option>
-                            <option value="parking-lot" ${item.location === 'parking-lot' ? 'selected' : ''}>Parking Lot</option>
-                            <option value="classroom" ${item.location === 'classroom' ? 'selected' : ''}>Classroom</option>
-                            <option value="bus-stop" ${item.location === 'bus-stop' ? 'selected' : ''}>Bus Stop</option>
-                            <option value="front-office" ${item.location === 'front-office' ? 'selected' : ''}>Front Office</option>
-                            <option value="computer-lab" ${item.location === 'computer-lab' ? 'selected' : ''}>Computer Lab</option>
-                            <option value="other" ${!item.location || item.location === 'other' ? 'selected' : ''}>Other</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="editFoundBy">Found By</label>
-                        <input type="text" class="form-control" id="editFoundBy" value="${item.foundBy || ''}">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="editContact">Contact Info</label>
-                        <input type="text" class="form-control" id="editContact" value="${item.contact || ''}">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
-                    <i class="fas fa-times me-1"></i>Cancel
-                </button>
-                <button class="modal-btn modal-btn-primary" onclick="saveItemEdit()">
-                    <i class="fas fa-save me-1"></i>Save Changes
-                </button>
-            </div>
-        `;
-        
-        showModal(modalContent);
-    }
-
-    // Save item edit
-    function saveItemEdit() {
-        const itemId = document.getElementById('editItemId').value;
-        const itemIndex = allItems.findIndex(i => i.id === itemId);
-        
-        if (itemIndex === -1) return;
-        
-        // Update item
-        allItems[itemIndex] = {
-            ...allItems[itemIndex],
-            title: document.getElementById('editTitle').value.trim(),
-            category: document.getElementById('editCategory').value,
-            description: document.getElementById('editDescription').value.trim(),
-            status: document.getElementById('editStatus').value,
-            location: document.getElementById('editLocation').value,
-            foundBy: document.getElementById('editFoundBy').value.trim(),
-            contact: document.getElementById('editContact').value.trim(),
-            lastUpdated: new Date().toISOString()
-        };
-        
-        // If status changed to claimed, update associated claims
-        if (allItems[itemIndex].status === 'claimed') {
-            allClaims.forEach(claim => {
-                if (claim.itemId === itemId && claim.status === 'pending') {
-                    claim.status = 'approved';
-                }
-            });
+// Filter items by status
+function filterItems(status) {
+    currentFilter = status;
+    
+    // Update active button
+    const buttons = document.querySelectorAll('.btn-group .btn');
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.toLowerCase().includes(status)) {
+            btn.classList.add('active');
         }
-        
-        saveAllData();
-        loadItemsTable();
-        loadClaimsTable();
-        closeModal();
-        
-        showSuccessModal('Item Updated', 'The item has been updated successfully.');
-    }
+    });
+    
+    loadItemsTable();
+}
 
-    // Delete item
-    function deleteItem(itemId) {
-        const item = allItems.find(i => i.id === itemId);
-        if (!item) return;
-        
-        showConfirmModal(
-            'Delete Item',
-            `Are you sure you want to delete "${item.title || 'this item'}"? This action cannot be undone.`,
-            () => {
-                // Remove item
-                allItems = allItems.filter(i => i.id !== itemId);
-                
-                // Remove associated claims
-                allClaims = allClaims.filter(claim => claim.itemId !== itemId);
-                
-                saveAllData();
-                loadItemsTable();
-                loadClaimsTable();
-                
-                showSuccessModal('Item Deleted', 'The item has been deleted successfully.');
+// Clear search
+function clearSearch() {
+    document.getElementById('itemSearch').value = '';
+    currentSearch = '';
+    loadItemsTable();
+}
+
+// Clear claim search
+function clearClaimSearch() {
+    document.getElementById('claimSearch').value = '';
+    loadClaimsTable();
+}
+
+// Toggle select all items
+function toggleSelectAllItems(checked) {
+    const checkboxes = document.querySelectorAll('.item-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = checked;
+    });
+    updateDeleteButton();
+}
+
+// Update delete button state
+function updateDeleteButton() {
+    const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+    const deleteBtn = document.getElementById('deleteSelectedBtn');
+    deleteBtn.disabled = checkboxes.length === 0;
+}
+
+// Delete selected items
+function deleteSelectedItems() {
+    const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+    const itemIds = Array.from(checkboxes).map(cb => cb.value);
+    
+    if (itemIds.length === 0) return;
+    
+    showConfirmModal(
+        `Delete ${itemIds.length} selected item(s)?`,
+        'This action cannot be undone.',
+        () => {
+            // Show processing modal
+            showProcessingModal('Deleting items...');
+            
+            // Remove items
+            allItems = allItems.filter(item => !itemIds.includes(item.id));
+            
+            // Remove associated claims
+            allClaims = allClaims.filter(claim => !itemIds.includes(claim.itemId));
+            
+            // Save data
+            if (saveAllData()) {
+                setTimeout(() => {
+                    closeModal();
+                    loadItemsTable();
+                    loadClaimsTable();
+                    showSuccessModal('Items Deleted', `${itemIds.length} item(s) have been deleted successfully.`);
+                }, 1000);
+            } else {
+                closeModal();
+                showErrorModal('Failed to delete items. Please try again.');
             }
-        );
-    }
+        }
+    );
+}
 
-    // View claim details
-    function viewClaim(claimId) {
-        const claim = allClaims.find(c => c.id === claimId);
-        if (!claim) return;
-        
-        const item = allItems.find(i => i.id === claim.itemId);
-        const itemName = item ? item.title : claim.itemName || 'Unknown Item';
-        
-        const modalContent = `
-            <div class="modal-header">
-                <h3>Claim Details</h3>
-                <button class="modal-close" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <strong>Claim ID:</strong><br>
-                        ${claim.id || 'N/A'}
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <strong>Status:</strong><br>
-                        <span class="status-badge ${claim.status === 'approved' ? 'status-claimed' : claim.status === 'pending' ? 'status-pending' : 'status-available'}">
-                            ${(claim.status || 'pending').charAt(0).toUpperCase() + (claim.status || 'pending').slice(1)}
-                        </span>
-                    </div>
-                    <div class="col-12 mb-3">
-                        <strong>Item Claimed:</strong><br>
-                        ${itemName}
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <strong>Claimant Name:</strong><br>
-                        ${claim.claimant || 'Unknown'}
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <strong>Claimant Email:</strong><br>
-                        ${claim.claimantEmail || 'N/A'}
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <strong>Claimant Phone:</strong><br>
-                        ${claim.claimantPhone || 'N/A'}
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <strong>Date Submitted:</strong><br>
-                        ${claim.dateSubmitted ? formatDate(claim.dateSubmitted) : 'Unknown'}
-                    </div>
-                    ${claim.identifyingFeatures ? `
-                    <div class="col-12 mb-3">
-                        <strong>Identifying Features:</strong><br>
-                        ${claim.identifyingFeatures}
-                    </div>
-                    ` : ''}
-                    ${claim.additionalInfo ? `
-                    <div class="col-12 mb-3">
-                        <strong>Additional Information:</strong><br>
-                        ${claim.additionalInfo}
-                    </div>
-                    ` : ''}
-                    ${claim.lostDate ? `
-                    <div class="col-md-6 mb-3">
-                        <strong>Date Lost:</strong><br>
-                        ${formatDate(claim.lostDate)}
-                    </div>
-                    ` : ''}
-                    ${claim.lostLocation ? `
-                    <div class="col-md-6 mb-3">
-                        <strong>Location Lost:</strong><br>
-                        ${formatLocation(claim.lostLocation)}
-                    </div>
-                    ` : ''}
+// View item details
+function viewItem(itemId) {
+    const item = allItems.find(i => i.id === itemId);
+    if (!item) {
+        showErrorModal('Item not found');
+        return;
+    }
+    
+    const modalContent = `
+        <div class="modal-header">
+            <h3>Item Details</h3>
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <strong>Title:</strong><br>
+                    ${escapeHtml(item.title) || 'N/A'}
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
-                    <i class="fas fa-times me-1"></i>Close
-                </button>
-                ${claim.status === 'pending' ? `
-                <button class="modal-btn modal-btn-primary" onclick="approveClaim('${claimId}')">
-                    <i class="fas fa-check me-1"></i>Approve Claim
-                </button>
-                <button class="modal-btn modal-btn-danger" onclick="rejectClaim('${claimId}')">
-                    <i class="fas fa-times me-1"></i>Reject Claim
-                </button>
+                <div class="col-md-6 mb-3">
+                    <strong>Category:</strong><br>
+                    ${formatCategory(item.category)}
+                </div>
+                <div class="col-12 mb-3">
+                    <strong>Description:</strong><br>
+                    ${escapeHtml(item.description) || 'No description provided'}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Date Found:</strong><br>
+                    ${item.dateFound ? formatDate(item.dateFound) : 'Unknown'}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Location:</strong><br>
+                    ${formatLocation(item.location)}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Status:</strong><br>
+                    <span class="status-badge status-${item.status || 'available'}">
+                        ${(item.status || 'available').charAt(0).toUpperCase() + (item.status || 'available').slice(1)}
+                    </span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Found By:</strong><br>
+                    ${escapeHtml(item.foundBy) || 'Unknown'}
+                </div>
+                ${item.contact ? `
+                <div class="col-12 mb-3">
+                    <strong>Contact:</strong><br>
+                    ${escapeHtml(item.contact)}
+                </div>
+                ` : ''}
+                ${item.additionalNotes ? `
+                <div class="col-12 mb-3">
+                    <strong>Additional Notes:</strong><br>
+                    ${escapeHtml(item.additionalNotes)}
+                </div>
                 ` : ''}
             </div>
-        `;
-        
-        showModal(modalContent);
-    }
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
+                <i class="fas fa-times me-1"></i>Close
+            </button>
+            <button class="modal-btn modal-btn-primary" onclick="editItem('${escapeHtml(itemId)}')">
+                <i class="fas fa-edit me-1"></i>Edit Item
+            </button>
+        </div>
+    `;
+    
+    showModal(modalContent);
+}
 
-    // Approve claim - UPDATE THIS FUNCTION
+// Edit item
+function editItem(itemId) {
+    const item = allItems.find(i => i.id === itemId);
+    if (!item) {
+        showErrorModal('Item not found');
+        return;
+    }
+    
+    const modalContent = `
+        <div class="modal-header">
+            <h3>Edit Item</h3>
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="editItemForm">
+                <input type="hidden" id="editItemId" value="${escapeHtml(itemId)}">
+                
+                <div class="form-group">
+                    <label for="editTitle">Title *</label>
+                    <input type="text" class="form-control" id="editTitle" value="${escapeHtml(item.title) || ''}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editCategory">Category</label>
+                    <select class="form-control" id="editCategory">
+                        <option value="electronics" ${item.category === 'electronics' ? 'selected' : ''}>Electronics</option>
+                        <option value="clothing" ${item.category === 'clothing' ? 'selected' : ''}>Clothing</option>
+                        <option value="books" ${item.category === 'books' ? 'selected' : ''}>Books</option>
+                        <option value="accessories" ${item.category === 'accessories' ? 'selected' : ''}>Accessories</option>
+                        <option value="personal" ${item.category === 'personal' ? 'selected' : ''}>Personal Items</option>
+                        <option value="other" ${!item.category || item.category === 'other' ? 'selected' : ''}>Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editDescription">Description</label>
+                    <textarea class="form-control" id="editDescription" rows="3">${escapeHtml(item.description) || ''}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editStatus">Status</label>
+                    <select class="form-control" id="editStatus">
+                        <option value="available" ${item.status === 'available' ? 'selected' : ''}>Available</option>
+                        <option value="pending" ${item.status === 'pending' ? 'selected' : ''}>Pending</option>
+                        <option value="claimed" ${item.status === 'claimed' ? 'selected' : ''}>Claimed</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editLocation">Location Found</label>
+                    <select class="form-control" id="editLocation">
+                        <option value="main-hallway" ${item.location === 'main-hallway' ? 'selected' : ''}>Main Hallway</option>
+                        <option value="cafeteria" ${item.location === 'cafeteria' ? 'selected' : ''}>Cafeteria</option>
+                        <option value="library" ${item.location === 'library' ? 'selected' : ''}>Library</option>
+                        <option value="gym" ${item.location === 'gym' ? 'selected' : ''}>Gym</option>
+                        <option value="parking-lot" ${item.location === 'parking-lot' ? 'selected' : ''}>Parking Lot</option>
+                        <option value="classroom" ${item.location === 'classroom' ? 'selected' : ''}>Classroom</option>
+                        <option value="bus-stop" ${item.location === 'bus-stop' ? 'selected' : ''}>Bus Stop</option>
+                        <option value="front-office" ${item.location === 'front-office' ? 'selected' : ''}>Front Office</option>
+                        <option value="computer-lab" ${item.location === 'computer-lab' ? 'selected' : ''}>Computer Lab</option>
+                        <option value="other" ${!item.location || item.location === 'other' ? 'selected' : ''}>Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editFoundBy">Found By</label>
+                    <input type="text" class="form-control" id="editFoundBy" value="${escapeHtml(item.foundBy) || ''}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="editContact">Contact Info</label>
+                    <input type="text" class="form-control" id="editContact" value="${escapeHtml(item.contact) || ''}">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
+                <i class="fas fa-times me-1"></i>Cancel
+            </button>
+            <button class="modal-btn modal-btn-primary" onclick="saveItemEdit()">
+                <i class="fas fa-save me-1"></i>Save Changes
+            </button>
+        </div>
+    `;
+    
+    showModal(modalContent);
+}
+
+// Save item edit
+function saveItemEdit() {
+    const itemId = document.getElementById('editItemId').value;
+    const itemIndex = allItems.findIndex(i => i.id === itemId);
+    
+    if (itemIndex === -1) {
+        showErrorModal('Item not found');
+        return;
+    }
+    
+    // Validate inputs
+    const title = document.getElementById('editTitle').value.trim();
+    if (!title) {
+        showErrorModal('Title is required');
+        return;
+    }
+    
+    // Show processing modal
+    showProcessingModal('Saving changes...');
+    
+    // Update item
+    allItems[itemIndex] = {
+        ...allItems[itemIndex],
+        title: title,
+        category: document.getElementById('editCategory').value,
+        description: document.getElementById('editDescription').value.trim(),
+        status: document.getElementById('editStatus').value,
+        location: document.getElementById('editLocation').value,
+        foundBy: document.getElementById('editFoundBy').value.trim(),
+        contact: document.getElementById('editContact').value.trim(),
+        lastUpdated: new Date().toISOString()
+    };
+    
+    // If status changed to claimed, update associated claims
+    if (allItems[itemIndex].status === 'claimed') {
+        allClaims.forEach(claim => {
+            if (claim.itemId === itemId && claim.status === 'pending') {
+                claim.status = 'approved';
+            }
+        });
+    }
+    
+    if (saveAllData()) {
+        setTimeout(() => {
+            closeModal();
+            loadItemsTable();
+            loadClaimsTable();
+            showSuccessModal('Item Updated', 'The item has been updated successfully.');
+        }, 1000);
+    } else {
+        closeModal();
+        showErrorModal('Failed to save changes');
+    }
+}
+
+// Delete item
+function deleteItem(itemId) {
+    const item = allItems.find(i => i.id === itemId);
+    if (!item) {
+        showErrorModal('Item not found');
+        return;
+    }
+    
+    showConfirmModal(
+        'Delete Item',
+        `Are you sure you want to delete "${escapeHtml(item.title || 'this item')}"? This action cannot be undone.`,
+        () => {
+            // Show processing modal
+            showProcessingModal('Deleting item...');
+            
+            // Remove item
+            allItems = allItems.filter(i => i.id !== itemId);
+            
+            // Remove associated claims
+            allClaims = allClaims.filter(claim => claim.itemId !== itemId);
+            
+            if (saveAllData()) {
+                setTimeout(() => {
+                    closeModal();
+                    loadItemsTable();
+                    loadClaimsTable();
+                    showSuccessModal('Item Deleted', 'The item has been deleted successfully.');
+                }, 1000);
+            } else {
+                closeModal();
+                showErrorModal('Failed to delete item');
+            }
+        },
+        'danger'
+    );
+}
+
+// View claim details
+function viewClaim(claimId) {
+    const claim = allClaims.find(c => c.id === claimId);
+    if (!claim) {
+        showErrorModal('Claim not found');
+        return;
+    }
+    
+    const item = allItems.find(i => i.id === claim.itemId);
+    const itemName = item ? item.title : claim.itemName || 'Unknown Item';
+    
+    const modalContent = `
+        <div class="modal-header">
+            <h3>Claim Details</h3>
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <strong>Claim ID:</strong><br>
+                    ${claim.id || 'N/A'}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Status:</strong><br>
+                    <span class="status-badge ${claim.status === 'approved' ? 'status-claimed' : claim.status === 'pending' ? 'status-pending' : 'status-available'}">
+                        ${(claim.status || 'pending').charAt(0).toUpperCase() + (claim.status || 'pending').slice(1)}
+                    </span>
+                </div>
+                <div class="col-12 mb-3">
+                    <strong>Item Claimed:</strong><br>
+                    ${escapeHtml(itemName)}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Claimant Name:</strong><br>
+                    ${escapeHtml(claim.claimant) || 'Unknown'}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Claimant Email:</strong><br>
+                    ${escapeHtml(claim.claimantEmail) || 'N/A'}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Claimant Phone:</strong><br>
+                    ${escapeHtml(claim.claimantPhone) || 'N/A'}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Date Submitted:</strong><br>
+                    ${claim.dateSubmitted ? formatDate(claim.dateSubmitted) : 'Unknown'}
+                </div>
+                ${claim.identifyingFeatures ? `
+                <div class="col-12 mb-3">
+                    <strong>Identifying Features:</strong><br>
+                    ${escapeHtml(claim.identifyingFeatures)}
+                </div>
+                ` : ''}
+                ${claim.additionalInfo ? `
+                <div class="col-12 mb-3">
+                    <strong>Additional Information:</strong><br>
+                    ${escapeHtml(claim.additionalInfo)}
+                </div>
+                ` : ''}
+                ${claim.lostDate ? `
+                <div class="col-md-6 mb-3">
+                    <strong>Date Lost:</strong><br>
+                    ${formatDate(claim.lostDate)}
+                </div>
+                ` : ''}
+                ${claim.lostLocation ? `
+                <div class="col-md-6 mb-3">
+                    <strong>Location Lost:</strong><br>
+                    ${formatLocation(claim.lostLocation)}
+                </div>
+                ` : ''}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
+                <i class="fas fa-times me-1"></i>Close
+            </button>
+            ${claim.status === 'pending' ? `
+            <button class="modal-btn modal-btn-primary" onclick="approveClaim('${escapeHtml(claimId)}')">
+                <i class="fas fa-check me-1"></i>Approve Claim
+            </button>
+            <button class="modal-btn modal-btn-danger" onclick="rejectClaim('${escapeHtml(claimId)}')">
+                <i class="fas fa-times me-1"></i>Reject Claim
+            </button>
+            ` : ''}
+        </div>
+    `;
+    
+    showModal(modalContent);
+}
+
+// Approve claim
 function approveClaim(claimId) {
     const claim = allClaims.find(c => c.id === claimId);
-    if (!claim) return;
+    if (!claim) {
+        showErrorModal('Claim not found');
+        return;
+    }
     
     showConfirmModal(
         'Approve Claim',
         'Are you sure you want to approve this claim? The item will be marked as claimed.',
         () => {
+            // Show processing modal
+            showProcessingModal('Approving claim...');
+            
             // Update claim status
             claim.status = 'approved';
             claim.approvedDate = new Date().toISOString();
@@ -3005,464 +3167,534 @@ function approveClaim(claimId) {
             }
             
             // Save all data with synchronization
-            saveAllData();
-            
-            // Force refresh of items table
-            loadItemsTable();
-            loadClaimsTable();
-            
-            showSuccessModal('Claim Approved', 'The claim has been approved successfully. The item status has been updated.');
+            if (saveAllData()) {
+                setTimeout(() => {
+                    closeModal();
+                    loadItemsTable();
+                    loadClaimsTable();
+                    showSuccessModal('Claim Approved', 'The claim has been approved successfully. The item status has been updated.');
+                }, 1000);
+            } else {
+                closeModal();
+                showErrorModal('Failed to approve claim');
+            }
         }
     );
 }
 
-    // Reject claim
-    function rejectClaim(claimId) {
-        const claim = allClaims.find(c => c.id === claimId);
-        if (!claim) return;
-        
-        showConfirmModal(
-            'Reject Claim',
-            'Are you sure you want to reject this claim?',
-            () => {
-                // Remove claim
-                allClaims = allClaims.filter(c => c.id !== claimId);
-                
-                saveAllData();
-                loadClaimsTable();
-                
-                showSuccessModal('Claim Rejected', 'The claim has been rejected successfully.');
-            }
-        );
+// Reject claim
+function rejectClaim(claimId) {
+    const claim = allClaims.find(c => c.id === claimId);
+    if (!claim) {
+        showErrorModal('Claim not found');
+        return;
     }
-
-    // Export data
-    function exportData() {
-        // Create CSV content
-        let csvContent = "data:text/csv;charset=utf-8,";
-        
-        // Items data
-        csvContent += "ITEMS EXPORT\n";
-        csvContent += "ID,Title,Category,Description,Date Found,Location,Status,Found By,Contact,Additional Notes\n";
-        allItems.forEach(item => {
-            const row = [
-                item.id || '',
-                `"${(item.title || '').replace(/"/g, '""')}"`,
-                item.category || '',
-                `"${(item.description || '').replace(/"/g, '""')}"`,
-                item.dateFound || '',
-                item.location || '',
-                item.status || '',
-                item.foundBy || '',
-                item.contact || '',
-                `"${(item.additionalNotes || '').replace(/"/g, '""')}"`
-            ];
-            csvContent += row.join(',') + '\n';
-        });
-        
-        // Claims data
-        csvContent += "\nCLAIMS EXPORT\n";
-        csvContent += "Claim ID,Item ID,Item Name,Claimant Name,Claimant Email,Claimant Phone,Date Submitted,Status,Identifying Features,Additional Info,Date Lost,Location Lost\n";
-        allClaims.forEach(claim => {
-            const row = [
-                claim.id || '',
-                claim.itemId || '',
-                `"${(claim.itemName || '').replace(/"/g, '""')}"`,
-                claim.claimant || '',
-                claim.claimantEmail || '',
-                claim.claimantPhone || '',
-                claim.dateSubmitted || '',
-                claim.status || '',
-                `"${(claim.identifyingFeatures || '').replace(/"/g, '""')}"`,
-                `"${(claim.additionalInfo || '').replace(/"/g, '""')}"`,
-                claim.lostDate || '',
-                claim.lostLocation || ''
-            ];
-            csvContent += row.join(',') + '\n';
-        });
-        
-        // Create download link
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `aai_lost_found_export_${new Date().toISOString().split('T')[0]}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        showSuccessModal('Data Exported', 'All data has been exported successfully as a CSV file.');
-    }
-
-    // Show bulk action modal
-    function showBulkActionModal() {
-        const modalContent = `
-            <div class="modal-header">
-                <h3>Bulk Actions</h3>
-                <button class="modal-close" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Select a bulk action to perform on items:</p>
-                <div class="form-group">
-                    <label for="bulkAction">Action:</label>
-                    <select class="form-control" id="bulkAction">
-                        <option value="mark_available">Mark as Available</option>
-                        <option value="mark_claimed">Mark as Claimed</option>
-                        <option value="delete">Delete Items</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="bulkFilter">Apply to:</label>
-                    <select class="form-control" id="bulkFilter">
-                        <option value="all">All Items</option>
-                        <option value="available">Available Items Only</option>
-                        <option value="pending">Pending Items Only</option>
-                        <option value="claimed">Claimed Items Only</option>
-                    </select>
-                </div>
-                <div class="alert alert-warning">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    This action will affect multiple items. Please review carefully.
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
-                    <i class="fas fa-times me-1"></i>Cancel
-                </button>
-                <button class="modal-btn modal-btn-primary" onclick="performBulkAction()">
-                    <i class="fas fa-play me-1"></i>Execute Action
-                </button>
-            </div>
-        `;
-        
-        showModal(modalContent);
-    }
-
-    // Perform bulk action
-    function performBulkAction() {
-        const action = document.getElementById('bulkAction').value;
-        const filter = document.getElementById('bulkFilter').value;
-        
-        // Get items to apply action to
-        let itemsToUpdate = [...allItems];
-        if (filter !== 'all') {
-            itemsToUpdate = itemsToUpdate.filter(item => item.status === filter);
-        }
-        
-        if (itemsToUpdate.length === 0) {
-            showErrorModal('No items found matching the criteria.');
-            return;
-        }
-        
-        let actionMessage = '';
-        
-        switch(action) {
-            case 'mark_available':
-                itemsToUpdate.forEach(item => item.status = 'available');
-                actionMessage = `${itemsToUpdate.length} item(s) marked as available`;
-                break;
-                
-            case 'mark_claimed':
-                itemsToUpdate.forEach(item => {
-                    item.status = 'claimed';
-                    // Update any pending claims for these items
-                    allClaims.forEach(claim => {
-                        if (claim.itemId === item.id && claim.status === 'pending') {
-                            claim.status = 'approved';
-                        }
-                    });
-                });
-                actionMessage = `${itemsToUpdate.length} item(s) marked as claimed`;
-                break;
-                
-            case 'delete':
-                showConfirmModal(
-                    'Confirm Bulk Delete',
-                    `Are you sure you want to delete ${itemsToUpdate.length} item(s)? This action cannot be undone.`,
-                    () => {
-                        const itemIds = itemsToUpdate.map(item => item.id);
-                        allItems = allItems.filter(item => !itemIds.includes(item.id));
-                        allClaims = allClaims.filter(claim => !itemIds.includes(claim.itemId));
-                        actionMessage = `${itemsToUpdate.length} item(s) deleted`;
-                        completeBulkAction(actionMessage);
-                    }
-                );
-                return;
-        }
-        
-        saveAllData();
-        loadItemsTable();
-        loadClaimsTable();
-        closeModal();
-        
-        showSuccessModal('Bulk Action Complete', actionMessage);
-    }
-
-    function completeBulkAction(message) {
-        saveAllData();
-        loadItemsTable();
-        loadClaimsTable();
-        closeModal();
-        
-        showSuccessModal('Bulk Action Complete', message);
-    }
-
-    // Clear all data
-    function clearAllData() {
-        showConfirmModal(
-            'Clear All Data',
-            'WARNING: This will delete ALL items and claims. This action cannot be undone!',
-            () => {
-                allItems = [];
-                allClaims = [];
-                saveAllData();
-                loadItemsTable();
-                loadClaimsTable();
-                
-                showSuccessModal('Data Cleared', 'All data has been cleared successfully.');
-            }
-        );
-    }
-
-    // Modal functions
-    function showModal(content) {
-        document.getElementById('adminModal').innerHTML = content;
-        document.getElementById('modalOverlay').classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-        document.getElementById('modalOverlay').classList.remove('active');
-        document.body.style.overflow = 'auto';
-        currentConfirmCallback = null;
-    }
-
-    function showConfirmModal(title, message, confirmCallback, type = 'warning') {
-        const modalContent = `
-            <div class="modal-header">
-                <h3>${title}</h3>
-                <button class="modal-close" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>${message}</p>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
-                    <i class="fas fa-times me-1"></i>Cancel
-                </button>
-                <button class="modal-btn ${type === 'danger' ? 'modal-btn-danger' : 'modal-btn-primary'}" id="confirmActionBtn">
-                    <i class="fas fa-check me-1"></i>Confirm
-                </button>
-            </div>
-        `;
-        
-        showModal(modalContent);
-        
-        // Store callback and set up event listener
-        currentConfirmCallback = confirmCallback;
-        document.getElementById('confirmActionBtn').addEventListener('click', function() {
-            closeModal();
-            if (currentConfirmCallback) {
-                currentConfirmCallback();
-            }
-        });
-    }
-
-    function showSuccessModal(title, message) {
-        const modalContent = `
-            <div class="modal-header">
-                <h3>${title}</h3>
-                <button class="modal-close" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="text-center">
-                    <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--success); margin-bottom: 20px;"></i>
-                    <p>${message}</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn modal-btn-primary" onclick="closeModal()">
-                    <i class="fas fa-check me-1"></i>OK
-                </button>
-            </div>
-        `;
-        
-        showModal(modalContent);
-    }
-
-    function showErrorModal(message) {
-        const modalContent = `
-            <div class="modal-header">
-                <h3>Error</h3>
-                <button class="modal-close" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    ${message}
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn modal-btn-primary" onclick="closeModal()">
-                    <i class="fas fa-check me-1"></i>OK
-                </button>
-            </div>
-        `;
-        
-        showModal(modalContent);
-    }
-
-    // Helper functions
-    function formatCategory(category) {
-        const categories = {
-            'electronics': 'Electronics',
-            'clothing': 'Clothing',
-            'books': 'Books',
-            'accessories': 'Accessories',
-            'personal': 'Personal Items',
-            'other': 'Other'
-        };
-        return categories[category] || category || 'Uncategorized';
-    }
-
-    function formatLocation(location) {
-        const locations = {
-            'main-hallway': 'Main Hallway',
-            'cafeteria': 'Cafeteria',
-            'library': 'Library',
-            'gym': 'Gym',
-            'parking-lot': 'Parking Lot',
-            'classroom': 'Classroom',
-            'bus-stop': 'Bus Stop',
-            'front-office': 'Front Office',
-            'computer-lab': 'Computer Lab',
-            'locker-room': 'Locker Room',
-            'other': 'Other Location'
-        };
-        return locations[location] || location || 'Unknown Location';
-    }
-
-    function formatDate(dateString) {
-        try {
-            const date = new Date(dateString);
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            return date.toLocaleDateString(undefined, options);
-        } catch (e) {
-            return dateString || 'Unknown';
-        }
-    }
-
-    // Handle page unloading
-    window.addEventListener('beforeunload', function() {
-        document.getElementById('loadingBar').style.width = '100%';
-    });
     
-    // Listen for storage changes from other pages
-    window.addEventListener('storage', function(e) {
-        console.log('Storage event detected in admin:', e.key);
-        if (e.key === 'lostFoundItems' || e.key === 'claims') {
-            console.log('Data updated from another tab, refreshing...');
-            loadAllData();
+    showConfirmModal(
+        'Reject Claim',
+        'Are you sure you want to reject this claim?',
+        () => {
+            // Show processing modal
+            showProcessingModal('Rejecting claim...');
+            
+            // Remove claim
+            allClaims = allClaims.filter(c => c.id !== claimId);
+            
+            if (saveAllData()) {
+                setTimeout(() => {
+                    closeModal();
+                    loadClaimsTable();
+                    showSuccessModal('Claim Rejected', 'The claim has been rejected successfully.');
+                }, 1000);
+            } else {
+                closeModal();
+                showErrorModal('Failed to reject claim');
+            }
+        },
+        'danger'
+    );
+}
+
+// Export data
+function exportData() {
+    try {
+        // Show processing modal
+        showProcessingModal('Exporting data...');
+        
+        // Small delay to show processing state
+        setTimeout(() => {
+            // Create CSV content
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            // Items data
+            csvContent += "ITEMS EXPORT\n";
+            csvContent += "ID,Title,Category,Description,Date Found,Location,Status,Found By,Contact,Additional Notes\n";
+            allItems.forEach(item => {
+                const row = [
+                    item.id || '',
+                    `"${(item.title || '').replace(/"/g, '""')}"`,
+                    item.category || '',
+                    `"${(item.description || '').replace(/"/g, '""')}"`,
+                    item.dateFound || '',
+                    item.location || '',
+                    item.status || '',
+                    item.foundBy || '',
+                    item.contact || '',
+                    `"${(item.additionalNotes || '').replace(/"/g, '""')}"`
+                ];
+                csvContent += row.join(',') + '\n';
+            });
+            
+            // Claims data
+            csvContent += "\nCLAIMS EXPORT\n";
+            csvContent += "Claim ID,Item ID,Item Name,Claimant Name,Claimant Email,Claimant Phone,Date Submitted,Status,Identifying Features,Additional Info,Date Lost,Location Lost\n";
+            allClaims.forEach(claim => {
+                const row = [
+                    claim.id || '',
+                    claim.itemId || '',
+                    `"${(claim.itemName || '').replace(/"/g, '""')}"`,
+                    claim.claimant || '',
+                    claim.claimantEmail || '',
+                    claim.claimantPhone || '',
+                    claim.dateSubmitted || '',
+                    claim.status || '',
+                    `"${(claim.identifyingFeatures || '').replace(/"/g, '""')}"`,
+                    `"${(claim.additionalInfo || '').replace(/"/g, '""')}"`,
+                    claim.lostDate || '',
+                    claim.lostLocation || ''
+                ];
+                csvContent += row.join(',') + '\n';
+            });
+            
+            // Create download link
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `aai_lost_found_export_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            closeModal();
+            showSuccessModal('Data Exported', 'All data has been exported successfully as a CSV file.');
+        }, 500);
+    } catch (error) {
+        console.error('Error exporting data:', error);
+        closeModal();
+        showErrorModal('Failed to export data');
+    }
+}
+
+// Show bulk action modal
+function showBulkActionModal() {
+    const modalContent = `
+        <div class="modal-header">
+            <h3>Bulk Actions</h3>
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Select a bulk action to perform on items:</p>
+            <div class="form-group">
+                <label for="bulkAction">Action:</label>
+                <select class="form-control" id="bulkAction">
+                    <option value="mark_available">Mark as Available</option>
+                    <option value="mark_claimed">Mark as Claimed</option>
+                    <option value="delete">Delete Items</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="bulkFilter">Apply to:</label>
+                <select class="form-control" id="bulkFilter">
+                    <option value="all">All Items</option>
+                    <option value="available">Available Items Only</option>
+                    <option value="pending">Pending Items Only</option>
+                    <option value="claimed">Claimed Items Only</option>
+                </select>
+            </div>
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                This action will affect multiple items. Please review carefully.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
+                <i class="fas fa-times me-1"></i>Cancel
+            </button>
+            <button class="modal-btn modal-btn-primary" onclick="performBulkAction()">
+                <i class="fas fa-play me-1"></i>Execute Action
+            </button>
+        </div>
+    `;
+    
+    showModal(modalContent);
+}
+
+// Perform bulk action
+function performBulkAction() {
+    const action = document.getElementById('bulkAction').value;
+    const filter = document.getElementById('bulkFilter').value;
+    
+    // Get items to apply action to
+    let itemsToUpdate = [...allItems];
+    if (filter !== 'all') {
+        itemsToUpdate = itemsToUpdate.filter(item => item.status === filter);
+    }
+    
+    if (itemsToUpdate.length === 0) {
+        showErrorModal('No items found matching the criteria.');
+        return;
+    }
+    
+    let actionMessage = '';
+    
+    switch(action) {
+        case 'mark_available':
+            showProcessingModal('Marking items as available...');
+            itemsToUpdate.forEach(item => item.status = 'available');
+            actionMessage = `${itemsToUpdate.length} item(s) marked as available`;
+            completeBulkAction(actionMessage);
+            break;
+            
+        case 'mark_claimed':
+            showProcessingModal('Marking items as claimed...');
+            itemsToUpdate.forEach(item => {
+                item.status = 'claimed';
+                // Update any pending claims for these items
+                allClaims.forEach(claim => {
+                    if (claim.itemId === item.id && claim.status === 'pending') {
+                        claim.status = 'approved';
+                    }
+                });
+            });
+            actionMessage = `${itemsToUpdate.length} item(s) marked as claimed`;
+            completeBulkAction(actionMessage);
+            break;
+            
+        case 'delete':
+            showConfirmModal(
+                'Confirm Bulk Delete',
+                `Are you sure you want to delete ${itemsToUpdate.length} item(s)? This action cannot be undone.`,
+                () => {
+                    showProcessingModal('Deleting items...');
+                    const itemIds = itemsToUpdate.map(item => item.id);
+                    allItems = allItems.filter(item => !itemIds.includes(item.id));
+                    allClaims = allClaims.filter(claim => !itemIds.includes(claim.itemId));
+                    actionMessage = `${itemsToUpdate.length} item(s) deleted`;
+                    completeBulkAction(actionMessage);
+                },
+                'danger'
+            );
+            return;
+    }
+}
+
+function completeBulkAction(message) {
+    if (saveAllData()) {
+        setTimeout(() => {
+            closeModal();
             loadItemsTable();
             loadClaimsTable();
-            updateStats();
+            showSuccessModal('Bulk Action Complete', message);
+        }, 1000);
+    } else {
+        closeModal();
+        showErrorModal('Failed to complete bulk action');
+    }
+}
+
+// Clear all data
+function clearAllData() {
+    showConfirmModal(
+        'Clear All Data',
+        'WARNING: This will delete ALL items and claims. This action cannot be undone!',
+        () => {
+            showProcessingModal('Clearing all data...');
+            
+            allItems = [];
+            allClaims = [];
+            
+            if (saveAllData()) {
+                setTimeout(() => {
+                    closeModal();
+                    loadItemsTable();
+                    loadClaimsTable();
+                    showSuccessModal('Data Cleared', 'All data has been cleared successfully.');
+                }, 1000);
+            } else {
+                closeModal();
+                showErrorModal('Failed to clear data');
+            }
+        },
+        'danger'
+    );
+}
+
+// Modal functions
+function showModal(content) {
+    document.getElementById('adminModal').innerHTML = content;
+    document.getElementById('modalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+    document.body.style.overflow = 'auto';
+    currentConfirmCallback = null;
+}
+
+function showProcessingModal(message) {
+    const modalContent = `
+        <div class="modal-header">
+            <h3>Processing...</h3>
+        </div>
+        <div class="modal-body">
+            <div class="text-center">
+                <i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: var(--accent-gold); margin-bottom: 20px;"></i>
+                <p>${message}</p>
+            </div>
+        </div>
+    `;
+    
+    showModal(modalContent);
+}
+
+function showConfirmModal(title, message, confirmCallback, type = 'warning') {
+    const modalContent = `
+        <div class="modal-header">
+            <h3>${title}</h3>
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>${message}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
+                <i class="fas fa-times me-1"></i>Cancel
+            </button>
+            <button class="modal-btn ${type === 'danger' ? 'modal-btn-danger' : 'modal-btn-primary'}" id="confirmActionBtn">
+                <i class="fas fa-check me-1"></i>Confirm
+            </button>
+        </div>
+    `;
+    
+    showModal(modalContent);
+    
+    // Store callback and set up event listener
+    currentConfirmCallback = confirmCallback;
+    document.getElementById('confirmActionBtn').addEventListener('click', function() {
+        if (currentConfirmCallback) {
+            currentConfirmCallback();
+        }
+    });
+}
+
+function showSuccessModal(title, message) {
+    const modalContent = `
+        <div class="modal-header">
+            <h3>${title}</h3>
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="text-center">
+                <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--success); margin-bottom: 20px;"></i>
+                <p>${message}</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-primary" onclick="closeModal()">
+                <i class="fas fa-check me-1"></i>OK
+            </button>
+        </div>
+    `;
+    
+    showModal(modalContent);
+}
+
+function showErrorModal(message) {
+    const modalContent = `
+        <div class="modal-header">
+            <h3>Error</h3>
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                ${message}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-primary" onclick="closeModal()">
+                <i class="fas fa-check me-1"></i>OK
+            </button>
+        </div>
+    `;
+    
+    showModal(modalContent);
+}
+
+// Helper functions
+function formatCategory(category) {
+    const categories = {
+        'electronics': 'Electronics',
+        'clothing': 'Clothing',
+        'books': 'Books',
+        'accessories': 'Accessories',
+        'personal': 'Personal Items',
+        'other': 'Other'
+    };
+    return categories[category] || category || 'Uncategorized';
+}
+
+function formatLocation(location) {
+    const locations = {
+        'main-hallway': 'Main Hallway',
+        'cafeteria': 'Cafeteria',
+        'library': 'Library',
+        'gym': 'Gym',
+        'parking-lot': 'Parking Lot',
+        'classroom': 'Classroom',
+        'bus-stop': 'Bus Stop',
+        'front-office': 'Front Office',
+        'computer-lab': 'Computer Lab',
+        'locker-room': 'Locker Room',
+        'other': 'Other Location'
+    };
+    return locations[location] || location || 'Unknown Location';
+}
+
+function formatDate(dateString) {
+    try {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            return dateString || 'Unknown';
+        }
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return date.toLocaleDateString(undefined, options);
+    } catch (e) {
+        return dateString || 'Unknown';
+    }
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Handle page unloading
+window.addEventListener('beforeunload', function() {
+    document.getElementById('loadingBar').style.width = '100%';
+});
+
+function setupDataSync() {
+    console.log('🔧 Setting up data synchronization for admin page...');
+    
+    // Store initial state
+    let lastUpdateTime = localStorage.getItem('lastDataUpdate') || '0';
+    let lastItemsHash = '';
+    let lastClaimsHash = '';
+    
+    // Function to calculate data hash
+    function calculateDataHash(data) {
+        return JSON.stringify(data).length.toString();
+    }
+    
+    // Function to refresh all data and UI
+    function refreshAllData() {
+        console.log('🔄 Refreshing all data from storage...');
+        
+        // Store current hashes before refresh
+        const oldItemsHash = lastItemsHash;
+        const oldClaimsHash = lastClaimsHash;
+        
+        // Load fresh data
+        loadAllData();
+        
+        // Calculate new hashes
+        lastItemsHash = calculateDataHash(allItems);
+        lastClaimsHash = calculateDataHash(allClaims);
+        
+        // Update stats
+        updateStats();
+        
+        // Only update tables if data changed
+        if (oldItemsHash !== lastItemsHash) {
+            console.log('Items changed, updating table');
+            loadItemsTable();
+        }
+        
+        if (oldClaimsHash !== lastClaimsHash) {
+            console.log('Claims changed, updating table');
+            loadClaimsTable();
+        }
+        
+        console.log('✅ Data refreshed. Items:', allItems.length, 'Claims:', allClaims.length);
+    }
+    
+    // Listen for storage events (cross-tab communication)
+    window.addEventListener('storage', function(e) {
+        console.log('📦 Storage event:', e.key, 'changed from', e.oldValue, 'to', e.newValue);
+        
+        if (e.key === 'lostFoundItems' || e.key === 'claims' || e.key === 'lastDataUpdate') {
+            console.log('📢 Data updated by another tab, refreshing...');
+            
+            // Small delay to ensure data is saved
+            setTimeout(refreshAllData, 100);
         }
     });
     
-    // Also listen for custom events
+    // Listen for custom events (same-tab communication)
     window.addEventListener('dataUpdated', function(e) {
-        console.log('Custom dataUpdated event detected:', e.detail);
-        loadAllData();
-        loadItemsTable();
-        loadClaimsTable();
-        updateStats();
+        console.log('📡 Custom dataUpdated event:', e.detail);
+        
+        if (e.detail && e.detail.source !== 'admin') {
+            console.log('Data updated by another page, refreshing...');
+            setTimeout(refreshAllData, 100);
+        }
     });
     
-    // Periodically check for updates (every 10 seconds)
+    // Also listen for a custom 'forceRefresh' event
+    window.addEventListener('forceRefresh', function() {
+        console.log('🔄 Force refresh requested');
+        refreshAllData();
+    });
+    
+    // Poll for changes every 2 seconds (fallback)
     setInterval(() => {
-        loadAllData();
-        updateStats();
-    }, 10000);
+        const currentUpdateTime = localStorage.getItem('lastDataUpdate');
+        if (currentUpdateTime !== lastUpdateTime) {
+            console.log('⏰ Polling detected data change');
+            lastUpdateTime = currentUpdateTime;
+            refreshAllData();
+        }
+    }, 2000);
+    
+    // Initialize hashes
+    refreshAllData();
+    
+    console.log('✅ Data synchronization setup complete');
+}
 
 // Scroll to top on page load
-window.addEventListener('beforeunload', function() {
-    window.scrollTo(0, 0);
-});
-
-// Also scroll to top when page loads
 window.addEventListener('load', function() {
     window.scrollTo(0, 0);
-    // Small delay to ensure everything is loaded
-    setTimeout(function() {
+    setTimeout(() => {
         window.scrollTo(0, 0);
     }, 100);
 });
 
-// Scroll to top when coming from another page
-history.scrollRestoration = 'manual';
-
-function setupDataSync() {
-    console.log('Setting up data synchronization for admin page...');
-    
-    // Listen for storage events
-    window.addEventListener('storage', function(e) {
-        console.log('Storage event in admin:', e.key);
-        
-        if (e.key === 'lostFoundItems' || e.key === 'claims' || e.key === 'lastDataUpdate') {
-            console.log('External data update detected, refreshing...');
-            
-            setTimeout(function() {
-                if (typeof loadAllData === 'function') {
-                    loadAllData();
-                    loadItemsTable();
-                    loadClaimsTable();
-                    updateStats();
-                }
-            }, 100);
-        }
-    });
-    
-    // Listen for custom events
-    window.addEventListener('dataUpdated', function(e) {
-        console.log('Custom dataUpdated event in admin:', e.detail);
-        
-        if (e.detail.source !== 'admin') { // Don't refresh if we triggered it
-            setTimeout(function() {
-                if (typeof loadAllData === 'function') {
-                    loadAllData();
-                    loadItemsTable();
-                    loadClaimsTable();
-                    updateStats();
-                }
-            }, 100);
-        }
-    });
-    
-    // Poll for changes every 5 seconds
-    setInterval(function() {
-        const lastUpdate = localStorage.getItem('lastDataUpdate');
-        if (window.lastKnownUpdate !== lastUpdate) {
-            console.log('Polling detected data change in admin');
-            window.lastKnownUpdate = lastUpdate;
-            
-            if (typeof loadAllData === 'function') {
-                loadAllData();
-                loadItemsTable();
-                loadClaimsTable();
-                updateStats();
-            }
-        }
-    }, 5000);
-    
-    // Initialize last known update
-    window.lastKnownUpdate = localStorage.getItem('lastDataUpdate');
+// Prevent scroll restoration
+if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
 }
 </script>
 </body>

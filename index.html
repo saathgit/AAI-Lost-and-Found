@@ -2080,7 +2080,7 @@ body.dark-mode .features .video-bg-overlay {
         transform: scale(1.2);
     }
 
-    /* Modern Chatbot Styles */
+    /* Modern Chatbot Styles - FIXED SIZE */
     .chatbot-container {
         position: fixed;
         bottom: 30px;
@@ -2155,17 +2155,19 @@ body.dark-mode .features .video-bg-overlay {
         }
     }
 
+    /* FIXED CHATBOT WINDOW SIZE - Smaller and better positioned */
     .chatbot-window {
         position: absolute;
         bottom: 90px;
         right: 0;
-        width: 450px;
-        height: 650px;
+        width: 400px; /* Reduced from 450px */
+        height: 500px; /* Reduced from 650px */
+        max-height: 80vh; /* Ensure it doesn't exceed viewport */
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(20px);
-        border-radius: 24px;
+        border-radius: 20px; /* Slightly smaller radius */
         box-shadow: 
-            0 20px 60px rgba(0, 0, 0, 0.2),
+            0 15px 40px rgba(0, 0, 0, 0.2),
             0 0 0 1px rgba(255, 255, 255, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.2);
         display: none;
@@ -2179,7 +2181,7 @@ body.dark-mode .features .video-bg-overlay {
     .dark-mode .chatbot-window {
         background: rgba(26, 32, 48, 0.95);
         box-shadow: 
-            0 20px 60px rgba(0, 0, 0, 0.4),
+            0 15px 40px rgba(0, 0, 0, 0.4),
             0 0 0 1px rgba(255, 255, 255, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
@@ -2193,11 +2195,12 @@ body.dark-mode .features .video-bg-overlay {
     .chatbot-header {
         background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
         color: var(--white);
-        padding: 20px;
+        padding: 15px 20px; /* Reduced padding */
         display: flex;
         align-items: center;
-        gap: 15px;
+        gap: 12px;
         position: relative;
+        flex-shrink: 0; /* Prevent shrinking */
     }
 
     .chatbot-header::after {
@@ -2211,8 +2214,8 @@ body.dark-mode .features .video-bg-overlay {
     }
 
     .chatbot-avatar {
-        width: 50px;
-        height: 50px;
+        width: 45px; /* Reduced size */
+        height: 45px;
         background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
         border-radius: 50%;
         display: flex;
@@ -2222,20 +2225,20 @@ body.dark-mode .features .video-bg-overlay {
     }
 
     .chatbot-avatar i {
-        font-size: 1.5rem;
+        font-size: 1.3rem; /* Reduced size */
         color: var(--primary-blue);
     }
 
     .chatbot-header-info h4 {
         margin: 0;
         font-family: 'Playfair Display', serif;
-        font-size: 1.2rem;
+        font-size: 1.1rem; /* Reduced size */
         color: var(--accent-gold);
     }
 
     .chatbot-header-info p {
         margin: 2px 0 0 0;
-        font-size: 0.9rem;
+        font-size: 0.8rem; /* Reduced size */
         opacity: 0.9;
     }
 
@@ -2243,7 +2246,7 @@ body.dark-mode .features .video-bg-overlay {
         background: none;
         border: none;
         color: var(--white);
-        font-size: 1.2rem;
+        font-size: 1.1rem; /* Reduced size */
         cursor: pointer;
         margin-left: auto;
         transition: color 0.3s ease;
@@ -2255,12 +2258,12 @@ body.dark-mode .features .video-bg-overlay {
 
     .chatbot-messages {
         flex: 1;
-        padding: 25px;
+        padding: 15px 20px; /* Reduced padding */
         overflow-y: auto;
         background: var(--light-blue);
         display: flex;
         flex-direction: column;
-        gap: 18px;
+        gap: 12px; /* Reduced gap */
     }
 
     .dark-mode .chatbot-messages {
@@ -2269,10 +2272,10 @@ body.dark-mode .features .video-bg-overlay {
 
     .message {
         max-width: 88%;
-        padding: 18px;
-        border-radius: 18px;
-        line-height: 1.5;
-        font-size: 1.02rem;
+        padding: 12px 15px; /* Reduced padding */
+        border-radius: 15px; /* Slightly smaller */
+        line-height: 1.4;
+        font-size: 0.95rem; /* Slightly smaller font */
         animation: messageSlide 0.3s ease-out;
         position: relative;
     }
@@ -2310,12 +2313,13 @@ body.dark-mode .features .video-bg-overlay {
     }
 
     .chatbot-input {
-        padding: 25px;
+        padding: 15px 20px; /* Reduced padding */
         background: var(--white);
         border-top: 1px solid rgba(0, 15, 61, 0.1);
         display: flex;
-        gap: 12px;
+        gap: 10px; /* Reduced gap */
         align-items: center;
+        flex-shrink: 0; /* Prevent shrinking */
     }
 
     .dark-mode .chatbot-input {
@@ -2325,12 +2329,12 @@ body.dark-mode .features .video-bg-overlay {
 
     .chatbot-input input {
         flex: 1;
-        padding: 15px 20px;
+        padding: 12px 18px; /* Reduced padding */
         border: 2px solid rgba(0, 15, 61, 0.1);
-        border-radius: 25px;
+        border-radius: 20px; /* Slightly smaller */
         outline: none;
         font-family: 'Georgia', serif;
-        font-size: 1rem;
+        font-size: 0.95rem;
         transition: all 0.3s ease;
         background: var(--light-blue);
     }
@@ -2351,8 +2355,8 @@ body.dark-mode .features .video-bg-overlay {
     }
 
     .chatbot-send {
-        width: 50px;
-        height: 50px;
+        width: 45px; /* Reduced size */
+        height: 45px;
         background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
         border: none;
         border-radius: 50%;
@@ -2362,7 +2366,7 @@ body.dark-mode .features .video-bg-overlay {
         align-items: center;
         justify-content: center;
         transition: all 0.3s ease;
-        font-size: 1.2rem;
+        font-size: 1.1rem; /* Reduced size */
     }
 
     .chatbot-send:hover {
@@ -2377,12 +2381,13 @@ body.dark-mode .features .video-bg-overlay {
     }
 
     .quick-questions {
-        padding: 20px 25px;
+        padding: 10px 15px; /* Reduced padding */
         background: var(--white);
         border-top: 1px solid rgba(0, 15, 61, 0.1);
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 8px; /* Reduced gap */
+        flex-shrink: 0; /* Prevent shrinking */
     }
 
     .dark-mode .quick-questions {
@@ -2391,9 +2396,9 @@ body.dark-mode .features .video-bg-overlay {
     }
 
     .quick-questions-title {
-        font-size: 0.85rem;
+        font-size: 0.75rem; /* Reduced size */
         color: var(--secondary-blue);
-        margin-bottom: 5px;
+        margin-bottom: 3px;
         font-weight: 600;
     }
 
@@ -2404,11 +2409,11 @@ body.dark-mode .features .video-bg-overlay {
     .quick-question {
         background: var(--light-blue);
         border: 1px solid rgba(0, 15, 61, 0.1);
-        border-radius: 15px;
-        padding: 12px 18px;
-        font-size: 0.95rem;
+        border-radius: 10px; /* Slightly smaller */
+        padding: 8px 12px; /* Reduced padding */
+        font-size: 0.85rem; /* Slightly smaller */
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         text-align: left;
         color: var(--text-dark);
     }
@@ -2423,7 +2428,9 @@ body.dark-mode .features .video-bg-overlay {
         background: var(--accent-gold);
         color: var(--primary-blue);
         border-color: var(--accent-gold);
-        transform: translateX(5px);
+        transform: translateX(3px); /* Reduced movement */
+        padding-left: 15px; /* Slight increase on hover */
+
     }
 
     @media (max-width: 768px) {
@@ -2433,9 +2440,10 @@ body.dark-mode .features .video-bg-overlay {
         }
 
         .chatbot-window {
-            width: 400px;
-            height: 580px;
+            width: 350px; /* Smaller on mobile */
+            height: 450px;
             right: -10px;
+            max-height: 70vh;
         }
 
         .chatbot-button {
@@ -2462,9 +2470,10 @@ body.dark-mode .features .video-bg-overlay {
         }
 
         .chatbot-window {
-            width: 350px;
-            height: 520px;
+            width: 320px;
+            height: 420px;
             right: -20px;
+            max-height: 65vh;
         }
 
         .chatbot-button {
@@ -3216,11 +3225,40 @@ function setLanguage(lang) {
 }
 
 function setTextSize(size) {
+    // Remove all text size classes
     document.body.classList.remove('text-small', 'text-large', 'text-xlarge');
+    
+    // Add the selected class
     if (size !== 'normal') {
         document.body.classList.add(`text-${size}`);
     }
+    
     localStorage.setItem('textSize', size);
+    
+    // Apply font size directly to elements that need it
+    const baseSize = {
+        'small': '14px',
+        'normal': '16px',
+        'large': '18px',
+        'xlarge': '20px'
+    }[size];
+    
+    // Apply to body
+    document.body.style.fontSize = baseSize;
+    
+    // Apply to all text elements that might have fixed sizes
+    document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, li, button, input, textarea, .nav-link').forEach(el => {
+        const currentSize = window.getComputedStyle(el).fontSize;
+        const currentSizeNum = parseFloat(currentSize);
+        const currentUnit = currentSize.replace(currentSizeNum, '');
+        
+        // Only adjust if it's using pixels
+        if (currentUnit === 'px') {
+            const ratio = parseFloat(baseSize) / 16; // 16px is normal
+            const newSize = currentSizeNum * ratio;
+            el.style.fontSize = `${newSize}${currentUnit}`;
+        }
+    });
 }
 
 function toggleTheme(theme) {
@@ -3525,6 +3563,52 @@ function initChatbot() {
     
     if (!chatbotButton || !chatbotWindow) return;
     
+    // Knowledge base for the chatbot
+    const knowledgeBase = {
+        "search": {
+            question: "How do I search for a lost item?",
+            answer: "You can search for lost items by clicking on 'Browse Items' in the navigation menu or using the 'Search Items' card on the home page. You can filter by category, date found, or location to find your item faster."
+        },
+        "report": {
+            question: "What should I do if I found an item?",
+            answer: "If you found an item, click on 'Report Found' in the navigation menu. You'll need to provide details about the item, upload photos, and specify where you found it. Our system will help reunite it with its owner."
+        },
+        "claim": {
+            question: "How do I claim an item?",
+            answer: "To claim an item, go to the 'Claim Item' page. You'll need to provide information about when and where you lost the item, along with identifying details. Our staff will verify your claim and contact you for pickup."
+        },
+        "time": {
+            question: "How long are items kept?",
+            answer: "Items are typically kept for 30 days. Valuable items like electronics, wallets, and keys are kept for 60 days. After this period, unclaimed items may be donated or disposed of according to school policy."
+        },
+        "location": {
+            question: "Where is the lost and found office?",
+            answer: "The main lost and found office is located in the administrative building, room 101. You can visit during school hours (8 AM - 4 PM, Monday to Friday) to check for your item in person."
+        },
+        "contact": {
+            question: "Who should I contact for lost and found questions?",
+            answer: "You can contact the lost and found coordinator at lostandfound@allianceacademy.edu or call (555) 123-4567 during school hours. For urgent matters, visit the administrative office."
+        },
+        "categories": {
+            question: "What categories of items are accepted?",
+            answer: "We accept: Electronics (phones, laptops, chargers), Clothing & Accessories, Books & School Supplies, Personal Items (wallets, keys, glasses), Sports Equipment, and Miscellaneous items found on campus."
+        },
+        "process": {
+            question: "What is the claim verification process?",
+            answer: "When you claim an item, our staff verifies: 1) Matching description of the item, 2) Location where it was lost vs found, 3) Date of loss, and 4) Any identifying marks or serial numbers. Verification typically takes 24-48 hours."
+        }
+    };
+    
+    // Common patterns and responses
+    const patterns = {
+        greetings: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon"],
+        farewells: ["bye", "goodbye", "see you", "thanks", "thank you"],
+        help: ["help", "what can you do", "capabilities", "assist"],
+        search: ["search", "find", "look for", "lost my", "missing"],
+        report: ["found", "report", "turn in", "pick up"],
+        claim: ["claim", "my item", "belongs to me", "retrieve"]
+    };
+    
     chatbotButton.addEventListener('click', () => {
         chatbotWindow.classList.toggle('active');
         chatbotButton.classList.remove('pulse');
@@ -3546,9 +3630,78 @@ function initChatbot() {
         addMessage(message, 'user');
         chatbotInput.value = '';
         
+        // Show typing indicator
+        showTypingIndicator();
+        
+        // Process message after delay
         setTimeout(() => {
-            addMessage("Thanks for your message! This is a demo chatbot. In a real system, I'd help you search for lost items or report found ones.", 'bot');
-        }, 1000);
+            removeTypingIndicator();
+            const response = getBotResponse(message);
+            addMessage(response, 'bot');
+        }, 1000 + Math.random() * 500);
+    }
+    
+    function getBotResponse(message) {
+        const lowerMessage = message.toLowerCase();
+        
+        // Check for greetings
+        if (patterns.greetings.some(word => lowerMessage.includes(word))) {
+            return getGreeting();
+        }
+        
+        // Check for farewells
+        if (patterns.farewells.some(word => lowerMessage.includes(word))) {
+            return getFarewell();
+        }
+        
+        // Check for help
+        if (patterns.help.some(word => lowerMessage.includes(word))) {
+            return "I can help you with: Searching for lost items, Reporting found items, Claiming items, Answering questions about the lost and found process, and Providing information about office hours and locations. What would you like to know?";
+        }
+        
+        // Check specific questions from knowledge base
+        for (const key in knowledgeBase) {
+            if (lowerMessage.includes(key) || 
+                lowerMessage.includes(knowledgeBase[key].question.toLowerCase())) {
+                return knowledgeBase[key].answer;
+            }
+        }
+        
+        // Check patterns
+        if (patterns.search.some(word => lowerMessage.includes(word))) {
+            return knowledgeBase.search.answer;
+        }
+        
+        if (patterns.report.some(word => lowerMessage.includes(word))) {
+            return knowledgeBase.report.answer;
+        }
+        
+        if (patterns.claim.some(word => lowerMessage.includes(word))) {
+            return knowledgeBase.claim.answer;
+        }
+        
+        // Default response
+        return "I'm not sure I understand. I can help you with: searching for lost items, reporting found items, claiming items, or answering questions about our lost and found process. Could you please rephrase your question?";
+    }
+    
+    function getGreeting() {
+        const greetings = [
+            "Hello! How can I assist you with the lost and found system today?",
+            "Hi there! I'm here to help you with any lost and found questions.",
+            "Welcome to AAI Lost & Found! How can I help you today?",
+            "Good day! I'm your AAI assistant. What can I help you with?"
+        ];
+        return greetings[Math.floor(Math.random() * greetings.length)];
+    }
+    
+    function getFarewell() {
+        const farewells = [
+            "You're welcome! Don't hesitate to ask if you have more questions.",
+            "Glad I could help! Have a great day!",
+            "Thank you for using AAI Lost & Found. Come back anytime!",
+            "Happy to assist! Remember to check the 'Browse Items' page for your lost belongings."
+        ];
+        return farewells[Math.floor(Math.random() * farewells.length)];
     }
     
     function addMessage(text, sender) {
@@ -3559,13 +3712,52 @@ function initChatbot() {
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
     }
     
+    function showTypingIndicator() {
+        const typing = document.createElement('div');
+        typing.className = 'message bot typing-indicator';
+        typing.innerHTML = '<span></span><span></span><span></span>';
+        typing.id = 'typingIndicator';
+        chatbotMessages.appendChild(typing);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+    
+    function removeTypingIndicator() {
+        const typing = document.getElementById('typingIndicator');
+        if (typing) typing.remove();
+    }
+    
     // Quick questions
     document.querySelectorAll('.quick-question').forEach(btn => {
         btn.addEventListener('click', function() {
-            chatbotInput.value = this.textContent;
+            const question = this.getAttribute('data-question');
+            chatbotInput.value = question;
             sendMessage();
         });
     });
+    
+    // Add typing indicator CSS
+    const style = document.createElement('style');
+    style.textContent = `
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 10px 15px !important;
+        }
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out both;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.6; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+    `;
+    document.head.appendChild(style);
 }
 
 // ========== SETTINGS ==========

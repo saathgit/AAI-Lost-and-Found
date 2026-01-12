@@ -2104,21 +2104,172 @@
     const itemsPerPage = 9;
 
     function refreshItems() {
-    console.log('🔄 Refreshing items from storage...');
+    console.log('🔄 refreshItems() - Browse page refresh initiated');
     
-    // Clear current data
-    allItems = [];
-    currentItems = [];
+    try {
+        // Store current state for comparison
+        const oldItemCount = allItems.length;
+        const oldCurrentItemCount = currentItems.length;
+        
+        // Force reload from localStorage
+        const storedItems = localStorage.getItem('lostFoundItems');
+        if (storedItems) {
+            allItems = JSON.parse(storedItems);
+            
+            // Validate and clean data
+            allItems = allItems.filter(item => item && item.title);
+            
+            // Sort by date (newest first)
+            allItems.sort((a, b) => {
+                const dateA = new Date(a.timestamp || a.dateFound || 0);
+                const dateB = new Date(b.timestamp || b.dateFound || 0);
+                return dateB - dateA;
+            });
+            
+            console.log('📊 Loaded', allItems.length, 'items from storage');
+        } else {
+            allItems = [];
+            console.log('📊 No items found in storage');
+        }
+        
+        // Update filtered items
+        currentItems = [...allItems];
+        
+        // Update stats if function exists
+        if (typeof updateStats === 'function') {
+            updateStats();
+        }
+        
+        // Reload items in the grid
+        if (typeof loadItems === 'function') {
+            loadItems();
+        }
+        
+        // Update any open modal
+        const itemModal = document.getElementById('itemModal');
+        if (itemModal && itemModal.classList.contains('active')) {
+            const modalTitle = document.getElementById('modalTitle');
+            if (modalTitle) {
+                const itemId = modalTitle.dataset.itemId;
+                if (itemId) {
+                    showItemDetails(itemId);
+                }
+            }
+        }
+        
+        // Dispatch event to notify other components
+        const refreshEvent = new CustomEvent('itemsRefreshed', {
+            detail: {
+                itemCount: allItems.length,
+                oldItemCount: oldItemCount,
+                timestamp: new Date().toISOString()
+            }
+        });
+        window.dispatchEvent(refreshEvent);
+        
+        console.log('✅ Browse refresh complete. Items:', allItems.length, 
+                   '(was:', oldItemCount, ') Filtered:', currentItems.length);
+        
+        return allItems.length;
+        
+    } catch (error) {
+        console.error('❌ Error refreshing items:', error);
+        
+        // Try to recover gracefully
+        allItems = [];
+        currentItems = [];
+        
+        if (typeof loadItems === 'function') {
+            loadItems();
+        }
+        
+        return 0;
+    }
+}
+function setupBrowseDataSync() {
+    console.log('🔧 Setting up browse page data synchronization...');
     
-    // Reload all data
-    allItems = loadAllItems();
-    currentItems = [...allItems];
+    // Initialize tracking variables
+    window.lastKnownUpdate = localStorage.getItem('lastDataUpdate') || Date.now().toString();
+    let syncInterval = null;
+    let isSyncing = false;
     
-    // Update UI
-    updateStats();
-    loadItems();
+    // Enhanced sync function
+    function performSync() {
+        if (isSyncing) return;
+        
+        isSyncing = true;
+        const currentUpdate = localStorage.getItem('lastDataUpdate');
+        
+        if (currentUpdate !== window.lastKnownUpdate) {
+            console.log('🔄 External change detected. Old:', window.lastKnownUpdate, 'New:', currentUpdate);
+            window.lastKnownUpdate = currentUpdate;
+            
+            // Perform refresh with delay to ensure data is saved
+            setTimeout(() => {
+                refreshItems();
+                console.log('✅ Sync completed');
+                isSyncing = false;
+            }, 300);
+        } else {
+            isSyncing = false;
+        }
+    }
     
-    console.log('✅ Items refreshed. Total items:', allItems.length);
+    // Listen for multiple event types
+    const events = ['storage', 'dataUpdated', 'forceRefresh', 'itemsRefreshed'];
+    
+    events.forEach(eventType => {
+        window.addEventListener(eventType, function(e) {
+            console.log('📡 Browse received', eventType, 'event:', e.detail || e.key);
+            
+            // If it's a storage event for our data
+            if (eventType === 'storage' && 
+                (e.key === 'lostFoundItems' || e.key === 'lastDataUpdate')) {
+                performSync();
+            }
+            
+            // If it's a custom dataUpdated event from admin
+            if (eventType === 'dataUpdated' && e.detail && e.detail.source === 'admin') {
+                console.log('👨‍💼 Admin updated data, syncing...');
+                setTimeout(performSync, 100);
+            }
+            
+            // If it's a force refresh
+            if (eventType === 'forceRefresh') {
+                console.log('🔄 Force refresh requested');
+                setTimeout(() => {
+                    refreshItems();
+                    console.log('✅ Forced refresh complete');
+                }, 100);
+            }
+        });
+    });
+    
+    // Set up periodic sync (every 2 seconds)
+    syncInterval = setInterval(performSync, 2000);
+    
+    // Also sync when page becomes visible again
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            console.log('👁️ Page visible again, checking for updates...');
+            performSync();
+        }
+    });
+    
+    // Sync on focus as well
+    window.addEventListener('focus', function() {
+        console.log('🎯 Browse page focused, checking for updates...');
+        setTimeout(performSync, 100);
+    });
+    
+    console.log('✅ Browse synchronization setup complete');
+    
+    // Return cleanup function
+    return function cleanup() {
+        if (syncInterval) clearInterval(syncInterval);
+        console.log('🧹 Browse sync cleaned up');
+    };
 }
     
     // IMPROVED: Listen for data updates from admin or other pages
@@ -2170,6 +2321,7 @@
         initParallaxScrolling();
         initScrollAnimations();
         initNavbarScroll();
+        setupBrowseDataSync();
         setActiveNavItem();
         updateStats();
         loadItems();
@@ -2262,6 +2414,86 @@
             return [];
         }
     }
+
+    // Enhanced data synchronization for browse page
+function setupBrowseDataSync() {
+    console.log('🔧 Setting up data synchronization for browse page...');
+    
+    let lastUpdateTime = localStorage.getItem('lastDataUpdate') || '0';
+    let refreshTimeout = null;
+    
+    // Function to refresh browse page data
+    function refreshBrowseData() {
+        console.log('🔄 Refreshing browse page data...');
+        
+        // Clear any pending timeout
+        if (refreshTimeout) {
+            clearTimeout(refreshTimeout);
+        }
+        
+        // Small delay to ensure data is loaded
+        refreshTimeout = setTimeout(() => {
+            // Load fresh data
+            allItems = loadAllItems();
+            currentItems = [...allItems];
+            
+            // Update UI
+            updateStats();
+            loadItems();
+            
+            console.log('✅ Browse page refreshed. Items:', allItems.length);
+            
+            // Scroll to top if needed
+            if (document.querySelector('.items-grid-container')) {
+                document.querySelector('.items-grid-container').scrollTop = 0;
+            }
+        }, 100);
+    }
+    
+    // Listen for storage events
+    window.addEventListener('storage', function(e) {
+        console.log('📦 Browse: Storage event detected:', e.key);
+        
+        if (e.key === 'lastDataUpdate' || e.key === 'lostFoundItems') {
+            const newUpdateTime = localStorage.getItem('lastDataUpdate');
+            
+            if (newUpdateTime !== lastUpdateTime) {
+                console.log('📢 Browse: Data updated, refreshing...');
+                lastUpdateTime = newUpdateTime;
+                refreshBrowseData();
+            }
+        }
+    });
+    
+    // Listen for custom events from admin
+    window.addEventListener('dataUpdated', function(e) {
+        console.log('📡 Browse: Custom dataUpdated event:', e.detail);
+        
+        if (e.detail && e.detail.source === 'admin') {
+            console.log('🔄 Browse: Admin updated data, refreshing...');
+            refreshBrowseData();
+        }
+    });
+    
+    // Also listen for forceRefresh
+    window.addEventListener('forceRefresh', function() {
+        console.log('🔄 Browse: Force refresh requested');
+        refreshBrowseData();
+    });
+    
+    // Poll for changes (less frequent than admin)
+    setInterval(() => {
+        const currentUpdateTime = localStorage.getItem('lastDataUpdate');
+        if (currentUpdateTime !== lastUpdateTime) {
+            console.log('⏰ Browse: Polling detected data change');
+            lastUpdateTime = currentUpdateTime;
+            refreshBrowseData();
+        }
+    }, 3000);
+    
+    // Initialize
+    console.log('✅ Browse data synchronization setup complete');
+}
 
     // Dark Mode Functionality
     function initDarkMode() {

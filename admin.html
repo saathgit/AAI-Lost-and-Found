@@ -1691,6 +1691,315 @@
     .dark-mode .search-icon {
         color: var(--accent-gold);
     }
+
+    /* Add this to your existing CSS */
+.btn-credentials {
+    background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+    color: var(--primary-blue);
+    border: none;
+    padding: 12px 25px;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    margin: 10px auto;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.btn-credentials:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(212, 175, 55, 0.4);
+    border-color: var(--accent-gold);
+}
+
+.btn-credentials i {
+    font-size: 1.1rem;
+}
+
+/* Credentials Popup */
+.credentials-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 15, 61, 0.85);
+    backdrop-filter: blur(20px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.credentials-popup.active {
+    display: flex;
+    opacity: 1;
+}
+
+.credentials-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform: scale(0.95) translateY(30px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dark-mode .credentials-card {
+    background: rgba(26, 32, 48, 0.95);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.credentials-popup.active .credentials-card {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.credentials-header {
+    padding: 30px 40px 20px;
+    border-bottom: 1px solid rgba(0, 15, 61, 0.1);
+    position: relative;
+}
+
+.dark-mode .credentials-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.credentials-header h3 {
+    color: var(--primary-blue);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dark-mode .credentials-header h3 {
+    color: #e0e7ff;
+}
+
+.credentials-close {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    background: none;
+    border: none;
+    color: var(--secondary-blue);
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.credentials-close:hover {
+    background: rgba(0, 15, 61, 0.1);
+    color: var(--danger);
+    transform: rotate(90deg);
+}
+
+.dark-mode .credentials-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.credentials-body {
+    padding: 30px 40px;
+}
+
+.credentials-body p {
+    color: var(--secondary-blue);
+    margin-bottom: 25px;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+.dark-mode .credentials-body p {
+    color: #b8c1ec;
+}
+
+.credential-item {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(0, 15, 61, 0.1);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.dark-mode .credential-item {
+    background: rgba(26, 32, 48, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.credential-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-gold);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+}
+
+.credential-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 15, 61, 0.1);
+}
+
+.dark-mode .credential-title {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.credential-title i {
+    color: var(--accent-gold);
+    font-size: 1.5rem;
+    width: 24px;
+}
+
+.credential-title h4 {
+    color: var(--primary-blue);
+    font-family: 'Playfair Display', serif;
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.dark-mode .credential-title h4 {
+    color: #e0e7ff;
+}
+
+.credential-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.credential-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.credential-label {
+    color: var(--secondary-blue);
+    font-weight: 600;
+    min-width: 80px;
+    font-size: 0.95rem;
+}
+
+.dark-mode .credential-label {
+    color: #b8c1ec;
+}
+
+.credential-value {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.5);
+    border: 2px solid rgba(0, 15, 61, 0.1);
+    border-radius: 12px;
+    padding: 12px 15px;
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--text-dark);
+    position: relative;
+}
+
+.dark-mode .credential-value {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: #e0e7ff;
+}
+
+.credential-copy {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent-gold);
+    color: var(--primary-blue);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.credential-copy:hover {
+    background: var(--light-gold);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.credentials-footer {
+    padding: 20px 40px 30px;
+    border-top: 1px solid rgba(0, 15, 61, 0.1);
+    text-align: center;
+}
+
+.dark-mode .credentials-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.credentials-footer p {
+    color: var(--secondary-blue);
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 0;
+}
+
+.dark-mode .credentials-footer p {
+    color: #b8c1ec;
+}
+
+/* Copy feedback */
+.copied-feedback {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--success);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 10001;
+}
+
+.copied-feedback.show {
+    transform: translateY(0);
+    opacity: 1;
+}
     </style>
 </head>
 <body>
@@ -1770,6 +2079,12 @@
                     <i class="fas fa-lock"></i>
                 </div>
                 <h2>Admin Login</h2>
+
+                <button class="btn-credentials" onclick="showAdminCredentials()" style="margin-bottom: 30px;">
+                <i class="fas fa-key"></i>
+                Reveal Admin Credentials (For Judges)
+            </button>
+
                 <div class="login-alert" id="loginError">
                     <i class="fas fa-exclamation-triangle me-2"></i>
                     <span id="errorMessage">Invalid username or password</span>
@@ -1788,6 +2103,111 @@
             </div>
         </div>
     </section>
+
+    <!-- Credentials Popup -->
+<div class="credentials-popup" id="credentialsPopup">
+    <div class="credentials-card">
+        <div class="credentials-header">
+            <h3><i class="fas fa-key"></i> Admin Credentials</h3>
+            <button class="credentials-close" onclick="closeCredentials()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="credentials-body">
+            <p>Use these credentials to access the admin dashboard:</p>
+            
+            <div class="credential-item">
+                <div class="credential-title">
+                    <i class="fas fa-user-shield"></i>
+                    <h4>Main Administrator</h4>
+                </div>
+                <div class="credential-details">
+                    <div class="credential-field">
+                        <span class="credential-label">Username:</span>
+                        <div class="credential-value">
+                            admin
+                            <button class="credential-copy" onclick="copyToClipboard('admin')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="credential-field">
+                        <span class="credential-label">Password:</span>
+                        <div class="credential-value">
+                            admin123
+                            <button class="credential-copy" onclick="copyToClipboard('admin123')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="credential-item">
+                <div class="credential-title">
+                    <i class="fas fa-user-tie"></i>
+                    <h4>Staff Member</h4>
+                </div>
+                <div class="credential-details">
+                    <div class="credential-field">
+                        <span class="credential-label">Username:</span>
+                        <div class="credential-value">
+                            staff
+                            <button class="credential-copy" onclick="copyToClipboard('staff')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="credential-field">
+                        <span class="credential-label">Password:</span>
+                        <div class="credential-value">
+                            staff123
+                            <button class="credential-copy" onclick="copyToClipboard('staff123')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="credential-item">
+                <div class="credential-title">
+                    <i class="fas fa-school"></i>
+                    <h4>AAI Staff</h4>
+                </div>
+                <div class="credential-details">
+                    <div class="credential-field">
+                        <span class="credential-label">Username:</span>
+                        <div class="credential-value">
+                            aai
+                            <button class="credential-copy" onclick="copyToClipboard('aai')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="credential-field">
+                        <span class="credential-label">Password:</span>
+                        <div class="credential-value">
+                            aai2025
+                            <button class="credential-copy" onclick="copyToClipboard('aai2025')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="credentials-footer">
+            <p><i class="fas fa-info-circle me-2"></i>These credentials are for demonstration purposes only</p>
+        </div>
+    </div>
+</div>
+
+<!-- Copy Feedback -->
+<div class="copied-feedback" id="copiedFeedback">
+    <i class="fas fa-check-circle"></i>
+    <span>Copied to clipboard!</span>
+</div>
 
     <!-- Admin Dashboard (Shown when logged in) -->
     <section id="adminSection" class="admin-section" style="display: none;">
@@ -3684,6 +4104,66 @@ function setupDataSync() {
     console.log('✅ Data synchronization setup complete');
 }
 
+// Credentials functions
+function showAdminCredentials() {
+    const popup = document.getElementById('credentialsPopup');
+    popup.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCredentials() {
+    const popup = document.getElementById('credentialsPopup');
+    popup.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        showCopyFeedback();
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showCopyFeedback();
+        } catch (err) {
+            console.error('Fallback copy failed: ', err);
+        }
+        document.body.removeChild(textArea);
+    });
+}
+
+function showCopyFeedback() {
+    const feedback = document.getElementById('copiedFeedback');
+    feedback.classList.add('show');
+    
+    setTimeout(() => {
+        feedback.classList.remove('show');
+    }, 2000);
+}
+
+// Close popup when clicking outside
+document.addEventListener('DOMContentLoaded', function() {
+    const popup = document.getElementById('credentialsPopup');
+    
+    popup.addEventListener('click', function(e) {
+        if (e.target === popup) {
+            closeCredentials();
+        }
+    });
+    
+    // Close with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && popup.classList.contains('active')) {
+            closeCredentials();
+        }
+    });
+});
+
 // Scroll to top on page load
 window.addEventListener('load', function() {
     window.scrollTo(0, 0);
@@ -3696,6 +4176,8 @@ window.addEventListener('load', function() {
 if (history.scrollRestoration) {
     history.scrollRestoration = 'manual';
 }
+
+
 </script>
 </body>
 </html>

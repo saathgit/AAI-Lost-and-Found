@@ -2001,6 +2001,12 @@
     opacity: 1;
 }
     </style>
+    
+    <!-- Vercel Web Analytics -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
     <!-- Loading Bar -->
@@ -2459,14 +2465,27 @@
     
     <script>
 // Firebase Configuration (same as other pages)
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "your-api-key-here",
-    authDomain: "aai-lost-found.firebaseapp.com",
-    projectId: "aai-lost-found",
-    storageBucket: "aai-lost-found.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "your-app-id-here"
+  apiKey: "AIzaSyAf-aXLY8AOgMTEyRMQCntJgks1a9jGCwk",
+  authDomain: "aai-lost-and-found.firebaseapp.com",
+  projectId: "aai-lost-and-found",
+  storageBucket: "aai-lost-and-found.firebasestorage.app",
+  messagingSenderId: "253835605006",
+  appId: "1:253835605006:web:9dc1dabcfd224be577385f",
+  measurementId: "G-5CWDNQ8TV4"
 };
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 // Admin credentials (In a real app, this would be server-side)
 const ADMIN_CREDENTIALS = [
@@ -4179,5 +4198,11 @@ if (history.scrollRestoration) {
 
 
 </script>
+
+<!-- Vercel Speed Insights -->
+<script>
+  window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>

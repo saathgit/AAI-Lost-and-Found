@@ -26,11 +26,11 @@
     overflow-x: hidden;
 }
 
-/* Ensure loading bar is always on top */
 .loading-bar {
     z-index: 99999 !important;
     position: fixed !important;
 }
+
     :root {
         --primary-blue: #022A75;
         --secondary-blue: #001c70;
@@ -46,7 +46,6 @@
         --font-scale: 1;
     }
 
-    /* Dark Mode Theme */
     .dark-mode {
         --primary-blue: #020409;
         --secondary-blue: #090f22;
@@ -60,17 +59,15 @@
         --warning: #ffc107;
     }
 
-    /* Color Blind Mode - Protanopia/Deuteranopia Friendly */
     .color-blind-mode {
-        --primary-blue: #00509E; /* Higher contrast blue */
+        --primary-blue: #00509E;
         --secondary-blue: #003F7F;
-        --accent-gold: #FF6B35; /* Orange instead of gold for better distinction */
+        --accent-gold: #FF6B35;
         --light-gold: #FF8C5A;
-        --success: #4CAF50; /* Brighter green */
-        --warning: #FF9800; /* Brighter orange */
+        --success: #4CAF50;
+        --warning: #FF9800;
     }
 
-    /* Combined Modes */
     .dark-mode.color-blind-mode {
         --primary-blue: #1E88E5;
         --secondary-blue: #0D47A1;
@@ -80,7 +77,6 @@
         --warning: #FFA726;
     }
 
-    /* Font scaling */
     * {
         margin: 0;
         padding: 0;
@@ -88,7 +84,6 @@
         font-size: calc(var(--text-size) * var(--font-scale));
     }
 
-    /* Font size classes for slider positioning */
     .font-scale-075 { --font-scale: 0.75; }
     .font-scale-080 { --font-scale: 0.80; }
     .font-scale-085 { --font-scale: 0.85; }
@@ -122,7 +117,6 @@
         font-size: calc(1rem * var(--font-scale));
     }
 
-    /* Modern Navigation - Inspired by juice.agency */
     .navbar {
         background-color: transparent !important;
         font-size: calc(17px * var(--font-scale));
@@ -159,149 +153,122 @@
         background-color: rgba(30, 136, 229, 0.95) !important;
     }
 
-    /* Parallax Elements */
-.parallax-layer {
-    position: absolute;
-    will-change: transform;
-    pointer-events: none;
-}
+    .parallax-layer {
+        position: absolute;
+        will-change: transform;
+        pointer-events: none;
+    }
 
-.parallax-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: 
-        radial-gradient(circle at 20% 30%, rgba(2, 42, 117, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
-}
+    .parallax-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: 
+            radial-gradient(circle at 20% 30%, rgba(2, 42, 117, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+    }
 
-.dark-mode .parallax-bg {
-    background: 
-        radial-gradient(circle at 20% 30%, rgba(26, 58, 143, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
-}
+    .dark-mode .parallax-bg {
+        background: 
+            radial-gradient(circle at 20% 30%, rgba(26, 58, 143, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+    }
 
-.color-blind-mode .parallax-bg {
-    background: 
-        radial-gradient(circle at 20% 30%, rgba(0, 80, 158, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(255, 107, 53, 0.08) 0%, transparent 50%);
-}
+    .color-blind-mode .parallax-bg {
+        background: 
+            radial-gradient(circle at 20% 30%, rgba(0, 80, 158, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(255, 107, 53, 0.08) 0%, transparent 50%);
+    }
 
-.dark-mode.color-blind-mode .parallax-bg {
-    background: 
-        radial-gradient(circle at 20% 30%, rgba(30, 136, 229, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(255, 112, 67, 0.1) 0%, transparent 50%);
-}
-/* ========== VIDEO BACKGROUND (Matches Login Page) ========== */
-.video-bg-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: -1;
-}
+    .dark-mode.color-blind-mode .parallax-bg {
+        background: 
+            radial-gradient(circle at 20% 30%, rgba(30, 136, 229, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(255, 112, 67, 0.1) 0%, transparent 50%);
+    }
 
-/* Video should be at normal opacity */
-.video-bg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    transform: translate(-50%, -50%);
-    object-fit: cover;
-    opacity: 1; /* FULL opacity - overlay will make it subtle */
-    z-index: 1;
-}
+    .video-bg-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -1;
+    }
 
-/* TRANSPARENT OVERLAY (like login page) */
-.video-bg-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* EXACT same as login page: semi-transparent gradient */
-    /* Same as login page */
-background: linear-gradient(135deg, rgba(2, 42, 117, 0.6) 0%, rgba(0, 28, 112, 0.65) 100%);
-    z-index: 2; /* Overlay ABOVE video but BELOW text */
-    pointer-events: none;
-}
+    .video-bg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        transform: translate(-50%, -50%);
+        object-fit: cover;
+        opacity: 1;
+        z-index: 1;
+    }
 
-/* Force dark mode override */
-body.dark-mode .video-bg-overlay {
-    background: linear-gradient(135deg, rgba(10, 15, 31, 0.85) 0%, rgba(18, 24, 38, 0.9) 100%) !important;
-}
+    .video-bg-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(2, 42, 117, 0.6) 0%, rgba(0, 28, 112, 0.65) 100%);
+        z-index: 2;
+        pointer-events: none;
+    }
 
-body.color-blind-mode .video-bg-overlay {
-    background: linear-gradient(135deg, rgba(0, 80, 158, 0.6) 0%, rgba(0, 63, 127, 0.65) 100%) !important;
-}
+    body.dark-mode .video-bg-overlay {
+        background: linear-gradient(135deg, rgba(10, 15, 31, 0.85) 0%, rgba(18, 24, 38, 0.9) 100%) !important;
+    }
 
-body.dark-mode.color-blind-mode .video-bg-overlay {
-    background: linear-gradient(135deg, rgba(30, 136, 229, 0.85) 0%, rgba(13, 71, 161, 0.9) 100%) !important;
-}
+    body.color-blind-mode .video-bg-overlay {
+        background: linear-gradient(135deg, rgba(0, 80, 158, 0.6) 0%, rgba(0, 63, 127, 0.65) 100%) !important;
+    }
 
-/* Features section specific */
-body.dark-mode .features .video-bg-overlay {
-    background: linear-gradient(135deg, 
-        rgba(10, 15, 31, 0.8) 0%, 
-        rgba(2, 3, 6, 0.85) 100%) !important;
-}
+    body.dark-mode.color-blind-mode .video-bg-overlay {
+        background: linear-gradient(135deg, rgba(30, 136, 229, 0.85) 0%, rgba(13, 71, 161, 0.9) 100%) !important;
+    }
 
-body.color-blind-mode .features .video-bg-overlay {
-    background: linear-gradient(135deg, 
-        rgba(0, 80, 158, 0.8) 0%, 
-        rgba(0, 63, 127, 0.85) 100%) !important;
-}
+    .features .video-bg-overlay {
+        background: linear-gradient(135deg, rgba(2, 42, 117, 0.8) 0%, rgba(0, 28, 112, 0.85) 100%);
+    }
 
-/* Features section overlay (slightly different) */
-.features .video-bg-overlay {
-    background: 
-        linear-gradient(135deg, 
-            rgba(2, 42, 117, 0.8) 0%, 
-            rgba(0, 28, 112, 0.85) 100%);
-}
+    .hero.with-video-bg,
+    .features.with-video-bg {
+        position: relative;
+        overflow: hidden;
+    }
 
-/* Section positioning */
-.hero.with-video-bg,
-.features.with-video-bg {
-    position: relative;
-    overflow: hidden;
-}
+    .hero.with-video-bg {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
 
-.hero.with-video-bg {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-}
+    .hero-content,
+    .features .container {
+        position: relative;
+        z-index: 3;
+    }
 
-/* Content stays above everything */
-.hero-content,
-.features .container {
-    position: relative;
-    z-index: 3; /* Above overlay and video */
-}
+    .video-loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: var(--accent-gold);
+        font-size: calc(2rem * var(--font-scale));
+        z-index: 2;
+        opacity: 0.7;
+    }
 
-/* Loading indicator */
-.video-loading {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--accent-gold);
-    font-size: calc(2rem * var(--font-scale));
-    z-index: 2; /* Between video and overlay */
-    opacity: 0.7;
-}
-
-    /* Settings Button - Replacing Theme Toggle */
     .settings-container {
         position: relative;
         margin-left: 15px;
@@ -379,7 +346,6 @@ body.color-blind-mode .features .video-bg-overlay {
         transform: translateY(0);
     }
 
-    /* Logo Animation */
     .logo-container {
         display: flex;
         align-items: center;
@@ -629,7 +595,6 @@ body.color-blind-mode .features .video-bg-overlay {
         background: var(--accent-gold);
     }
 
-    /* Modern Hero Section - Inspired by augen.pro */
     .hero {
         background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
         color: var(--white);
@@ -774,7 +739,6 @@ body.color-blind-mode .features .video-bg-overlay {
         }
     }
 
-    /* Modern Quick Actions - Inspired by superpower.com */
     .quick-actions {
         padding: calc(120px * var(--font-scale)) 0;
         background-color: var(--white);
@@ -842,7 +806,6 @@ body.color-blind-mode .features .video-bg-overlay {
         color: #e0e7ff;
     }
 
-    /* Modern Action Cards */
     .action-card {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(20px);
@@ -979,7 +942,19 @@ body.color-blind-mode .features .video-bg-overlay {
         color: var(--light-gold);
     }
 
-    /* Modern Features Section - Inspired by juice.agency */
+    .action-icon i,
+    .feature-icon i {
+        font-size: calc(5rem * var(--font-scale));
+        display: inline-block;
+        line-height: 1;
+    }
+
+    .action-card:hover .action-icon i,
+    .feature-card:hover .feature-icon i {
+        font-size: calc(5.5rem * var(--font-scale));
+        transform: rotate(5deg);
+    }
+
     .features {
         padding: calc(120px * var(--font-scale)) 0;
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -1005,7 +980,6 @@ body.color-blind-mode .features .video-bg-overlay {
         background: radial-gradient(circle, rgba(0, 80, 158, 0.05) 0%, transparent 70%);
     }
 
-    /* Modern Feature Cards */
     .feature-card {
         background: rgba(255, 255, 255, 0.55);
         backdrop-filter: blur(20px);
@@ -1135,22 +1109,6 @@ body.color-blind-mode .features .video-bg-overlay {
         color: var(--light-gold);
     }
 
-    /* Target the actual Font Awesome icons inside the containers */
-.action-icon i,
-.feature-icon i {
-    font-size: calc(5rem * var(--font-scale)); /* Adjust this value to make icons bigger */
-    display: inline-block;
-    line-height: 1;
-}
-
-/* Optional: Make them even bigger on hover */
-.action-card:hover .action-icon i,
-.feature-card:hover .feature-icon i {
-    font-size: calc(5.5rem * var(--font-scale));
-    transform: rotate(5deg);
-}
-
-    /* Modern Stats Section - Inspired by superpower.com */
     .stats {
         background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
         color: var(--white);
@@ -1224,7 +1182,6 @@ body.color-blind-mode .features .video-bg-overlay {
         font-weight: 500;
     }
 
-    /* Modern Community Section - Inspired by augen.pro */
     .community-section {
         padding: calc(120px * var(--font-scale)) 0;
         background: linear-gradient(135deg, var(--light-blue) 0%, #e8f4ff 100%);
@@ -1312,7 +1269,6 @@ body.color-blind-mode .features .video-bg-overlay {
         color: #b8c1ec;
     }
 
-    /* Enhanced Recent Items Section - Inspired by superpower.com */
     .recent-items {
         padding: calc(120px * var(--font-scale)) 0;
         background: linear-gradient(135deg, var(--white) 0%, var(--light-blue) 100%);
@@ -1353,7 +1309,6 @@ body.color-blind-mode .features .video-bg-overlay {
         }
     }
 
-    /* Horizontal Scrolling Container */
     .items-scroll-container {
         position: relative;
         padding: calc(40px * var(--font-scale)) 0 calc(60px * var(--font-scale));
@@ -1373,7 +1328,6 @@ body.color-blind-mode .features .video-bg-overlay {
         display: none;
     }
 
-    /* Modern Item Cards */
     .item-card-enhanced {
         flex: 0 0 calc(380px * var(--font-scale));
         background: rgba(255, 255, 255, 0.95);
@@ -1609,7 +1563,6 @@ body.color-blind-mode .features .video-bg-overlay {
         border-color: rgba(76, 175, 80, 0.3);
     }
 
-    /* Scroll Controls */
     .scroll-controls {
         display: flex;
         justify-content: center;
@@ -1656,7 +1609,6 @@ body.color-blind-mode .features .video-bg-overlay {
         transform: scale(1);
     }
 
-    /* View All Button */
     .view-all-container {
         text-align: center;
         margin-top: calc(30px * var(--font-scale));
@@ -1714,7 +1666,6 @@ body.color-blind-mode .features .video-bg-overlay {
         box-shadow: 0 calc(15px * var(--font-scale)) calc(35px * var(--font-scale)) rgba(255, 107, 53, 0.4);
     }
 
-    /* Modern Reviews Section */
     .reviews-section {
         padding: calc(120px * var(--font-scale)) 0;
         background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
@@ -1867,7 +1818,6 @@ body.color-blind-mode .features .video-bg-overlay {
         animation-play-state: running;
     }
 
-    /* Modern Footer - Inspired by juice.agency */
     footer {
         background-color: var(--primary-blue);
         color: var(--white);
@@ -1963,7 +1913,6 @@ body.color-blind-mode .features .video-bg-overlay {
         border-top: 1px solid rgba(255, 107, 53, 0.2);
     }
 
-    /* Responsive Design */
     @media (max-width: 992px) {
         .hero h1 {
             font-size: calc(3.5rem * var(--font-scale));
@@ -2055,7 +2004,6 @@ body.color-blind-mode .features .video-bg-overlay {
         }
     }
 
-    /* Loading Animations */
     .items-loading {
         display: flex;
         gap: calc(25px * var(--font-scale));
@@ -2113,7 +2061,6 @@ body.color-blind-mode .features .video-bg-overlay {
         100% { background-position: calc(200px + 100%) 0; }
     }
 
-    /* Scroll Reveal Animations */
     .reveal-element {
         opacity: 0;
         transform: translateY(40px);
@@ -2125,7 +2072,6 @@ body.color-blind-mode .features .video-bg-overlay {
         transform: translateY(0);
     }
 
-    /* Loading Bar */
     .loading-bar {
         position: fixed;
         top: 0;
@@ -2137,7 +2083,6 @@ body.color-blind-mode .features .video-bg-overlay {
         transition: width 0.3s ease;
     }
 
-    /* Settings Modal */
     .settings-modal .modal-content {
         background: var(--light-blue);
         border-radius: calc(20px * var(--font-scale));
@@ -2232,7 +2177,6 @@ body.color-blind-mode .features .video-bg-overlay {
         color: var(--accent-gold);
     }
 
-    /* Font Size Slider */
     .font-size-slider-container {
         margin-top: calc(10px * var(--font-scale));
     }
@@ -2390,7 +2334,6 @@ body.color-blind-mode .features .video-bg-overlay {
         margin-right: calc(8px * var(--font-scale));
     }
 
-    /* Color Blind Mode Info */
     .color-blind-info {
         font-size: calc(0.85rem * var(--font-scale));
         color: var(--secondary-blue);
@@ -2410,7 +2353,6 @@ body.color-blind-mode .features .video-bg-overlay {
         border-left-color: var(--accent-gold);
     }
 
-    /* Reset Settings Button */
     .reset-settings {
         margin-top: calc(20px * var(--font-scale));
         text-align: center;
@@ -2446,7 +2388,6 @@ body.color-blind-mode .features .video-bg-overlay {
         border-color: var(--accent-gold);
     }
 
-    /* Back to Top Button */
     .back-to-top {
         position: fixed;
         left: calc(30px * var(--font-scale));
@@ -2493,7 +2434,6 @@ body.color-blind-mode .features .video-bg-overlay {
         transform: scale(1.2);
     }
 
-    /* Modern Chatbot Styles - FIXED SIZE */
     .chatbot-container {
         position: fixed;
         bottom: calc(30px * var(--font-scale));
@@ -2588,17 +2528,16 @@ body.color-blind-mode .features .video-bg-overlay {
         }
     }
 
-    /* FIXED CHATBOT WINDOW SIZE - Smaller and better positioned */
     .chatbot-window {
         position: absolute;
         bottom: calc(90px * var(--font-scale));
         right: 0;
-        width: calc(400px * var(--font-scale)); /* Reduced from 450px */
-        height: calc(500px * var(--font-scale)); /* Reduced from 650px */
-        max-height: 80vh; /* Ensure it doesn't exceed viewport */
+        width: calc(400px * var(--font-scale));
+        height: calc(500px * var(--font-scale));
+        max-height: 80vh;
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(20px);
-        border-radius: calc(20px * var(--font-scale)); /* Slightly smaller radius */
+        border-radius: calc(20px * var(--font-scale));
         box-shadow: 
             0 calc(15px * var(--font-scale)) calc(40px * var(--font-scale)) rgba(0, 0, 0, 0.2),
             0 0 0 1px rgba(255, 255, 255, 0.1);
@@ -2636,12 +2575,12 @@ body.color-blind-mode .features .video-bg-overlay {
     .chatbot-header {
         background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
         color: var(--white);
-        padding: calc(15px * var(--font-scale)) calc(20px * var(--font-scale)); /* Reduced padding */
+        padding: calc(15px * var(--font-scale)) calc(20px * var(--font-scale));
         display: flex;
         align-items: center;
         gap: calc(12px * var(--font-scale));
         position: relative;
-        flex-shrink: 0; /* Prevent shrinking */
+        flex-shrink: 0;
     }
 
     .chatbot-header::after {
@@ -2655,7 +2594,7 @@ body.color-blind-mode .features .video-bg-overlay {
     }
 
     .chatbot-avatar {
-        width: calc(45px * var(--font-scale)); /* Reduced size */
+        width: calc(45px * var(--font-scale));
         height: calc(45px * var(--font-scale));
         background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
         border-radius: 50%;
@@ -2666,20 +2605,20 @@ body.color-blind-mode .features .video-bg-overlay {
     }
 
     .chatbot-avatar i {
-        font-size: calc(1.3rem * var(--font-scale)); /* Reduced size */
+        font-size: calc(1.3rem * var(--font-scale));
         color: var(--primary-blue);
     }
 
     .chatbot-header-info h4 {
         margin: 0;
         font-family: 'Playfair Display', serif;
-        font-size: calc(1.1rem * var(--font-scale)); /* Reduced size */
+        font-size: calc(1.1rem * var(--font-scale));
         color: var(--accent-gold);
     }
 
     .chatbot-header-info p {
         margin: calc(2px * var(--font-scale)) 0 0 0;
-        font-size: calc(0.8rem * var(--font-scale)); /* Reduced size */
+        font-size: calc(0.8rem * var(--font-scale));
         opacity: 0.9;
     }
 
@@ -2687,7 +2626,7 @@ body.color-blind-mode .features .video-bg-overlay {
         background: none;
         border: none;
         color: var(--white);
-        font-size: calc(1.1rem * var(--font-scale)); /* Reduced size */
+        font-size: calc(1.1rem * var(--font-scale));
         cursor: pointer;
         margin-left: auto;
         transition: color 0.3s ease;
@@ -2699,12 +2638,12 @@ body.color-blind-mode .features .video-bg-overlay {
 
     .chatbot-messages {
         flex: 1;
-        padding: calc(15px * var(--font-scale)) calc(20px * var(--font-scale)); /* Reduced padding */
+        padding: calc(15px * var(--font-scale)) calc(20px * var(--font-scale));
         overflow-y: auto;
         background: var(--light-blue);
         display: flex;
         flex-direction: column;
-        gap: calc(12px * var(--font-scale)); /* Reduced gap */
+        gap: calc(12px * var(--font-scale));
     }
 
     .dark-mode .chatbot-messages {
@@ -2721,10 +2660,10 @@ body.color-blind-mode .features .video-bg-overlay {
 
     .message {
         max-width: 88%;
-        padding: calc(12px * var(--font-scale)) calc(15px * var(--font-scale)); /* Reduced padding */
-        border-radius: calc(15px * var(--font-scale)); /* Slightly smaller */
+        padding: calc(12px * var(--font-scale)) calc(15px * var(--font-scale));
+        border-radius: calc(15px * var(--font-scale));
         line-height: 1.4;
-        font-size: calc(0.95rem * var(--font-scale)); /* Slightly smaller font */
+        font-size: calc(0.95rem * var(--font-scale));
         animation: messageSlide 0.3s ease-out;
         position: relative;
     }
@@ -2774,13 +2713,13 @@ body.color-blind-mode .features .video-bg-overlay {
     }
 
     .chatbot-input {
-        padding: calc(15px * var(--font-scale)) calc(20px * var(--font-scale)); /* Reduced padding */
+        padding: calc(15px * var(--font-scale)) calc(20px * var(--font-scale));
         background: var(--white);
         border-top: 1px solid rgba(0, 15, 61, 0.1);
         display: flex;
-        gap: calc(10px * var(--font-scale)); /* Reduced gap */
+        gap: calc(10px * var(--font-scale));
         align-items: center;
-        flex-shrink: 0; /* Prevent shrinking */
+        flex-shrink: 0;
     }
 
     .dark-mode .chatbot-input {
@@ -2800,9 +2739,9 @@ body.color-blind-mode .features .video-bg-overlay {
 
     .chatbot-input input {
         flex: 1;
-        padding: calc(12px * var(--font-scale)) calc(18px * var(--font-scale)); /* Reduced padding */
+        padding: calc(12px * var(--font-scale)) calc(18px * var(--font-scale));
         border: calc(2px * var(--font-scale)) solid rgba(0, 15, 61, 0.1);
-        border-radius: calc(20px * var(--font-scale)); /* Slightly smaller */
+        border-radius: calc(20px * var(--font-scale));
         outline: none;
         font-family: 'Georgia', serif;
         font-size: calc(0.95rem * var(--font-scale));
@@ -2842,7 +2781,7 @@ body.color-blind-mode .features .video-bg-overlay {
     }
 
     .chatbot-send {
-        width: calc(45px * var(--font-scale)); /* Reduced size */
+        width: calc(45px * var(--font-scale));
         height: calc(45px * var(--font-scale));
         background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
         border: none;
@@ -2853,7 +2792,7 @@ body.color-blind-mode .features .video-bg-overlay {
         align-items: center;
         justify-content: center;
         transition: all 0.3s ease;
-        font-size: calc(1.1rem * var(--font-scale)); /* Reduced size */
+        font-size: calc(1.1rem * var(--font-scale));
     }
 
     .chatbot-send:hover {
@@ -2872,13 +2811,13 @@ body.color-blind-mode .features .video-bg-overlay {
     }
 
     .quick-questions {
-        padding: calc(10px * var(--font-scale)) calc(15px * var(--font-scale)); /* Reduced padding */
+        padding: calc(10px * var(--font-scale)) calc(15px * var(--font-scale));
         background: var(--white);
         border-top: 1px solid rgba(0, 15, 61, 0.1);
         display: flex;
         flex-direction: column;
-        gap: calc(8px * var(--font-scale)); /* Reduced gap */
-        flex-shrink: 0; /* Prevent shrinking */
+        gap: calc(8px * var(--font-scale));
+        flex-shrink: 0;
     }
 
     .dark-mode .quick-questions {
@@ -2897,7 +2836,7 @@ body.color-blind-mode .features .video-bg-overlay {
     }
 
     .quick-questions-title {
-        font-size: calc(0.75rem * var(--font-scale)); /* Reduced size */
+        font-size: calc(0.75rem * var(--font-scale));
         color: var(--secondary-blue);
         margin-bottom: calc(3px * var(--font-scale));
         font-weight: 600;
@@ -2914,9 +2853,9 @@ body.color-blind-mode .features .video-bg-overlay {
     .quick-question {
         background: var(--light-blue);
         border: 1px solid rgba(0, 15, 61, 0.1);
-        border-radius: calc(10px * var(--font-scale)); /* Slightly smaller */
-        padding: calc(8px * var(--font-scale)) calc(12px * var(--font-scale)); /* Reduced padding */
-        font-size: calc(0.85rem * var(--font-scale)); /* Slightly smaller */
+        border-radius: calc(10px * var(--font-scale));
+        padding: calc(8px * var(--font-scale)) calc(12px * var(--font-scale));
+        font-size: calc(0.85rem * var(--font-scale));
         cursor: pointer;
         transition: all 0.2s ease;
         text-align: left;
@@ -2945,8 +2884,310 @@ body.color-blind-mode .features .video-bg-overlay {
         background: var(--accent-gold);
         color: var(--primary-blue);
         border-color: var(--accent-gold);
-        transform: translateX(calc(3px * var(--font-scale))); /* Reduced movement */
-        padding-left: calc(15px * var(--font-scale)); /* Slight increase on hover */
+        transform: translateX(calc(3px * var(--font-scale)));
+        padding-left: calc(15px * var(--font-scale));
+    }
+
+    /* ========== REVIEW SUBMISSION STYLES ========== */
+    .review-submission-container {
+        text-align: center;
+        margin-top: calc(60px * var(--font-scale));
+        padding: calc(40px * var(--font-scale));
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: calc(24px * var(--font-scale));
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        position: relative;
+        z-index: 2;
+    }
+
+    .review-submission-container h3 {
+        color: var(--white);
+        font-family: 'Playfair Display', serif;
+        font-size: calc(2.2rem * var(--font-scale));
+        margin-bottom: calc(20px * var(--font-scale));
+    }
+
+    .review-submission-container p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: calc(1.1rem * var(--font-scale));
+        margin-bottom: calc(30px * var(--font-scale));
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .review-submit-btn {
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        color: var(--primary-blue);
+        border: none;
+        padding: calc(16px * var(--font-scale)) calc(40px * var(--font-scale));
+        border-radius: calc(50px * var(--font-scale));
+        font-weight: 600;
+        font-size: calc(1.1rem * var(--font-scale));
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        display: inline-flex;
+        align-items: center;
+        gap: calc(12px * var(--font-scale));
+        box-shadow: 0 calc(8px * var(--font-scale)) calc(25px * var(--font-scale)) rgba(212, 175, 55, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .review-submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        transition: left 0.6s;
+    }
+
+    .review-submit-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 calc(15px * var(--font-scale)) calc(35px * var(--font-scale)) rgba(212, 175, 55, 0.4);
+    }
+
+    .review-submit-btn:hover::before {
+        left: 100%;
+    }
+
+    .review-submit-btn i {
+        font-size: calc(1.2rem * var(--font-scale));
+    }
+
+    /* Review Modal Styles */
+    .review-modal .modal-content {
+        background: var(--light-blue);
+        border-radius: calc(24px * var(--font-scale));
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        box-shadow: 0 calc(25px * var(--font-scale)) calc(60px * var(--font-scale)) rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+    }
+
+    .dark-mode .review-modal .modal-content {
+        background: #0a0f1f;
+        border-color: rgba(212, 175, 55, 0.3);
+    }
+
+    .review-modal .modal-header {
+        background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+        color: white;
+        border-radius: calc(24px * var(--font-scale)) calc(24px * var(--font-scale)) 0 0;
+        padding: calc(30px * var(--font-scale)) calc(40px * var(--font-scale));
+        border-bottom: calc(3px * var(--font-scale)) solid var(--accent-gold);
+        text-align: center;
+    }
+
+    .review-modal .modal-title {
+        font-family: 'Playfair Display', serif;
+        color: var(--accent-gold);
+        font-size: calc(1.8rem * var(--font-scale));
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .review-modal .modal-body {
+        padding: calc(40px * var(--font-scale)) calc(40px * var(--font-scale)) calc(30px * var(--font-scale));
+    }
+
+    .review-form-container {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .review-form-group {
+        margin-bottom: calc(30px * var(--font-scale));
+    }
+
+    .review-form-group label {
+        display: block;
+        margin-bottom: calc(10px * var(--font-scale));
+        color: var(--primary-blue);
+        font-weight: 600;
+        font-size: calc(1.1rem * var(--font-scale));
+    }
+
+    .dark-mode .review-form-group label {
+        color: #e0e7ff;
+    }
+
+    .review-form-input {
+        width: 100%;
+        padding: calc(15px * var(--font-scale)) calc(20px * var(--font-scale));
+        border: 2px solid rgba(0, 15, 61, 0.1);
+        border-radius: calc(12px * var(--font-scale));
+        font-family: 'Georgia', serif;
+        font-size: calc(1rem * var(--font-scale));
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--text-dark);
+    }
+
+    .dark-mode .review-form-input {
+        background: rgba(26, 32, 48, 0.9);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: #e0e7ff;
+    }
+
+    .color-blind-mode .review-form-input {
+        border-color: rgba(0, 80, 158, 0.1);
+    }
+
+    .review-form-input:focus {
+        outline: none;
+        border-color: var(--accent-gold);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    }
+
+    .dark-mode .review-form-input:focus {
+        background: #1a2030;
+    }
+
+    .review-form-textarea {
+        min-height: calc(150px * var(--font-scale));
+        resize: vertical;
+    }
+
+    .rating-container {
+        display: flex;
+        flex-direction: column;
+        gap: calc(15px * var(--font-scale));
+    }
+
+    .star-rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        gap: calc(5px * var(--font-scale));
+    }
+
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating label {
+        font-size: calc(2.5rem * var(--font-scale));
+        color: #e0e0e0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        padding: calc(5px * var(--font-scale));
+    }
+
+    .dark-mode .star-rating label {
+        color: #4a5568;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover ~ label,
+    .star-rating input:checked ~ label {
+        color: var(--accent-gold);
+    }
+
+    .star-rating label i {
+        transition: all 0.2s ease;
+    }
+
+    .star-rating label:hover i,
+    .star-rating label:hover ~ label i,
+    .star-rating input:checked ~ label i {
+        transform: scale(1.2);
+    }
+
+    .rating-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: calc(0.9rem * var(--font-scale));
+        color: var(--secondary-blue);
+        margin-top: calc(5px * var(--font-scale));
+    }
+
+    .dark-mode .rating-labels {
+        color: #b8c1ec;
+    }
+
+    .review-submit-form-btn {
+        width: 100%;
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+        color: var(--primary-blue);
+        border: none;
+        padding: calc(18px * var(--font-scale)) calc(40px * var(--font-scale));
+        border-radius: calc(50px * var(--font-scale));
+        font-weight: 600;
+        font-size: calc(1.2rem * var(--font-scale));
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: calc(12px * var(--font-scale));
+        box-shadow: 0 calc(8px * var(--font-scale)) calc(25px * var(--font-scale)) rgba(212, 175, 55, 0.3);
+        position: relative;
+        overflow: hidden;
+        margin-top: calc(20px * var(--font-scale));
+    }
+
+    .review-submit-form-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        transition: left 0.6s;
+    }
+
+    .review-submit-form-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 calc(12px * var(--font-scale)) calc(30px * var(--font-scale)) rgba(212, 175, 55, 0.4);
+    }
+
+    .review-submit-form-btn:hover::before {
+        left: 100%;
+    }
+
+    .review-submit-form-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .review-success-message {
+        text-align: center;
+        padding: calc(40px * var(--font-scale));
+    }
+
+    .review-success-message i {
+        font-size: calc(4rem * var(--font-scale));
+        color: var(--accent-gold);
+        margin-bottom: calc(20px * var(--font-scale));
+    }
+
+    .review-success-message h4 {
+        color: var(--primary-blue);
+        font-family: 'Playfair Display', serif;
+        font-size: calc(1.8rem * var(--font-scale));
+        margin-bottom: calc(15px * var(--font-scale));
+    }
+
+    .dark-mode .review-success-message h4 {
+        color: #e0e7ff;
+    }
+
+    .review-success-message p {
+        color: var(--text-dark);
+        font-size: calc(1.1rem * var(--font-scale));
+        margin-bottom: calc(30px * var(--font-scale));
+    }
+
+    .dark-mode .review-success-message p {
+        color: #b8c1ec;
     }
 
     @media (max-width: 768px) {
@@ -2956,7 +3197,7 @@ body.color-blind-mode .features .video-bg-overlay {
         }
 
         .chatbot-window {
-            width: calc(350px * var(--font-scale)); /* Smaller on mobile */
+            width: calc(350px * var(--font-scale));
             height: calc(450px * var(--font-scale));
             right: calc(-10px * var(--font-scale));
             max-height: 70vh;
@@ -2976,6 +3217,18 @@ body.color-blind-mode .features .video-bg-overlay {
             bottom: calc(20px * var(--font-scale));
             width: calc(50px * var(--font-scale));
             height: calc(50px * var(--font-scale));
+        }
+        
+        .review-modal .modal-body {
+            padding: calc(30px * var(--font-scale)) calc(20px * var(--font-scale)) calc(20px * var(--font-scale));
+        }
+        
+        .review-modal .modal-header {
+            padding: calc(25px * var(--font-scale)) calc(20px * var(--font-scale));
+        }
+        
+        .star-rating label {
+            font-size: calc(2rem * var(--font-scale));
         }
     }
 
@@ -3009,6 +3262,97 @@ body.color-blind-mode .features .video-bg-overlay {
         .accessibility-btn {
             min-width: calc(100px * var(--font-scale));
         }
+        
+        .review-submission-container {
+            padding: calc(30px * var(--font-scale)) calc(20px * var(--font-scale));
+        }
+        
+        .review-submission-container h3 {
+            font-size: calc(1.8rem * var(--font-scale));
+        }
+    }
+
+    .btn-login {
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold)) !important;
+        color: var(--primary-blue) !important;
+        border: none !important;
+        padding: calc(16px * var(--font-scale)) calc(40px * var(--font-scale)) !important;
+        border-radius: 50px !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: relative !important;
+        overflow: hidden !important;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        transform: translateY(0) !important;
+        box-shadow: 
+            0 calc(10px * var(--font-scale)) calc(20px * var(--font-scale)) rgba(212, 175, 55, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .btn-login::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: -100% !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent) !important;
+        transition: left 0.6s ease !important;
+        z-index: 1 !important;
+    }
+
+    .btn-login:hover {
+        transform: translateY(calc(-5px * var(--font-scale))) !important;
+        box-shadow: 
+            0 calc(20px * var(--font-scale)) calc(40px * var(--font-scale)) rgba(212, 175, 55, 0.4),
+            0 0 0 2px rgba(212, 175, 55, 0.2) !important;
+        color: var(--primary-blue) !important;
+        background: linear-gradient(135deg, var(--light-gold), var(--accent-gold)) !important;
+    }
+
+    .btn-login:hover::before {
+        left: 100% !important;
+    }
+
+    .btn-login i {
+        position: relative !important;
+        z-index: 2 !important;
+        transition: transform 0.3s ease !important;
+    }
+
+    .btn-login:hover i {
+        transform: translateY(calc(-2px * var(--font-scale))) !important;
+    }
+
+    .btn-login span {
+        position: relative !important;
+        z-index: 2 !important;
+    }
+
+    .dark-mode .btn-login {
+        box-shadow: 
+            0 calc(10px * var(--font-scale)) calc(20px * var(--font-scale)) rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(212, 175, 55, 0.2) !important;
+    }
+
+    .dark-mode .btn-login:hover {
+        box-shadow: 
+            0 calc(20px * var(--font-scale)) calc(40px * var(--font-scale)) rgba(0, 0, 0, 0.4),
+            0 0 0 2px rgba(212, 175, 55, 0.3) !important;
+    }
+
+    .color-blind-mode .btn-login {
+        background: linear-gradient(135deg, var(--accent-gold), var(--light-gold)) !important;
+        box-shadow: 
+            0 calc(10px * var(--font-scale)) calc(20px * var(--font-scale)) rgba(255, 107, 53, 0.3) !important;
+    }
+
+    .color-blind-mode .btn-login:hover {
+        box-shadow: 
+            0 calc(20px * var(--font-scale)) calc(40px * var(--font-scale)) rgba(255, 107, 53, 0.4) !important;
     }
     </style>
 </head>
@@ -3077,118 +3421,43 @@ body.color-blind-mode .features .video-bg-overlay {
         </div>
     </nav>
 
- <!-- ========== HERO SECTION ========== -->
-<section class="hero with-video-bg" id="hero-section" style="position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden;">
-    <!-- Video Background Container -->
-    <div class="video-bg-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
-        <!-- Video element -->
-        <video class="video-bg" autoplay muted loop playsinline preload="auto" 
-               style="position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover; opacity: 1; z-index: 1;">
-            <!-- Your GitHub Video -->
-            <source src="https://raw.githubusercontent.com/saathgit/aai-videos/main/DJI_0014.mp4" type="video/mp4">
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hero with-video-bg" id="hero-section" style="position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden;">
+        <div class="video-bg-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
+            <video class="video-bg" autoplay muted loop playsinline preload="auto" 
+                   style="position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover; opacity: 1; z-index: 1;">
+                <source src="https://raw.githubusercontent.com/saathgit/aai-videos/main/DJI_0014.mp4" type="video/mp4">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-university-campus-41775-large.mp4" type="video/mp4">
+            </video>
             
-            <!-- Fallback stock video -->
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-university-campus-41775-large.mp4" type="video/mp4">
-        </video>
-        
-        <!-- Loading indicator -->
-        <div class="video-loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #d4af37; font-size: 2rem; z-index: 2;">
-            <i class="fas fa-spinner fa-spin"></i>
+            <div class="video-loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #d4af37; font-size: 2rem; z-index: 2;">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            
+            <div class="video-bg-overlay" 
+                 style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+                        background: linear-gradient(135deg, rgba(2, 42, 117, 0.7) 0%, rgba(0, 28, 112, 0.75) 100%);
+                        z-index: 2; pointer-events: none;"></div>
         </div>
         
-        <!-- LIGHTER OVERLAY (More video visible) -->
-        <div class="video-bg-overlay" 
-             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-                    background: linear-gradient(135deg, rgba(2, 42, 117, 0.7) 0%, rgba(0, 28, 112, 0.75) 100%);
-                    z-index: 2; pointer-events: none;"></div>
-    </div>
-    
-    <!-- Content Container -->
-    <div class="container" style="position: relative; z-index: 3;">
-        <div class="hero-content">
-            <h1 data-en="Find What You've Lost" data-es="Encuentra Lo Que Perdiste">Find What You've Lost</h1>
-            <p class="hero-subtitle" data-en="Alliance Academy For Innovation's official lost and found system - connecting students with their missing belongings" data-es="Sistema oficial de objetos perdidos de Alliance Academy For Innovation - conectando estudiantes con sus pertenencias perdidas">
-                Alliance Academy For Innovation's official lost and found system - 
-                connecting students with their missing belongings
-            </p>
-            <div class="hero-cta">
-                <a href="#quick-actions" class="btn btn-lg btn-login" style="background: linear-gradient(135deg, #d4af37, #e6c34f); color: #022A75; border: none; padding: 16px 40px; border-radius: 50px; font-weight: 600; text-decoration: none;">
-                    <i class="fas fa-arrow-down me-2"></i><span data-en="Get Started" data-es="Comenzar">Get Started</span>
-                </a>
+        <div class="container" style="position: relative; z-index: 3;">
+            <div class="hero-content">
+                <h1 data-en="Find What You've Lost" data-es="Encuentra Lo Que Perdiste">Find What You've Lost</h1>
+                <p class="hero-subtitle" data-en="Alliance Academy For Innovation's official lost and found system - connecting students with their missing belongings" data-es="Sistema oficial de objetos perdidos de Alliance Academy For Innovation - conectando estudiantes con sus pertenencias perdidas">
+                    Alliance Academy For Innovation's official lost and found system - 
+                    connecting students with their missing belongings
+                </p>
+                <div class="hero-cta">
+                    <a href="#quick-actions" class="btn btn-lg btn-login" style="background: linear-gradient(135deg, #d4af37, #e6c34f); color: #022A75; border: none; padding: 16px 40px; border-radius: 50px; font-weight: 600; text-decoration: none;">
+                        <i class="fas fa-arrow-down me-2"></i><span data-en="Get Started" data-es="Comenzar">Get Started</span>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="scroll-indicator">
-        <span></span>
-    </div>
-</section>
-
-<script>
-// Add this script to handle video loading
-document.addEventListener('DOMContentLoaded', function() {
-    const heroVideo = document.querySelector('#hero-section .video-bg');
-    const heroLoading = document.querySelector('#hero-section .video-loading');
-
-    
-    if (heroVideo) {
-        // Wait for video to load
-        heroVideo.addEventListener('loadeddata', function() {
-            // Set playback rate (0.5 = half speed, 0.75 = 75% speed, etc.)
-            heroVideo.playbackRate = 0.55; // 75% of original speed
-            
-            console.log('Hero video slowed to:', heroVideo.playbackRate + 'x speed');
-        });
-        
-        // Also set it immediately in case event already fired
-        setTimeout(() => {
-            if (heroVideo.readyState >= 2) { // HAVE_CURRENT_DATA or more
-                heroVideo.playbackRate = 0.75;
-            }
-        }, 1000);
-    }
-    
-    if (heroVideo) {
-        // Remove loading spinner when video loads
-        heroVideo.addEventListener('loadeddata', function() {
-            console.log('Hero video loaded successfully');
-            if (heroLoading) {
-                heroLoading.style.opacity = '0';
-                setTimeout(() => {
-                    heroLoading.style.display = 'none';
-                }, 500);
-            }
-        });
-        
-        // Handle video errors
-        heroVideo.addEventListener('error', function(e) {
-            console.error('Hero video failed to load:', e);
-            if (heroLoading) {
-                heroLoading.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
-                heroLoading.style.color = '#e6c34f';
-            }
-            
-            // Try to play fallback
-            const sources = heroVideo.querySelectorAll('source');
-            if (sources.length > 1) {
-                console.log('Switching to fallback video...');
-                heroVideo.src = sources[1].src;
-                heroVideo.load();
-            }
-        });
-        
-        // Force video to play
-        setTimeout(() => {
-            heroVideo.play().catch(err => {
-                console.log('Autoplay blocked, will play on interaction');
-                document.addEventListener('click', function playOnce() {
-                    heroVideo.play();
-                    document.removeEventListener('click', playOnce);
-                }, { once: true });
-            });
-        }, 1000);
-    }
-});
-</script>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
 
     <!-- Modern Quick Actions Section -->
     <section id="quick-actions" class="quick-actions">
@@ -3229,129 +3498,61 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </section>
 
- <!-- ========== FEATURES SECTION ========== -->
-<section class="features with-video-bg" id="features-section" style="position: relative; overflow: hidden; padding: 120px 0;">
-    <!-- Video Background Container -->
-    <div class="video-bg-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
-        <!-- Video element -->
-        <video class="video-bg" autoplay muted loop playsinline preload="auto" 
-               style="position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover; opacity: 1; z-index: 1;">
-            <!-- Your GitHub Video -->
-            <source src="https://raw.githubusercontent.com/saathgit/aai-videos/main/Lost%20n%20Found%20Video.mp4" type="video/mp4">
+    <!-- ========== FEATURES SECTION ========== -->
+    <section class="features with-video-bg" id="features-section" style="position: relative; overflow: hidden; padding: 120px 0;">
+        <div class="video-bg-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
+            <video class="video-bg" autoplay muted loop playsinline preload="auto" 
+                   style="position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover; opacity: 1; z-index: 1;">
+                <source src="https://raw.githubusercontent.com/saathgit/aai-videos/main/Lost%20n%20Found%20Video.mp4" type="video/mp4">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-stack-of-books-on-a-shelf-41780-large.mp4" type="video/mp4">
+            </video>
             
-            <!-- Fallback stock video -->
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-stack-of-books-on-a-shelf-41780-large.mp4" type="video/mp4">
-        </video>
-        
-        <!-- Loading indicator -->
-        <div class="video-loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #d4af37; font-size: 2rem; z-index: 2;">
-            <i class="fas fa-spinner fa-spin"></i>
-        </div>
-        
-        <!-- LIGHTER OVERLAY (More video visible) -->
-        <div class="video-bg-overlay" 
-             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-                    background: linear-gradient(135deg, rgba(2, 42, 117, 0.65) 0%, rgba(0, 28, 112, 0.7) 100%);
-                    z-index: 2; pointer-events: none;"></div>
-    </div>
-    
-    <!-- Content Container -->
-    <div class="container" style="position: relative; z-index: 3;">
-        <div class="section-title reveal-element">
-            <h2 data-en="How It Works" data-es="Cómo Funciona">How It Works</h2>
-            <p class="lead" data-en="Simple steps to recover your lost belongings" data-es="Pasos simples para recuperar tus pertenencias perdidas">Simple steps to recover your lost belongings</p>
-        </div>
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="feature-card reveal-element">
-                    <div class="feature-icon">
-                        <i class="fas fa-binoculars"></i>
-                    </div>
-                    <h3 data-en="1. Search & Browse" data-es="1. Buscar y Explorar">1. Search & Browse</h3>
-                    <p data-en="Use our search tools to look through all found items. Filter by category, date found, or location to quickly find what you're looking for." data-es="Usa nuestras herramientas de búsqueda para revisar todos los artículos encontrados. Filtra por categoría, fecha encontrada o ubicación para encontrar rápidamente lo que buscas.">Use our search tools to look through all found items. Filter by category, date found, or location to quickly find what you're looking for.</p>
-                </div>
+            <div class="video-loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #d4af37; font-size: 2rem; z-index: 2;">
+                <i class="fas fa-spinner fa-spin"></i>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="feature-card reveal-element">
-                    <div class="feature-icon">
-                        <i class="fas fa-phone-alt"></i>
-                    </div>
-                    <h3 data-en="2. Submit Claim" data-es="2. Enviar Reclamación">2. Submit Claim</h3>
-                    <p data-en="Found your item? Submit a claim with details about when and where you lost it. We'll verify the information and contact you." data-es="¿Encontraste tu artículo? Envía una reclamación con detalles sobre cuándo y dónde lo perdiste. Verificaremos la información y te contactaremos.">Found your item? Submit a claim with details about when and where you lost it. We'll verify the information and contact you.</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="feature-card reveal-element">
-                    <div class="feature-icon">
-                        <i class="fas fa-award"></i>
-                    </div>
-                    <h3 data-en="3. Get Your Item Back" data-es="3. Recupera Tu Artículo">3. Get Your Item Back</h3>
-                    <p data-en="Once verified, coordinate pickup with our staff. Most items are returned within 24-48 hours of claim approval." data-es="Una vez verificado, coordina la recogida con nuestro personal. La mayoría de los artículos se devuelven en 24-48 horas después de la aprobación de la reclamación.">Once verified, coordinate pickup with our staff. Most items are returned within 24-48 hours of claim approval.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<script>
-// Add this script to handle features video loading
-document.addEventListener('DOMContentLoaded', function() {
-    const featuresVideo = document.querySelector('#features-section .video-bg');
-    const featuresLoading = document.querySelector('#features-section .video-loading');
-    
-    if (featuresVideo) {
-        // Fix filename - GitHub URLs need URL encoding for spaces
-        const sources = featuresVideo.querySelectorAll('source');
-        if (sources.length > 0 && sources[0].src.includes('Lost n Found Video.mp4')) {
-            // Fix the space in filename
-            sources[0].src = 'https://raw.githubusercontent.com/saathgit/aai-videos/main/Lost%20n%20Found%20Video.mp4';
-        }
-        
-        // Remove loading spinner when video loads
-        featuresVideo.addEventListener('loadeddata', function() {
-            console.log('Features video loaded successfully');
-            if (featuresLoading) {
-                featuresLoading.style.opacity = '0';
-                setTimeout(() => {
-                    featuresLoading.style.display = 'none';
-                }, 500);
-            }
-        });
-        
-        // Handle video errors
-        featuresVideo.addEventListener('error', function(e) {
-            console.error('Features video failed to load:', e);
-            if (featuresLoading) {
-                featuresLoading.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
-                featuresLoading.style.color = '#e6c34f';
-            }
             
-            // Try to play fallback
-            const sources = featuresVideo.querySelectorAll('source');
-            if (sources.length > 1) {
-                console.log('Switching to fallback video...');
-                featuresVideo.src = sources[1].src;
-                featuresVideo.load();
-            }
-        });
+            <div class="video-bg-overlay" 
+                 style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+                        background: linear-gradient(135deg, rgba(2, 42, 117, 0.65) 0%, rgba(0, 28, 112, 0.7) 100%);
+                        z-index: 2; pointer-events: none;"></div>
+        </div>
         
-        // Lazy load - only play when section is visible
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    featuresVideo.play().catch(err => {
-                        console.log('Features video play blocked');
-                    });
-                } else {
-                    featuresVideo.pause();
-                }
-            });
-        }, { threshold: 0.3 });
-        
-        observer.observe(document.getElementById('features-section'));
-    }
-});
-</script>
+        <div class="container" style="position: relative; z-index: 3;">
+            <div class="section-title reveal-element">
+                <h2 data-en="How It Works" data-es="Cómo Funciona">How It Works</h2>
+                <p class="lead" data-en="Simple steps to recover your lost belongings" data-es="Pasos simples para recuperar tus pertenencias perdidas">Simple steps to recover your lost belongings</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card reveal-element">
+                        <div class="feature-icon">
+                            <i class="fas fa-binoculars"></i>
+                        </div>
+                        <h3 data-en="1. Search & Browse" data-es="1. Buscar y Explorar">1. Search & Browse</h3>
+                        <p data-en="Use our search tools to look through all found items. Filter by category, date found, or location to quickly find what you're looking for." data-es="Usa nuestras herramientas de búsqueda para revisar todos los artículos encontrados. Filtra por categoría, fecha encontrada o ubicación para encontrar rápidamente lo que buscas.">Use our search tools to look through all found items. Filter by category, date found, or location to quickly find what you're looking for.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card reveal-element">
+                        <div class="feature-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <h3 data-en="2. Submit Claim" data-es="2. Enviar Reclamación">2. Submit Claim</h3>
+                        <p data-en="Found your item? Submit a claim with details about when and where you lost it. We'll verify the information and contact you." data-es="¿Encontraste tu artículo? Envía una reclamación con detalles sobre cuándo y dónde lo perdiste. Verificaremos la información y te contactaremos.">Found your item? Submit a claim with details about when and where you lost it. We'll verify the information and contact you.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card reveal-element">
+                        <div class="feature-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h3 data-en="3. Get Your Item Back" data-es="3. Recupera Tu Artículo">3. Get Your Item Back</h3>
+                        <p data-en="Once verified, coordinate pickup with our staff. Most items are returned within 24-48 hours of claim approval." data-es="Una vez verificado, coordina la recogida con nuestro personal. La mayoría de los artículos se devuelven en 24-48 horas después de la aprobación de la reclamación.">Once verified, coordinate pickup with our staff. Most items are returned within 24-48 hours of claim approval.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Modern Stats Section -->
     <section class="stats">
@@ -3431,9 +3632,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             <div class="items-scroll-container">
                 <div class="items-scroll-track" id="recentItemsScroll">
-                    <!-- Items will be loaded dynamically -->
                     <div class="items-loading">
-                        <!-- Skeleton loading cards -->
                         <div class="item-card-skeleton">
                             <div class="skeleton-image"></div>
                             <div class="skeleton-text short"></div>
@@ -3455,7 +3654,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
                 
-                <!-- Scroll Controls -->
                 <div class="scroll-controls">
                     <button class="scroll-btn" id="scrollLeftBtn" disabled>
                         <i class="fas fa-chevron-left"></i>
@@ -3486,6 +3684,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="reviews-track" id="reviewsTrack">
                     <!-- Reviews will be added dynamically -->
                 </div>
+            </div>
+            
+            <!-- ========== REVIEW SUBMISSION SECTION ========== -->
+            <div class="review-submission-container reveal-element">
+                <h3 data-en="Share Your Experience" data-es="Comparte Tu Experiencia">Share Your Experience</h3>
+                <p data-en="Help others by sharing your experience with our lost and found system. Your review helps us improve!" data-es="Ayuda a otros compartiendo tu experiencia con nuestro sistema de objetos perdidos. ¡Tu reseña nos ayuda a mejorar!">
+                    Help others by sharing your experience with our lost and found system. Your review helps us improve!
+                </p>
+                <button class="review-submit-btn" id="reviewSubmitBtn" data-en="Leave a Review" data-es="Dejar una Reseña">
+                    <i class="fas fa-star me-2"></i>Leave a Review
+                </button>
             </div>
         </div>
     </section>
@@ -3651,6 +3860,82 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 
+    <!-- Review Submission Modal -->
+    <div class="modal fade review-modal" id="reviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" data-en="Share Your Experience" data-es="Comparte Tu Experiencia">Share Your Experience</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="review-form-container" id="reviewFormContainer">
+                        <div class="review-form-group">
+                            <label for="reviewerName" data-en="Your Name" data-es="Tu Nombre">Your Name</label>
+                            <input type="text" id="reviewerName" class="review-form-input" placeholder="Enter your name" data-en-placeholder="Enter your name" data-es-placeholder="Ingresa tu nombre">
+                        </div>
+                        
+                        <div class="review-form-group">
+                            <label for="reviewerRole" data-en="Your Role" data-es="Tu Rol">Your Role</label>
+                            <select id="reviewerRole" class="review-form-input">
+                                <option value="" data-en="Select your role" data-es="Selecciona tu rol">Select your role</option>
+                                <option value="Student" data-en="Student" data-es="Estudiante">Student</option>
+                                <option value="Teacher" data-en="Teacher" data-es="Maestro">Teacher</option>
+                                <option value="Staff" data-en="Staff" data-es="Personal">Staff</option>
+                                <option value="Parent" data-en="Parent" data-es="Padre/Madre">Parent</option>
+                                <option value="Other" data-en="Other" data-es="Otro">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="review-form-group">
+                            <label data-en="Rating" data-es="Calificación">Rating</label>
+                            <div class="rating-container">
+                                <div class="star-rating">
+                                    <input type="radio" id="star5" name="rating" value="5">
+                                    <label for="star5"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star4" name="rating" value="4">
+                                    <label for="star4"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star3" name="rating" value="3">
+                                    <label for="star3"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star2" name="rating" value="2">
+                                    <label for="star2"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star1" name="rating" value="1">
+                                    <label for="star1"><i class="fas fa-star"></i></label>
+                                </div>
+                                <div class="rating-labels">
+                                    <span data-en="Poor" data-es="Pobre">Poor</span>
+                                    <span data-en="Excellent" data-es="Excelente">Excellent</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="review-form-group">
+                            <label for="reviewText" data-en="Your Review" data-es="Tu Reseña">Your Review</label>
+                            <textarea id="reviewText" class="review-form-input review-form-textarea" placeholder="Share your experience with our lost and found system..." data-en-placeholder="Share your experience with our lost and found system..." data-es-placeholder="Comparte tu experiencia con nuestro sistema de objetos perdidos..." rows="4"></textarea>
+                        </div>
+                        
+                        <button class="review-submit-form-btn" id="reviewSubmitFormBtn" data-en="Submit Review" data-es="Enviar Reseña">
+                            <i class="fas fa-paper-plane me-2"></i>Submit Review
+                        </button>
+                    </div>
+                    
+                    <div class="review-success-message" id="reviewSuccessMessage" style="display: none;">
+                        <i class="fas fa-check-circle"></i>
+                        <h4 data-en="Thank You!" data-es="¡Gracias!">Thank You!</h4>
+                        <p data-en="Your review has been submitted successfully. It will help other students and improve our services." data-es="Tu reseña ha sido enviada exitosamente. Ayudará a otros estudiantes y mejorará nuestros servicios.">
+                            Your review has been submitted successfully. It will help other students and improve our services.
+                        </p>
+                        <button class="review-submit-form-btn" id="reviewDoneBtn" data-en="Done" data-es="Listo">
+                            <i class="fas fa-check me-2"></i>Done
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
@@ -3661,29 +3946,21 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Page loading...');
     
-    // 1. Show initial loading bar
     const loadingBar = document.getElementById('loadingBar');
     if (loadingBar) loadingBar.style.width = '30%';
     
-    // 2. Check authentication
     const isAuthenticated = localStorage.getItem('aai_authenticated');
     if (!isAuthenticated) {
         window.location.href = 'login.html';
         return;
     }
     
-    // 3. Initialize immediately visible elements
     initNavbarScroll();
     setActiveNavItem();
     initBackToTop();
-    
-    // 4. Load user preferences
     loadUserPreferences();
-    
-    // 5. Load content
     loadContent();
     
-    // 6. Setup logout
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(e) {
@@ -3733,23 +4010,19 @@ function initBackToTop() {
 }
 
 function loadUserPreferences() {
-    // Theme
     const savedTheme = localStorage.getItem('theme') || 'light';
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
     }
     
-    // Color Blind Mode
     const savedColorBlind = localStorage.getItem('colorBlindMode') || 'normal';
     if (savedColorBlind === 'color-blind') {
         document.body.classList.add('color-blind-mode');
     }
     
-    // Language
     const savedLang = localStorage.getItem('language') || 'en';
     setLanguage(savedLang);
     
-    // Font size
     const savedFontScale = localStorage.getItem('fontScale') || 100;
     setFontSize(savedFontScale);
 }
@@ -3760,6 +4033,8 @@ function setLanguage(lang) {
     document.querySelectorAll('[data-en], [data-es]').forEach(element => {
         if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
             element.placeholder = element.getAttribute(`data-${lang}-placeholder`) || element.getAttribute(`data-${lang}`);
+        } else if (element.tagName === 'OPTION') {
+            element.textContent = element.getAttribute(`data-${lang}`) || element.textContent;
         } else {
             element.textContent = element.getAttribute(`data-${lang}`) || element.textContent;
         }
@@ -3767,20 +4042,13 @@ function setLanguage(lang) {
 }
 
 function setFontSize(size) {
-    // Convert size (75-150) to scale factor
     const scaleFactor = size / 100;
-    
-    // Update CSS variable
     document.documentElement.style.setProperty('--font-scale', scaleFactor);
     
-    // Update slider position
     const slider = document.getElementById('fontSizeSlider');
     if (slider) slider.value = size;
     
-    // Update preview text
     updateFontSizePreview(size);
-    
-    // Save to localStorage
     localStorage.setItem('fontScale', size);
 }
 
@@ -3817,44 +4085,35 @@ function toggleColorBlindMode(mode) {
 }
 
 function resetSettings() {
-    // Reset to defaults
     localStorage.removeItem('theme');
     localStorage.removeItem('colorBlindMode');
     localStorage.removeItem('language');
     localStorage.removeItem('fontScale');
     
-    // Apply defaults
     document.body.classList.remove('dark-mode', 'color-blind-mode');
     setLanguage('en');
     setFontSize(100);
     
-    // Update UI
     updateSettingsUI();
-    
-    // Show confirmation
     alert('Settings have been reset to defaults');
 }
 
 function updateSettingsUI() {
-    // Update theme buttons
     const currentTheme = localStorage.getItem('theme') || 'light';
     document.querySelectorAll('.theme-btn').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-theme') === currentTheme);
     });
     
-    // Update color blind mode buttons
     const currentColorBlind = localStorage.getItem('colorBlindMode') || 'normal';
     document.querySelectorAll('.accessibility-btn').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-mode') === currentColorBlind);
     });
     
-    // Update language buttons
     const currentLang = localStorage.getItem('language') || 'en';
     document.querySelectorAll('.language-btn').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
     });
     
-    // Update font size slider
     const currentFontScale = localStorage.getItem('fontScale') || 100;
     const slider = document.getElementById('fontSizeSlider');
     if (slider) slider.value = currentFontScale;
@@ -3865,28 +4124,25 @@ function updateSettingsUI() {
 function loadContent() {
     const loadingBar = document.getElementById('loadingBar');
     
-    // Load videos
     setTimeout(() => {
         initVideos();
         if (loadingBar) loadingBar.style.width = '50%';
     }, 300);
     
-    // Load recent items
     setTimeout(() => {
         loadRecentItems();
         if (loadingBar) loadingBar.style.width = '70%';
     }, 600);
     
-    // Load animations and other features
     setTimeout(() => {
         initScrollAnimations();
         initReviews();
         animateStats();
         initChatbot();
+        initReviewSystem();
         if (loadingBar) loadingBar.style.width = '90%';
     }, 900);
     
-    // Complete loading
     setTimeout(() => {
         if (loadingBar) {
             loadingBar.style.width = '100%';
@@ -3905,7 +4161,6 @@ function loadContent() {
 
 // ========== VIDEO HANDLING ==========
 function initVideos() {
-    // Hero video
     const heroVideo = document.querySelector('#hero-section .video-bg');
     if (heroVideo) {
         heroVideo.play().catch(e => {
@@ -3925,11 +4180,9 @@ function loadRecentItems() {
         const container = document.getElementById('recentItemsScroll');
         if (!container) return;
         
-        // Clear loading skeleton
         const skeleton = container.querySelector('.items-loading');
         if (skeleton) skeleton.style.display = 'none';
         
-        // Get items from localStorage
         const storedItems = JSON.parse(localStorage.getItem('lostFoundItems') || '[]');
         
         if (storedItems.length === 0) {
@@ -3942,7 +4195,6 @@ function loadRecentItems() {
             return;
         }
         
-        // Show recent items
         const recentItems = storedItems.slice(0, 6);
         container.innerHTML = '';
         
@@ -3977,17 +4229,14 @@ function loadRecentItems() {
             `;
             container.appendChild(card);
             
-            // Make clickable
             card.addEventListener('click', function(e) {
                 e.preventDefault();
                 window.location.href = 'browse.html';
             });
             
-            // Animate in
             setTimeout(() => card.classList.add('visible'), 100 * index);
         });
         
-        // Initialize scroll controls
         setTimeout(initScrollControls, 500);
         
     } catch (error) {
@@ -4034,11 +4283,9 @@ function animateStats() {
         successRate: 70
     };
 
-    // Get the stats section
     const statsSection = document.querySelector('.stats');
     if (!statsSection) return;
     
-    // Check if animation has already run
     let hasAnimated = false;
 
     const observer = new IntersectionObserver((entries) => {
@@ -4054,8 +4301,8 @@ function animateStats() {
                     const isPercentage = statId === 'successRate';
                     
                     let current = 0;
-                    const duration = 2000; // 2 seconds total
-                    const increment = target / (duration / 30); // 30ms interval
+                    const duration = 2000;
+                    const increment = target / (duration / 30);
                     
                     const timer = setInterval(() => {
                         current += increment;
@@ -4069,16 +4316,14 @@ function animateStats() {
                     }, 30);
                 });
                 
-                // Stop observing after animation
                 observer.unobserve(entry.target);
             }
         });
     }, {
-        threshold: 0.3, // Trigger when 30% of the element is visible
-        rootMargin: '0px 0px -100px 0px' // Trigger 100px before entering viewport
+        threshold: 0.3,
+        rootMargin: '0px 0px -100px 0px'
     });
 
-    // Start observing
     observer.observe(statsSection);
     console.log('Stats animation observer initialized');
 }
@@ -4109,16 +4354,26 @@ function initReviews() {
         }
     ];
     
+    // Load saved reviews from localStorage
+    const savedReviews = JSON.parse(localStorage.getItem('aai_reviews') || '[]');
+    const allReviews = [...reviews, ...savedReviews];
+    
     const track = document.getElementById('reviewsTrack');
     if (!track) return;
     
-    reviews.forEach(review => {
+    // Clear existing content
+    track.innerHTML = '';
+    
+    // Add reviews to track
+    allReviews.forEach(review => {
         const card = document.createElement('div');
         card.className = 'review-card';
         card.innerHTML = `
             <div class="review-header">
                 <div class="review-avatar">
-                    <img src="${review.avatar}" alt="${review.name}" loading="lazy">
+                    <img src="${review.avatar || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzAyMkE3NSIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEiIGZvbnQtc2l6ZT0iMzYiIGZpbGw9IiNkNGFmMzciIHRleHQtYW5jaG9yPSJtaWRkbGUiIHRleHQtZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+${review.name.charAt(0)}PC90ZXh0Pjwvc3ZnPg=='}" 
+                         alt="${review.name}" 
+                         loading="lazy">
                 </div>
                 <div class="review-info">
                     <h4>${review.name}</h4>
@@ -4143,6 +4398,114 @@ function initReviews() {
     });
 }
 
+// ========== REVIEW SUBMISSION SYSTEM ==========
+function initReviewSystem() {
+    const reviewSubmitBtn = document.getElementById('reviewSubmitBtn');
+    const reviewModal = $('#reviewModal');
+    const reviewSubmitFormBtn = document.getElementById('reviewSubmitFormBtn');
+    const reviewDoneBtn = document.getElementById('reviewDoneBtn');
+    const reviewerNameInput = document.getElementById('reviewerName');
+    const reviewerRoleSelect = document.getElementById('reviewerRole');
+    const reviewTextArea = document.getElementById('reviewText');
+    const reviewFormContainer = document.getElementById('reviewFormContainer');
+    const reviewSuccessMessage = document.getElementById('reviewSuccessMessage');
+
+    if (!reviewSubmitBtn) return;
+
+    // Open modal when review button is clicked
+    reviewSubmitBtn.addEventListener('click', function() {
+        // Reset form
+        reviewerNameInput.value = '';
+        reviewerRoleSelect.value = '';
+        reviewTextArea.value = '';
+        document.querySelectorAll('input[name="rating"]').forEach(radio => radio.checked = false);
+        
+        // Show form, hide success message
+        reviewFormContainer.style.display = 'block';
+        reviewSuccessMessage.style.display = 'none';
+        
+        // Show modal
+        reviewModal.modal('show');
+    });
+
+    // Submit review
+    if (reviewSubmitFormBtn) {
+        reviewSubmitFormBtn.addEventListener('click', function() {
+            const name = reviewerNameInput.value.trim();
+            const role = reviewerRoleSelect.value;
+            const rating = document.querySelector('input[name="rating"]:checked');
+            const reviewText = reviewTextArea.value.trim();
+            
+            // Validation
+            if (!name) {
+                alert('Please enter your name');
+                return;
+            }
+            
+            if (!role) {
+                alert('Please select your role');
+                return;
+            }
+            
+            if (!rating) {
+                alert('Please select a rating');
+                return;
+            }
+            
+            if (!reviewText) {
+                alert('Please enter your review');
+                return;
+            }
+            
+            if (reviewText.length < 10) {
+                alert('Please provide a more detailed review (minimum 10 characters)');
+                return;
+            }
+            
+            // Create review object
+            const newReview = {
+                name: name,
+                role: role,
+                stars: parseInt(rating.value),
+                content: reviewText,
+                date: new Date().toISOString().split('T')[0]
+            };
+            
+            // Save to localStorage
+            const savedReviews = JSON.parse(localStorage.getItem('aai_reviews') || '[]');
+            savedReviews.push(newReview);
+            localStorage.setItem('aai_reviews', JSON.stringify(savedReviews));
+            
+            // Show success message
+            reviewFormContainer.style.display = 'none';
+            reviewSuccessMessage.style.display = 'block';
+            
+            // Reload reviews to include the new one
+            setTimeout(initReviews, 500);
+        });
+    }
+    
+    // Close modal when done button is clicked
+    if (reviewDoneBtn) {
+        reviewDoneBtn.addEventListener('click', function() {
+            reviewModal.modal('hide');
+        });
+    }
+    
+    // Close modal on modal hidden
+    reviewModal.on('hidden.bs.modal', function() {
+        // Reset form
+        reviewerNameInput.value = '';
+        reviewerRoleSelect.value = '';
+        reviewTextArea.value = '';
+        document.querySelectorAll('input[name="rating"]').forEach(radio => radio.checked = false);
+        
+        // Show form, hide success message for next time
+        reviewFormContainer.style.display = 'block';
+        reviewSuccessMessage.style.display = 'none';
+    });
+}
+
 // ========== CHATBOT ==========
 function initChatbot() {
     const chatbotButton = document.getElementById('chatbotButton');
@@ -4154,7 +4517,6 @@ function initChatbot() {
     
     if (!chatbotButton || !chatbotWindow) return;
     
-    // Knowledge base for the chatbot
     const knowledgeBase = {
         "search": {
             question: "How do I search for a lost item?",
@@ -4190,7 +4552,6 @@ function initChatbot() {
         }
     };
     
-    // Common patterns and responses
     const patterns = {
         greetings: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon"],
         farewells: ["bye", "goodbye", "see you", "thanks", "thank you"],
@@ -4221,10 +4582,8 @@ function initChatbot() {
         addMessage(message, 'user');
         chatbotInput.value = '';
         
-        // Show typing indicator
         showTypingIndicator();
         
-        // Process message after delay
         setTimeout(() => {
             removeTypingIndicator();
             const response = getBotResponse(message);
@@ -4235,22 +4594,18 @@ function initChatbot() {
     function getBotResponse(message) {
         const lowerMessage = message.toLowerCase();
         
-        // Check for greetings
         if (patterns.greetings.some(word => lowerMessage.includes(word))) {
             return getGreeting();
         }
         
-        // Check for farewells
         if (patterns.farewells.some(word => lowerMessage.includes(word))) {
             return getFarewell();
         }
         
-        // Check for help
         if (patterns.help.some(word => lowerMessage.includes(word))) {
             return "I can help you with: Searching for lost items, Reporting found items, Claiming items, Answering questions about the lost and found process, and Providing information about office hours and locations. What would you like to know?";
         }
         
-        // Check specific questions from knowledge base
         for (const key in knowledgeBase) {
             if (lowerMessage.includes(key) || 
                 lowerMessage.includes(knowledgeBase[key].question.toLowerCase())) {
@@ -4258,7 +4613,6 @@ function initChatbot() {
             }
         }
         
-        // Check patterns
         if (patterns.search.some(word => lowerMessage.includes(word))) {
             return knowledgeBase.search.answer;
         }
@@ -4271,7 +4625,6 @@ function initChatbot() {
             return knowledgeBase.claim.answer;
         }
         
-        // Default response
         return "I'm not sure I understand. I can help you with: searching for lost items, reporting found items, claiming items, or answering questions about our lost and found process. Could you please rephrase your question?";
     }
     
@@ -4317,7 +4670,6 @@ function initChatbot() {
         if (typing) typing.remove();
     }
     
-    // Quick questions
     document.querySelectorAll('.quick-question').forEach(btn => {
         btn.addEventListener('click', function() {
             const question = this.getAttribute('data-question');
@@ -4326,7 +4678,6 @@ function initChatbot() {
         });
     });
     
-    // Add typing indicator CSS
     const style = document.createElement('style');
     style.textContent = `
         .typing-indicator {
@@ -4360,7 +4711,6 @@ function initSettings() {
         $('#settingsModal').modal('show');
     });
     
-    // Theme buttons
     document.querySelectorAll('.theme-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
@@ -4369,7 +4719,6 @@ function initSettings() {
         });
     });
     
-    // Language buttons
     document.querySelectorAll('.language-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.language-btn').forEach(b => b.classList.remove('active'));
@@ -4378,7 +4727,6 @@ function initSettings() {
         });
     });
     
-    // Accessibility (Color Blind Mode) buttons
     document.querySelectorAll('.accessibility-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.accessibility-btn').forEach(b => b.classList.remove('active'));
@@ -4387,7 +4735,6 @@ function initSettings() {
         });
     });
     
-    // Font size slider
     const fontSizeSlider = document.getElementById('fontSizeSlider');
     if (fontSizeSlider) {
         fontSizeSlider.addEventListener('input', function() {
@@ -4399,30 +4746,24 @@ function initSettings() {
         });
     }
     
-    // Reset settings button
     const resetBtn = document.getElementById('resetSettingsBtn');
     if (resetBtn) {
         resetBtn.addEventListener('click', resetSettings);
     }
     
-    // Set initial active states
     updateSettingsUI();
 }
 
 // ========== PARALLAX ==========
 function initParallaxScrolling() {
-    // Only run parallax on desktop for performance
     if (window.innerWidth > 768) {
         console.log('Initializing full parallax effects...');
         
-        // Create parallax layers
         createParallaxLayers();
         
-        // Initialize GSAP ScrollTrigger for parallax
         if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
             gsap.registerPlugin(ScrollTrigger);
             
-            // Parallax background effect
             gsap.to('#parallaxBg', {
                 backgroundPosition: '50% 100%',
                 ease: 'none',
@@ -4434,7 +4775,6 @@ function initParallaxScrolling() {
                 }
             });
             
-            // Parallax for hero section
             const heroBg = document.querySelector('.hero-bg');
             if (heroBg) {
                 gsap.to(heroBg, {
@@ -4449,7 +4789,6 @@ function initParallaxScrolling() {
                 });
             }
             
-            // Parallax for action cards on scroll
             gsap.utils.toArray('.action-card, .feature-card, .item-card-enhanced').forEach((card, i) => {
                 gsap.fromTo(card,
                     { y: 50 },
@@ -4466,7 +4805,6 @@ function initParallaxScrolling() {
                 );
             });
             
-            // Parallax for stats section
             const statsBg = document.querySelector('.stats-bg');
             if (statsBg) {
                 gsap.to(statsBg, {
@@ -4495,7 +4833,6 @@ function createParallaxLayers() {
     const parallaxContainer = document.body;
     const layers = 5;
     
-    // Clear existing layers first
     document.querySelectorAll('.parallax-layer').forEach(layer => layer.remove());
     
     for (let i = 0; i < layers; i++) {
@@ -4510,27 +4847,21 @@ function createParallaxLayers() {
         layer.style.position = 'absolute';
         layer.style.pointerEvents = 'none';
         
-        // Different effects for different layers
         switch(i) {
             case 0:
-                // Top layer - subtle gradient
                 layer.style.background = 'radial-gradient(circle at 10% 20%, var(--primary-blue) 0%, transparent 40%)';
                 break;
             case 1:
-                // Middle layer - gold accent
                 layer.style.background = 'radial-gradient(circle at 90% 80%, var(--accent-gold) 0%, transparent 30%)';
                 break;
             case 2:
-                // Bottom layer - blue accent
                 layer.style.background = 'radial-gradient(circle at 50% 50%, var(--secondary-blue) 0%, transparent 50%)';
                 break;
             case 3:
-                // Pattern overlay
                 layer.style.backgroundImage = 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0,0 L100,100 M100,0 L0,100\' stroke=\'%23d4af37\' stroke-width=\'0.5\' opacity=\'0.1\'/%3E%3C/svg%3E")';
                 layer.style.backgroundSize = '100px 100px';
                 break;
             case 4:
-                // Grid overlay
                 layer.style.backgroundImage = 'linear-gradient(rgba(212, 175, 55, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(212, 175, 55, 0.1) 1px, transparent 1px)';
                 layer.style.backgroundSize = '50px 50px';
                 break;
@@ -4538,7 +4869,6 @@ function createParallaxLayers() {
         
         parallaxContainer.appendChild(layer);
         
-        // Apply different parallax speeds to each layer
         if (typeof gsap !== 'undefined') {
             gsap.to(layer, {
                 y: (i + 1) * 50,
@@ -4572,7 +4902,6 @@ window.addEventListener('load', function() {
     setTimeout(() => window.scrollTo(0, 0), 100);
 });
 
-// Prevent scroll restoration
 if (history.scrollRestoration) {
     history.scrollRestoration = 'manual';
 }

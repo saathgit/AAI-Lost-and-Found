@@ -1052,149 +1052,6 @@
        }
 
 
-       /* Settings Modal Styles */
-       .settings-modal .modal-content {
-           background: var(--bg-card);
-           color: var(--text-primary);
-           border-radius: 20px;
-           border: 1px solid var(--border-color);
-       }
-
-       .settings-modal .modal-header {
-           border-bottom: 1px solid var(--border-color);
-           background: var(--bg-secondary);
-           border-radius: 20px 20px 0 0;
-       }
-
-       .settings-modal .modal-body {
-           padding: 2rem;
-       }
-
-       .settings-option {
-           display: flex;
-           justify-content: space-between;
-           align-items: center;
-           padding: 15px 0;
-           border-bottom: 1px solid var(--border-color);
-       }
-
-       .settings-option:last-child {
-           border-bottom: none;
-       }
-
-       .settings-option label {
-           font-weight: 500;
-           font-size: 1.1rem;
-           color: var(--text-primary);
-       }
-
-       .font-size-controls {
-           display: flex;
-           gap: 10px;
-           align-items: center;
-       }
-
-       .font-size-btn {
-           width: 40px;
-           height: 40px;
-           border-radius: 50%;
-           background: var(--bg-tertiary);
-           border: 2px solid var(--border-color);
-           color: var(--text-primary);
-           display: flex;
-           align-items: center;
-           justify-content: center;
-           cursor: pointer;
-           transition: all 0.3s ease;
-       }
-
-       .font-size-btn:hover {
-           background: var(--accent-gold);
-           color: var(--primary-blue);
-           border-color: var(--accent-gold);
-       }
-
-       .font-size-display {
-           font-weight: 600;
-           min-width: 40px;
-           text-align: center;
-       }
-
-       /* Toggle Switch */
-       .toggle-switch {
-           position: relative;
-           display: inline-block;
-           width: 60px;
-           height: 30px;
-       }
-
-       .toggle-switch input {
-           opacity: 0;
-           width: 0;
-           height: 0;
-       }
-
-       .toggle-slider {
-           position: absolute;
-           cursor: pointer;
-           top: 0;
-           left: 0;
-           right: 0;
-           bottom: 0;
-           background-color: var(--bg-tertiary);
-           transition: .4s;
-           border-radius: 34px;
-           border: 2px solid var(--border-color);
-       }
-
-       .toggle-slider:before {
-           position: absolute;
-           content: "";
-           height: 22px;
-           width: 22px;
-           left: 2px;
-           bottom: 2px;
-           background-color: var(--text-primary);
-           transition: .4s;
-           border-radius: 50%;
-       }
-
-       input:checked + .toggle-slider {
-           background-color: var(--accent-gold);
-           border-color: var(--accent-gold);
-       }
-
-       input:checked + .toggle-slider:before {
-           transform: translateX(28px);
-           background-color: var(--primary-blue);
-       }
-
-       /* Language Toggle */
-       .language-toggle {
-           display: flex;
-           gap: 10px;
-           background: var(--bg-tertiary);
-           padding: 5px;
-           border-radius: 50px;
-           border: 2px solid var(--border-color);
-       }
-
-       .lang-btn {
-           padding: 8px 20px;
-           border-radius: 50px;
-           border: none;
-           background: transparent;
-           color: var(--text-primary);
-           cursor: pointer;
-           transition: all 0.3s ease;
-           font-weight: 500;
-       }
-
-       .lang-btn.active {
-           background: var(--accent-gold);
-           color: var(--primary-blue);
-       }
-
        /* Back to Top Button */
        .back-to-top {
            position: fixed;
@@ -1232,6 +1089,501 @@
 
        .back-to-top i {
            font-size: 1.5rem;
+       }
+
+       /* NEW: Password Visibility Toggle */
+       .password-toggle {
+           position: absolute;
+           right: 15px;
+           top: 50%;
+           transform: translateY(-50%);
+           background: transparent;
+           border: none;
+           color: var(--text-primary);
+           opacity: 0.6;
+           cursor: pointer;
+           transition: all 0.3s ease;
+           padding: 5px;
+           z-index: 10;
+       }
+
+       .password-toggle:hover {
+           opacity: 1;
+           color: var(--accent-gold);
+       }
+
+       .password-input-container {
+           position: relative;
+           width: 100%;
+       }
+
+       .password-input-container input {
+           padding-right: 50px;
+           width: 100%;
+       }
+
+       /* NEW: 2FA Verification Styles */
+       .two-factor-step {
+           display: none;
+           animation: fadeIn 0.5s ease;
+       }
+
+       .two-factor-step.active {
+           display: block;
+       }
+
+       .verification-code-container {
+           display: flex;
+           justify-content: center;
+           gap: 10px;
+           margin: 30px 0;
+       }
+
+       .verification-input {
+           width: 50px !important;
+           height: 60px;
+           text-align: center;
+           font-size: 1.5rem;
+           font-weight: bold;
+           border: 2px solid var(--border-color);
+           border-radius: 8px;
+           background: var(--bg-secondary);
+           color: var(--text-primary);
+           transition: all 0.3s ease;
+       }
+
+       .verification-input:focus {
+           border-color: var(--accent-gold);
+           box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+           outline: none;
+       }
+
+       .verification-input.filled {
+           border-color: var(--success);
+           background: rgba(40, 167, 69, 0.1);
+       }
+
+       .resend-code {
+           color: var(--accent-gold);
+           cursor: pointer;
+           text-decoration: underline;
+           transition: all 0.3s ease;
+       }
+
+       .resend-code:hover {
+           color: var(--light-gold);
+           text-decoration: none;
+       }
+
+       .resend-code.disabled {
+           color: var(--text-secondary);
+           cursor: not-allowed;
+           opacity: 0.6;
+       }
+
+       /* NEW: Step Indicators */
+       .step-indicator {
+           display: flex;
+           justify-content: center;
+           gap: 15px;
+           margin: 20px 0 30px;
+       }
+
+       .step-dot {
+           width: 10px;
+           height: 10px;
+           border-radius: 50%;
+           background: var(--border-color);
+           transition: all 0.3s ease;
+       }
+
+       .step-dot.active {
+           background: var(--accent-gold);
+           transform: scale(1.2);
+       }
+
+       /* NEW: Social Login Options */
+       .social-login-options {
+           display: flex;
+           justify-content: center;
+           gap: 15px;
+           margin: 25px 0;
+       }
+
+       .social-login-btn {
+           width: 50px;
+           height: 50px;
+           border-radius: 50%;
+           border: 2px solid var(--border-color);
+           background: var(--bg-secondary);
+           color: var(--text-primary);
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           cursor: pointer;
+           transition: all 0.3s ease;
+       }
+
+       .social-login-btn:hover {
+           transform: translateY(-3px);
+           border-color: var(--accent-gold);
+           color: var(--accent-gold);
+           box-shadow: 0 5px 15px var(--shadow-color);
+       }
+
+       /* NEW: Demo Mode Indicator */
+       .demo-mode-indicator {
+           position: fixed;
+           bottom: 30px;
+           right: 30px;
+           background: rgba(212, 175, 55, 0.1);
+           border: 1px solid var(--accent-gold);
+           color: var(--accent-gold);
+           padding: 8px 15px;
+           border-radius: 20px;
+           font-size: 0.8rem;
+           z-index: 1000;
+           backdrop-filter: blur(10px);
+           display: flex;
+           align-items: center;
+           gap: 8px;
+       }
+
+       /* NEW: Demo Code Display */
+       .demo-code-display {
+           position: fixed;
+           top: 100px;
+           right: 30px;
+           background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+           color: var(--accent-gold);
+           padding: 15px 20px;
+           border-radius: 10px;
+           box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+           z-index: 9999;
+           max-width: 300px;
+           animation: slideIn 0.3s ease;
+           border: 2px solid rgba(212, 175, 55, 0.3);
+           backdrop-filter: blur(10px);
+           display: flex;
+           align-items: center;
+           gap: 10px;
+           font-weight: 600;
+           font-size: 1.1rem;
+       }
+
+       .demo-code-display i {
+           font-size: 1.2rem;
+       }
+
+       @keyframes slideIn {
+           from { transform: translateX(100%); opacity: 0; }
+           to { transform: translateX(0); opacity: 1; }
+       }
+
+       /* Settings Modal Styles - Updated from admin page */
+       .settings-modal .modal-content {
+           background: var(--light-blue);
+           border-radius: calc(20px);
+           border: 1px solid var(--border-color);
+           box-shadow: 0 calc(20px) calc(60px) rgba(0, 0, 0, 0.2);
+       }
+
+       .dark-mode .settings-modal .modal-content {
+           background: #0a0f1f;
+           border-color: rgba(255, 255, 255, 0.1);
+       }
+
+       .color-blind-mode .settings-modal .modal-content {
+           background: #fafdff;
+       }
+
+       .dark-mode.color-blind-mode .settings-modal .modal-content {
+           background: #0a0f1f;
+       }
+
+       .settings-modal .modal-header {
+           background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+           color: white;
+           border-radius: calc(20px) calc(20px) 0 0;
+           padding: calc(25px) calc(30px);
+           border-bottom: calc(3px) solid var(--accent-gold);
+       }
+
+       .settings-modal .modal-title {
+           font-family: 'Playfair Display', serif;
+           color: var(--accent-gold);
+           font-size: calc(1.5rem);
+           font-weight: 600;
+       }
+
+       .settings-modal .modal-body {
+           padding: calc(30px);
+       }
+
+       .settings-option {
+           padding: calc(20px);
+           background: rgba(255, 255, 255, 0.8);
+           border-radius: calc(15px);
+           margin-bottom: calc(20px);
+           border: 1px solid rgba(0, 15, 61, 0.1);
+           transition: all 0.3s ease;
+       }
+
+       .dark-mode .settings-option {
+           background: rgba(26, 32, 48, 0.8);
+           border-color: rgba(255, 255, 255, 0.1);
+       }
+
+       .color-blind-mode .settings-option {
+           background: rgba(255, 255, 255, 0.9);
+       }
+
+       .dark-mode.color-blind-mode .settings-option {
+           background: rgba(26, 32, 48, 0.9);
+       }
+
+       .settings-option:hover {
+           background: rgba(255, 255, 255, 0.9);
+           transform: translateY(-2px);
+           box-shadow: 0 calc(10px) calc(30px) rgba(0, 0, 0, 0.1);
+       }
+
+       .dark-mode .settings-option:hover {
+           background: rgba(26, 32, 48, 0.9);
+           box-shadow: 0 calc(10px) calc(30px) rgba(0, 0, 0, 0.3);
+       }
+
+       .color-blind-mode .settings-option:hover {
+           box-shadow: 0 calc(10px) calc(30px) rgba(0, 0, 0, 0.1);
+       }
+
+       .settings-option h5 {
+           color: var(--primary-blue);
+           margin-bottom: calc(15px);
+           font-size: calc(1.2rem);
+           font-weight: 600;
+           display: flex;
+           align-items: center;
+           gap: calc(10px);
+       }
+
+       .dark-mode .settings-option h5 {
+           color: #e0e7ff;
+       }
+
+       .settings-option h5 i {
+           color: var(--accent-gold);
+       }
+
+       .font-size-slider-container {
+           margin-top: calc(10px);
+       }
+
+       .font-size-slider {
+           width: 100%;
+           height: calc(8px);
+           -webkit-appearance: none;
+           appearance: none;
+           background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+           border-radius: calc(4px);
+           outline: none;
+           margin: calc(15px) 0;
+       }
+
+       .font-size-slider::-webkit-slider-thumb {
+           -webkit-appearance: none;
+           appearance: none;
+           width: calc(24px);
+           height: calc(24px);
+           background: var(--primary-blue);
+           border: 2px solid var(--accent-gold);
+           border-radius: 50%;
+           cursor: pointer;
+           box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+           transition: all 0.2s ease;
+       }
+
+       .color-blind-mode .font-size-slider::-webkit-slider-thumb {
+           border-color: var(--accent-gold);
+       }
+
+       .font-size-slider::-webkit-slider-thumb:hover {
+           transform: scale(1.1);
+           box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+       }
+
+       .color-blind-mode .font-size-slider::-webkit-slider-thumb:hover {
+           box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
+       }
+
+       .font-size-slider::-moz-range-thumb {
+           width: calc(24px);
+           height: calc(24px);
+           background: var(--primary-blue);
+           border: 2px solid var(--accent-gold);
+           border-radius: 50%;
+           cursor: pointer;
+           box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+       }
+
+       .font-size-value {
+           display: flex;
+           justify-content: space-between;
+           margin-top: calc(5px);
+           font-size: calc(0.9rem);
+           color: var(--secondary-blue);
+       }
+
+       .dark-mode .font-size-value {
+           color: #b8c1ec;
+       }
+
+       .font-size-preview {
+           text-align: center;
+           margin-top: calc(15px);
+           padding: calc(10px);
+           background: rgba(255, 255, 255, 0.2);
+           border-radius: calc(8px);
+           border: 1px dashed var(--accent-gold);
+           font-size: calc(1.2rem);
+           transition: all 0.3s ease;
+       }
+
+       .dark-mode .font-size-preview {
+           background: rgba(255, 255, 255, 0.1);
+       }
+
+       .color-blind-mode .font-size-preview {
+           border-color: var(--accent-gold);
+       }
+
+       .theme-toggle-group,
+       .language-toggle-group,
+       .accessibility-toggle-group {
+           display: flex;
+           gap: calc(15px);
+           flex-wrap: wrap;
+           margin-bottom: calc(10px);
+       }
+
+       .theme-btn,
+       .language-btn,
+       .accessibility-btn {
+           flex: 1;
+           min-width: calc(120px);
+           padding: calc(12px) calc(20px);
+           border: 2px solid rgba(212, 175, 55, 0.3);
+           background: rgba(255, 255, 255, 0.5);
+           color: var(--primary-blue);
+           border-radius: calc(10px);
+           cursor: pointer;
+           transition: all 0.3s ease;
+           text-align: center;
+           font-weight: 500;
+           font-size: calc(0.95rem);
+       }
+
+       .color-blind-mode .theme-btn,
+       .color-blind-mode .language-btn,
+       .color-blind-mode .accessibility-btn {
+           border-color: rgba(255, 107, 53, 0.3);
+       }
+
+       .dark-mode .theme-btn,
+       .dark-mode .language-btn,
+       .dark-mode .accessibility-btn {
+           background: rgba(255, 255, 255, 0.1);
+           color: #e0e7ff;
+       }
+
+       .theme-btn:hover,
+       .language-btn:hover,
+       .accessibility-btn:hover {
+           border-color: var(--accent-gold);
+           background: rgba(212, 175, 55, 0.1);
+           transform: translateY(-2px);
+       }
+
+       .color-blind-mode .theme-btn:hover,
+       .color-blind-mode .language-btn:hover,
+       .color-blind-mode .accessibility-btn:hover {
+           border-color: var(--accent-gold);
+           background: rgba(255, 107, 53, 0.1);
+       }
+
+       .theme-btn.active,
+       .language-btn.active,
+       .accessibility-btn.active {
+           background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+           color: var(--primary-blue);
+           border-color: var(--accent-gold);
+           box-shadow: 0 calc(5px) calc(15px) rgba(212, 175, 55, 0.3);
+       }
+
+       .color-blind-mode .theme-btn.active,
+       .color-blind-mode .language-btn.active,
+       .color-blind-mode .accessibility-btn.active {
+           box-shadow: 0 calc(5px) calc(15px) rgba(255, 107, 53, 0.3);
+       }
+
+       .theme-btn i,
+       .language-btn i,
+       .accessibility-btn i {
+           margin-right: calc(8px);
+       }
+
+       .color-blind-info {
+           font-size: calc(0.85rem);
+           color: var(--secondary-blue);
+           margin-top: calc(10px);
+           padding: calc(10px);
+           background: rgba(255, 255, 255, 0.2);
+           border-radius: calc(8px);
+           border-left: 3px solid var(--accent-gold);
+       }
+
+       .dark-mode .color-blind-info {
+           color: #b8c1ec;
+           background: rgba(255, 255, 255, 0.1);
+       }
+
+       .color-blind-mode .color-blind-info {
+           border-left-color: var(--accent-gold);
+       }
+
+       .reset-settings {
+           margin-top: calc(20px);
+           text-align: center;
+       }
+
+       .reset-settings-btn {
+           background: rgba(255, 255, 255, 0.2);
+           border: 1px solid rgba(212, 175, 55, 0.3);
+           color: var(--text-dark);
+           padding: calc(10px) calc(20px);
+           border-radius: calc(8px);
+           cursor: pointer;
+           transition: all 0.3s ease;
+           font-size: calc(0.9rem);
+       }
+
+       .color-blind-mode .reset-settings-btn {
+           border-color: rgba(255, 107, 53, 0.3);
+       }
+
+       .dark-mode .reset-settings-btn {
+           color: #e0e7ff;
+           background: rgba(255, 255, 255, 0.1);
+       }
+
+       .reset-settings-btn:hover {
+           background: rgba(212, 175, 55, 0.2);
+           border-color: var(--accent-gold);
+       }
+
+       .color-blind-mode .reset-settings-btn:hover {
+           background: rgba(255, 107, 53, 0.2);
+           border-color: var(--accent-gold);
        }
 
        /* Responsive */
@@ -1322,6 +1674,46 @@
                width: 50px;
                height: 50px;
            }
+
+           /* NEW: Mobile adjustments */
+           .verification-code-container {
+               gap: 8px;
+           }
+
+           .verification-input {
+               width: 45px !important;
+               height: 55px;
+               font-size: 1.3rem;
+           }
+
+           .demo-mode-indicator {
+               bottom: 80px;
+               right: 20px;
+               font-size: 0.75rem;
+           }
+
+           .demo-code-display {
+               top: 80px;
+               right: 20px;
+               max-width: 250px;
+               font-size: 0.95rem;
+           }
+
+           .settings-modal .modal-body {
+               padding: 20px;
+           }
+
+           .settings-option {
+               padding: 15px;
+           }
+
+           .theme-btn,
+           .language-btn,
+           .accessibility-btn {
+               min-width: 100px;
+               padding: 10px 15px;
+               font-size: 0.9rem;
+           }
        }
 
        @media (max-width: 480px) {
@@ -1344,6 +1736,38 @@
                left: 15px;
                width: 45px;
                height: 45px;
+           }
+
+           /* NEW: Small mobile adjustments */
+           .verification-code-container {
+               gap: 5px;
+           }
+
+           .verification-input {
+               width: 40px !important;
+               height: 50px;
+               font-size: 1.2rem;
+           }
+
+           .social-login-btn {
+               width: 45px;
+               height: 45px;
+           }
+
+           .demo-code-display {
+               top: 70px;
+               right: 15px;
+               max-width: 220px;
+               font-size: 0.9rem;
+               padding: 12px 15px;
+           }
+
+           .theme-btn,
+           .language-btn,
+           .accessibility-btn {
+               min-width: 85px;
+               padding: 8px 12px;
+               font-size: 0.8rem;
            }
        }
 
@@ -1373,6 +1797,28 @@
            z-index: 9999;
            transition: width 0.3s ease;
        }
+
+       /* Color Blind Mode Styles */
+       .color-blind-mode {
+           --primary-blue: #00509E;
+           --secondary-blue: #003F7F;
+           --accent-gold: #FF6B35;
+           --light-gold: #FF8C5A;
+           --success: #4CAF50;
+           --warning: #FF9800;
+       }
+
+       .dark-mode.color-blind-mode {
+           --primary-blue: #1E88E5;
+           --secondary-blue: #0D47A1;
+           --accent-gold: #FF7043;
+           --light-gold: #FF8A65;
+           --success: #66BB6A;
+           --warning: #FFA726;
+           --bg-primary: #0a0f1f;
+           --bg-secondary: #121826;
+           --bg-tertiary: #1a2c4d;
+       }
    </style>
     
     <!-- Vercel Web Analytics -->
@@ -1395,6 +1841,12 @@
    <a href="#" class="back-to-top" id="backToTop">
        <i class="fas fa-chevron-up"></i>
    </a>
+
+   <!-- Demo Mode Indicator -->
+   <div class="demo-mode-indicator">
+       <i class="fas fa-flask"></i>
+       <span data-en="Demo Mode Active" data-es="Modo Demo Activo">Demo Mode Active</span>
+   </div>
 
 
    <!-- Navigation -->
@@ -1458,7 +1910,7 @@
                    that doesn't belong to you, our system makes the process simple and efficient.
                </p>
                <div class="welcome-hero-cta">
-                   <a href="#secure-access" class="btn-login">
+                    <a href="#login" class="btn-login">
                        <i class="fas fa-arrow-down me-2"></i><span data-en="Access the System" data-es="Acceder al Sistema">Access the System</span>
                    </a>
                </div>
@@ -1491,19 +1943,80 @@
                    <div class="login-icon">
                        <i class="fas fa-shield-alt"></i>
                    </div>
-                   <h2 data-en="ClassLink Authentication Required" data-es="Autenticación ClassLink Requerida">ClassLink Authentication Required</h2>
-                   <p data-en="To access the AAI Lost & Found system, you must verify your identity through our secure ClassLink portal. This ensures only authorized Alliance Academy students and staff can use this service." data-es="Para acceder al sistema de Objetos Perdidos de AAI, debes verificar tu identidad a través de nuestro portal seguro de ClassLink. Esto garantiza que solo los estudiantes y personal autorizados de la Academia Alianza puedan utilizar este servicio.">
-                       To access the AAI Lost & Found system, you must verify your identity through our secure ClassLink portal. This ensures only authorized Alliance Academy students and staff can use this service.
+                   <h2 data-en="Enhanced Secure Login" data-es="Inicio de Sesión Seguro Mejorado">Enhanced Secure Login</h2>
+                   <p data-en="To access the AAI Lost & Found system, you must verify your identity through our secure authentication system. This ensures only authorized Alliance Academy students and staff can use this service." data-es="Para acceder al sistema de Objetos Perdidos de AAI, debes verificar tu identidad a través de nuestro sistema seguro de autenticación. Esto garantiza que solo los estudiantes y personal autorizados de la Academia Alianza puedan utilizar este servicio.">
+                       To access the AAI Lost & Found system, you must verify your identity through our secure authentication system. This ensures only authorized Alliance Academy students and staff can use this service.
                    </p>
-                  
-                   <a href="#" class="btn-login" id="classlinkLogin">
-                       <i class="fas fa-sign-in-alt"></i><span data-en="Login with ClassLink" data-es="Iniciar Sesión con ClassLink">Login with ClassLink</span>
-                   </a>
-                  
+                   
+                   <!-- Step Indicator -->
+                   <div class="step-indicator">
+                       <div class="step-dot active" id="step1"></div>
+                       <div class="step-dot" id="step2"></div>
+                   </div>
+                   
+                   <!-- Step 1: Basic Credentials -->
+                   <div class="two-factor-step active" id="stepOne">
+                       <div class="form-group text-left mb-4">
+                           <label for="loginUsername" data-en="Username / Student ID" data-es="Usuario / ID de Estudiante">Username / Student ID</label>
+                           <input type="text" class="form-control" id="loginUsername" placeholder="Enter your username or student ID" style="border-radius: 10px; padding: 12px 15px;">
+                       </div>
+                       
+                       <div class="form-group text-left mb-4">
+                           <label for="loginPassword" data-en="Password" data-es="Contraseña">Password</label>
+                           <div class="password-input-container">
+                               <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" style="border-radius: 10px; padding: 12px 15px;">
+                               <button type="button" class="password-toggle" id="passwordToggle">
+                                   <i class="fas fa-eye"></i>
+                               </button>
+                           </div>
+                       </div>
+                       
+                       <!-- Social Login Options - Only ClassLink -->
+                       <div class="social-login-options">
+                           <button class="social-login-btn" title="Login with ClassLink" id="classlinkSocialBtn">
+                               <i class="fas fa-graduation-cap"></i>
+                           </button>
+                       </div>
+                       
+                       <button class="btn-login mb-3" id="continueTo2FA">
+                           <i class="fas fa-arrow-right"></i><span data-en="Continue to 2FA" data-es="Continuar a 2FA">Continue to 2FA</span>
+                       </button>
+                   </div>
+                   
+                   <!-- Step 2: 2FA Verification -->
+                   <div class="two-factor-step" id="stepTwo">
+                       <h4 data-en="Two-Factor Authentication" data-es="Autenticación de Dos Factores">Two-Factor Authentication</h4>
+                       <p class="mb-4" data-en="Enter the 6-digit verification code sent to your registered email" data-es="Ingresa el código de verificación de 6 dígitos enviado a tu correo registrado">
+                           Enter the 6-digit verification code sent to your registered email
+                       </p>
+                       
+                       <div class="verification-code-container">
+                           <input type="text" maxlength="1" class="verification-input" data-index="0">
+                           <input type="text" maxlength="1" class="verification-input" data-index="1">
+                           <input type="text" maxlength="1" class="verification-input" data-index="2">
+                           <input type="text" maxlength="1" class="verification-input" data-index="3">
+                           <input type="text" maxlength="1" class="verification-input" data-index="4">
+                           <input type="text" maxlength="1" class="verification-input" data-index="5">
+                       </div>
+                       
+                       <div class="d-flex justify-content-between align-items-center mt-4">
+                           <button class="btn btn-outline-secondary" id="backToStepOne" data-en="Back" data-es="Atrás">Back</button>
+                           <button class="btn-login" id="verify2FACode">
+                               <i class="fas fa-check"></i><span data-en="Verify & Login" data-es="Verificar e Iniciar Sesión">Verify & Login</span>
+                           </button>
+                       </div>
+                       
+                       <div class="mt-4">
+                           <p class="mb-2" data-en="Didn't receive the code?" data-es="¿No recibiste el código?">Didn't receive the code?</p>
+                           <a href="#" class="resend-code" id="resendCode" data-en="Resend code" data-es="Reenviar código">Resend code</a>
+                           <span class="text-muted ml-2" id="resendTimer"></span>
+                       </div>
+                   </div>
+                   
                    <div class="security-features">
                        <div class="security-item reveal-element" style="transition-delay: 0.1s">
-                           <i class="fas fa-check-circle"></i>
-                           <span data-en="Secure Authentication" data-es="Autenticación Segura">Secure Authentication</span>
+                           <i class="fas fa-shield-alt"></i>
+                           <span data-en="Two-Factor Auth" data-es="Autenticación 2FA">Two-Factor Auth</span>
                        </div>
                        <div class="security-item reveal-element" style="transition-delay: 0.2s">
                            <i class="fas fa-user-shield"></i>
@@ -1639,8 +2152,8 @@
        }
 
        function updateLanguageButton(lang) {
-           const enBtn = document.getElementById('langEn');
-           const esBtn = document.getElementById('langEs');
+           const enBtn = document.querySelector('.language-btn[data-lang="en"]');
+           const esBtn = document.querySelector('.language-btn[data-lang="es"]');
            
            if (enBtn && esBtn) {
                enBtn.classList.toggle('active', lang === 'en');
@@ -1650,80 +2163,150 @@
 
        // Font Size Management
        function initFontSize() {
-           const savedFontSize = localStorage.getItem('fontSize') || '16';
-           setFontSize(savedFontSize);
-           updateFontSizeDisplay(savedFontSize);
+           const savedFontScale = localStorage.getItem('fontScale') || '100';
+           setFontSize(savedFontScale);
+           updateFontSizePreview(savedFontScale);
        }
 
        function setFontSize(size) {
-           const root = document.documentElement;
-           root.style.setProperty('--font-size-base', `${size}px`);
-           localStorage.setItem('fontSize', size);
+           const scaleFactor = size / 100;
+           document.documentElement.style.setProperty('--font-scale', scaleFactor);
+           document.body.style.fontSize = `${scaleFactor * 16}px`;
+           localStorage.setItem('fontScale', size);
        }
 
-       function updateFontSizeDisplay(size) {
-           const display = document.getElementById('fontSizeDisplay');
-           if (display) {
-               display.textContent = `${size}px`;
-           }
+       function updateFontSizePreview(size) {
+           const preview = document.getElementById('fontSizePreview');
+           if (!preview) return;
+           
+           const percentage = size + '%';
+           const textMap = {
+               'en': `Preview: ${percentage} size`,
+               'es': `Vista previa: ${percentage} tamaño`
+           };
+           
+           const currentLang = localStorage.getItem('language') || 'en';
+           preview.textContent = textMap[currentLang];
        }
 
-       // Settings Modal
+       // Settings Modal - Updated from admin page
        function initSettingsModal() {
            const settingsBtn = document.getElementById('settingsBtn');
+           if (!settingsBtn) return;
            
-           settingsBtn.addEventListener('click', function() {
+           settingsBtn.addEventListener('click', () => {
                showSettingsModal();
+           });
+           
+           // Also set up event listeners for any existing settings modal elements
+           document.addEventListener('click', function(e) {
+               if (e.target.closest('.theme-btn')) {
+                   const btn = e.target.closest('.theme-btn');
+                   document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+                   btn.classList.add('active');
+                   toggleTheme(btn.getAttribute('data-theme'));
+               }
+               
+               if (e.target.closest('.language-btn')) {
+                   const btn = e.target.closest('.language-btn');
+                   document.querySelectorAll('.language-btn').forEach(b => b.classList.remove('active'));
+                   btn.classList.add('active');
+                   setLanguage(btn.getAttribute('data-lang'));
+               }
+               
+               if (e.target.closest('.accessibility-btn')) {
+                   const btn = e.target.closest('.accessibility-btn');
+                   document.querySelectorAll('.accessibility-btn').forEach(b => b.classList.remove('active'));
+                   btn.classList.add('active');
+                   toggleColorBlindMode(btn.getAttribute('data-mode'));
+               }
+               
+               if (e.target.closest('#resetSettingsBtn')) {
+                   resetSettings();
+               }
            });
        }
 
        function showSettingsModal() {
-           const isDarkMode = document.body.classList.contains('dark-mode');
+           const currentTheme = localStorage.getItem('theme') || 'light';
            const currentLang = localStorage.getItem('language') || 'en';
-           const currentFontSize = localStorage.getItem('fontSize') || '16';
+           const currentColorBlind = localStorage.getItem('colorBlindMode') || 'normal';
+           const currentFontScale = localStorage.getItem('fontScale') || '100';
            
            const modalHTML = `
-               <div class="modal fade settings-modal" id="settingsModal" tabindex="-1" role="dialog">
+               <div class="modal fade settings-modal" id="settingsModal" tabindex="-1" role="dialog" aria-hidden="true">
                    <div class="modal-dialog modal-dialog-centered" role="document">
                        <div class="modal-content">
                            <div class="modal-header">
-                               <h5 class="modal-title" data-en="Settings" data-es="Configuración">Settings</h5>
-                               <button type="button" class="close" data-dismiss="modal">
-                                   <span>&times;</span>
+                               <h5 class="modal-title"><i class="fas fa-cog me-2"></i><span data-en="Settings" data-es="Configuración">Settings</span></h5>
+                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                   <span aria-hidden="true">&times;</span>
                                </button>
                            </div>
                            <div class="modal-body">
                                <div class="settings-option">
-                                   <label data-en="Dark Mode" data-es="Modo Oscuro">Dark Mode</label>
-                                   <label class="toggle-switch">
-                                       <input type="checkbox" id="darkModeToggle" ${isDarkMode ? 'checked' : ''}>
-                                       <span class="toggle-slider"></span>
-                                   </label>
-                               </div>
-                               
-                               <div class="settings-option">
-                                   <label data-en="Language" data-es="Idioma">Language</label>
-                                   <div class="language-toggle">
-                                       <button type="button" class="lang-btn ${currentLang === 'en' ? 'active' : ''}" id="langEn" data-lang="en">EN</button>
-                                       <button type="button" class="lang-btn ${currentLang === 'es' ? 'active' : ''}" id="langEs" data-lang="es">ES</button>
+                                   <h5><i class="fas fa-palette"></i> <span data-en="Theme" data-es="Tema">Theme</span></h5>
+                                   <div class="theme-toggle-group">
+                                       <button class="theme-btn ${currentTheme === 'light' ? 'active' : ''}" data-theme="light">
+                                           <i class="fas fa-sun"></i> <span data-en="Light" data-es="Claro">Light</span>
+                                       </button>
+                                       <button class="theme-btn ${currentTheme === 'dark' ? 'active' : ''}" data-theme="dark">
+                                           <i class="fas fa-moon"></i> <span data-en="Dark" data-es="Oscuro">Dark</span>
+                                       </button>
                                    </div>
                                </div>
                                
                                <div class="settings-option">
-                                   <label data-en="Text Size" data-es="Tamaño de Texto">Text Size</label>
-                                   <div class="font-size-controls">
-                                       <button class="font-size-btn" id="decreaseFont" title="Decrease text size">
-                                           <i class="fas fa-minus"></i>
+                                   <h5><i class="fas fa-language"></i> <span data-en="Language" data-es="Idioma">Language</span></h5>
+                                   <div class="language-toggle-group">
+                                       <button class="language-btn ${currentLang === 'en' ? 'active' : ''}" data-lang="en">
+                                           <i class="fas fa-globe-americas"></i> <span>English</span>
                                        </button>
-                                       <span class="font-size-display" id="fontSizeDisplay">${currentFontSize}px</span>
-                                       <button class="font-size-btn" id="increaseFont" title="Increase text size">
-                                           <i class="fas fa-plus"></i>
+                                       <button class="language-btn ${currentLang === 'es' ? 'active' : ''}" data-lang="es">
+                                           <i class="fas fa-globe-americas"></i> <span>Español</span>
                                        </button>
                                    </div>
+                               </div>
+                               
+                               <div class="settings-option">
+                                   <h5><i class="fas fa-eye"></i> <span data-en="Accessibility" data-es="Accesibilidad">Accessibility</span></h5>
+                                   <div class="accessibility-toggle-group">
+                                       <button class="accessibility-btn ${currentColorBlind === 'normal' ? 'active' : ''}" data-mode="normal">
+                                           <i class="fas fa-eye"></i> <span data-en="Normal Vision" data-es="Visión Normal">Normal Vision</span>
+                                       </button>
+                                       <button class="accessibility-btn ${currentColorBlind === 'color-blind' ? 'active' : ''}" data-mode="color-blind">
+                                           <i class="fas fa-low-vision"></i> <span data-en="Color Blind" data-es="Daltonismo">Color Blind</span>
+                                       </button>
+                                   </div>
+                                   <div class="color-blind-info" data-en="Optimized for protanopia/deuteranopia (red-green color blindness)" data-es="Optimizado para protanopia/deuteranopia (daltonismo rojo-verde)">
+                                       Optimized for protanopia/deuteranopia (red-green color blindness)
+                                   </div>
+                               </div>
+                               
+                               <div class="settings-option">
+                                   <h5><i class="fas fa-text-height"></i> <span data-en="Font Size" data-es="Tamaño de Fuente">Font Size</span></h5>
+                                   <div class="font-size-slider-container">
+                                       <input type="range" min="75" max="150" value="${currentFontScale}" class="font-size-slider" id="fontSizeSlider">
+                                       <div class="font-size-value">
+                                           <span data-en="Small" data-es="Pequeño">Small</span>
+                                           <span data-en="Large" data-es="Grande">Large</span>
+                                       </div>
+                                       <div class="font-size-preview" id="fontSizePreview">
+                                           <span data-en="Preview Text Size" data-es="Vista Previa del Tamaño">Preview Text Size</span>
+                                       </div>
+                                   </div>
+                               </div>
+                               
+                               <div class="reset-settings">
+                                   <button class="reset-settings-btn" id="resetSettingsBtn">
+                                       <i class="fas fa-undo me-2"></i><span data-en="Reset to Defaults" data-es="Restablecer Valores">Reset to Defaults</span>
+                                   </button>
                                </div>
                            </div>
                            <div class="modal-footer">
-                               <button type="button" class="btn btn-secondary" data-dismiss="modal" data-en="Close" data-es="Cerrar">Close</button>
+                               <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                   <i class="fas fa-times me-1"></i> <span data-en="Close" data-es="Cerrar">Close</span>
+                               </button>
                            </div>
                        </div>
                    </div>
@@ -1745,62 +2328,20 @@
            
            // Initialize modal event listeners
            setTimeout(() => {
-               // Dark mode toggle
-               const darkModeToggle = document.getElementById('darkModeToggle');
-               if (darkModeToggle) {
-                   darkModeToggle.addEventListener('change', function() {
-                       if (this.checked) {
-                           document.body.classList.add('dark-mode');
-                           localStorage.setItem('theme', 'dark');
-                       } else {
-                           document.body.classList.remove('dark-mode');
-                           localStorage.setItem('theme', 'light');
-                       }
-                   });
-               }
+               // Update font size preview
+               updateFontSizePreview(currentFontScale);
                
-               // Language buttons
-               const langEnBtn = document.getElementById('langEn');
-               const langEsBtn = document.getElementById('langEs');
-               
-               if (langEnBtn && langEsBtn) {
-                   langEnBtn.addEventListener('click', function() {
-                       setLanguage('en');
-                       updateLanguageButton('en');
-                   });
-                   
-                   langEsBtn.addEventListener('click', function() {
-                       setLanguage('es');
-                       updateLanguageButton('es');
-                   });
-               }
-               
-               // Font size controls
-               const decreaseFontBtn = document.getElementById('decreaseFont');
-               const increaseFontBtn = document.getElementById('increaseFont');
-               
-               if (decreaseFontBtn && increaseFontBtn) {
-                   decreaseFontBtn.addEventListener('click', function() {
-                       let currentSize = parseInt(localStorage.getItem('fontSize') || '16');
-                       if (currentSize > 12) {
-                           currentSize -= 2;
-                           setFontSize(currentSize);
-                           updateFontSizeDisplay(currentSize);
-                       }
-                   });
-                   
-                   increaseFontBtn.addEventListener('click', function() {
-                       let currentSize = parseInt(localStorage.getItem('fontSize') || '16');
-                       if (currentSize < 24) {
-                           currentSize += 2;
-                           setFontSize(currentSize);
-                           updateFontSizeDisplay(currentSize);
-                       }
+               // Font size slider
+               const fontSizeSlider = document.getElementById('fontSizeSlider');
+               if (fontSizeSlider) {
+                   fontSizeSlider.addEventListener('input', function() {
+                       setFontSize(this.value);
+                       updateFontSizePreview(this.value);
                    });
                }
                
                // Update language for modal elements
-               setLanguage(localStorage.getItem('language') || 'en');
+               setLanguage(currentLang);
            }, 100);
            
            // Clean up on close
@@ -1808,6 +2349,65 @@
                $('#settingsModal').remove();
                $('.modal-backdrop').remove();
            });
+       }
+
+       function toggleTheme(theme) {
+           if (theme === 'dark') {
+               document.body.classList.add('dark-mode');
+           } else {
+               document.body.classList.remove('dark-mode');
+           }
+           localStorage.setItem('theme', theme);
+       }
+
+       function toggleColorBlindMode(mode) {
+           if (mode === 'color-blind') {
+               document.body.classList.add('color-blind-mode');
+           } else {
+               document.body.classList.remove('color-blind-mode');
+           }
+           localStorage.setItem('colorBlindMode', mode);
+       }
+
+       function resetSettings() {
+           localStorage.removeItem('theme');
+           localStorage.removeItem('colorBlindMode');
+           localStorage.removeItem('language');
+           localStorage.removeItem('fontScale');
+           
+           document.body.classList.remove('dark-mode', 'color-blind-mode');
+           setLanguage('en');
+           setFontSize('100');
+           
+           // Update UI in modal if open
+           const modal = document.getElementById('settingsModal');
+           if (modal) {
+               updateSettingsUI();
+           }
+           
+           alert('Settings have been reset to defaults');
+       }
+
+       function updateSettingsUI() {
+           const currentTheme = localStorage.getItem('theme') || 'light';
+           document.querySelectorAll('.theme-btn').forEach(btn => {
+               btn.classList.toggle('active', btn.getAttribute('data-theme') === currentTheme);
+           });
+           
+           const currentColorBlind = localStorage.getItem('colorBlindMode') || 'normal';
+           document.querySelectorAll('.accessibility-btn').forEach(btn => {
+               btn.classList.toggle('active', btn.getAttribute('data-mode') === currentColorBlind);
+           });
+           
+           const currentLang = localStorage.getItem('language') || 'en';
+           document.querySelectorAll('.language-btn').forEach(btn => {
+               btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
+           });
+           
+           const currentFontScale = localStorage.getItem('fontScale') || '100';
+           const slider = document.getElementById('fontSizeSlider');
+           if (slider) slider.value = currentFontScale;
+           updateFontSizePreview(currentFontScale);
        }
 
        // Back to Top Button
@@ -2076,220 +2676,426 @@
            });
        }
 
+       // NEW: Two-Factor Authentication System
+       let demoCodeDisplay = null;
+       let demoCode = null;
 
-       // ClassLink Login Handler
-       function initClassLinkLogin() {
-           const loginBtn = document.getElementById('classlinkLogin');
-          
-           loginBtn.addEventListener('click', function(e) {
-               e.preventDefault();
-              
-               // Animate button press
-               loginBtn.style.transform = 'scale(0.98)';
-              
+       function initTwoFactorAuth() {
+           const stepOne = document.getElementById('stepOne');
+           const stepTwo = document.getElementById('stepTwo');
+           const continueBtn = document.getElementById('continueTo2FA');
+           const backBtn = document.getElementById('backToStepOne');
+           const verifyBtn = document.getElementById('verify2FACode');
+           const passwordToggle = document.getElementById('passwordToggle');
+           const verificationInputs = document.querySelectorAll('.verification-input');
+           const resendCodeBtn = document.getElementById('resendCode');
+           const step1Dot = document.getElementById('step1');
+           const step2Dot = document.getElementById('step2');
+           const classlinkSocialBtn = document.getElementById('classlinkSocialBtn');
+           
+           // Password visibility toggle
+           let passwordVisible = false;
+           passwordToggle.addEventListener('click', function() {
+               const passwordInput = document.getElementById('loginPassword');
+               if (passwordVisible) {
+                   passwordInput.type = 'password';
+                   passwordToggle.innerHTML = '<i class="fas fa-eye"></i>';
+                   passwordToggle.title = 'Show password';
+               } else {
+                   passwordInput.type = 'text';
+                   passwordToggle.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                   passwordToggle.title = 'Hide password';
+               }
+               passwordVisible = !passwordVisible;
+           });
+           
+           // Continue to 2FA step
+           continueBtn.addEventListener('click', function() {
+               const username = document.getElementById('loginUsername').value;
+               const password = document.getElementById('loginPassword').value;
+               
+               if (!username || !password) {
+                   // Show error animation
+                   if (!username) {
+                       document.getElementById('loginUsername').classList.add('is-invalid');
+                   }
+                   if (!password) {
+                       document.getElementById('loginPassword').classList.add('is-invalid');
+                   }
+                   
+                   // Shake animation
+                   this.style.animation = 'shake 0.5s';
+                   setTimeout(() => {
+                       this.style.animation = '';
+                   }, 500);
+                   
+                   return;
+               }
+               
+               // Clear any previous errors
+               document.getElementById('loginUsername').classList.remove('is-invalid');
+               document.getElementById('loginPassword').classList.remove('is-invalid');
+               
                // Show loading state
-               const originalHTML = loginBtn.innerHTML;
+               const originalHTML = this.innerHTML;
                const currentLang = localStorage.getItem('language') || 'en';
                const loadingText = currentLang === 'es' 
-                   ? '<i class="fas fa-spinner fa-spin me-2"></i>Conectando a ClassLink...' 
-                   : '<i class="fas fa-spinner fa-spin me-2"></i>Connecting to ClassLink...';
+                   ? '<i class="fas fa-spinner fa-spin me-2"></i>Verificando...' 
+                   : '<i class="fas fa-spinner fa-spin me-2"></i>Verifying...';
                
-               loginBtn.innerHTML = loadingText;
-               loginBtn.style.pointerEvents = 'none';
-              
-               // Simulate authentication delay
+               this.innerHTML = loadingText;
+               this.disabled = true;
+               
+               // Simulate API call
                setTimeout(() => {
-                   // Check if user is already authenticated
-                   const isAuthenticated = localStorage.getItem('aai_authenticated');
-                  
-                   if (isAuthenticated) {
-                       // Already authenticated, redirect
-                       window.location.href = 'index.html';
-                   } else {
-                       // Show authentication modal
-                       showAuthModal();
-                      
-                       // Reset button
-                       setTimeout(() => {
-                           loginBtn.innerHTML = originalHTML;
-                           loginBtn.style.transform = '';
-                           loginBtn.style.pointerEvents = 'auto';
-                       }, 500);
-                   }
+                   // Transition to step 2
+                   stepOne.classList.remove('active');
+                   stepTwo.classList.add('active');
+                   step1Dot.classList.remove('active');
+                   step2Dot.classList.add('active');
+                   
+                   // Generate and "send" verification code (for demo)
+                   demoCode = Math.floor(100000 + Math.random() * 900000).toString();
+                   localStorage.setItem('demo_2fa_code', demoCode);
+                   
+                   // Show demo code display
+                   showDemoCodeDisplay(demoCode);
+                   
+                   // Auto-focus first verification input
+                   verificationInputs[0].focus();
+                   
+                   // Reset continue button
+                   this.innerHTML = originalHTML;
+                   this.disabled = false;
+                   
+                   // Start resend timer
+                   startResendTimer();
                }, 1500);
            });
-       }
-
-
-       // Modern Authentication Modal with Black Background
-       function showAuthModal() {
-           const currentLang = localStorage.getItem('language') || 'en';
-           const titleText = currentLang === 'es' ? 'Autenticación Escolar' : 'School Authentication';
-           const subtitleText = currentLang === 'es' 
-               ? 'Inicia sesión con tus credenciales de la Academia Alianza' 
-               : 'Sign in with your Alliance Academy credentials';
-           const usernamePlaceholder = currentLang === 'es' ? 'Usuario' : 'Username';
-           const passwordPlaceholder = currentLang === 'es' ? 'Contraseña' : 'Password';
-           const buttonText = currentLang === 'es' ? 'Iniciar Sesión' : 'Sign In';
-           const noteText = currentLang === 'es' ? 'Demo: Cualquier credencial funcionará' : 'Demo: Any credentials will work';
            
-           const modalHTML = `
-               <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-hidden="true">
-                   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                       <div class="modal-content" style="
-                           border-radius: 20px;
-                           overflow: hidden;
-                           border: none;
-                           background: #000000;
-                           color: #ffffff;
-                       ">
-                           <div class="modal-body p-0">
-                               <div class="auth-container" style="
-                                   padding: 40px 30px;
-                                   text-align: center;
-                                   background: #000000;
-                               ">
-                                   <div class="auth-icon mb-4">
-                                       <div style="
-                                           width: 80px;
-                                           height: 80px;
-                                           margin: 0 auto;
-                                           background: linear-gradient(135deg, #1a3a8f, #2a4bab);
-                                           border-radius: 50%;
-                                           display: flex;
-                                           align-items: center;
-                                           justify-content: center;
-                                       ">
-                                           <i class="fas fa-user-graduate fa-2x" style="color: var(--accent-gold);"></i>
-                                       </div>
-                                   </div>
-                                   <h4 style="
-                                       color: var(--accent-gold);
-                                       margin-bottom: 10px;
-                                       font-weight: 600;
-                                       font-family: 'Playfair Display', serif;
-                                   ">
-                                       ${titleText}
-                                   </h4>
-                                   <p style="
-                                       color: #e0e7ff;
-                                       opacity: 0.8;
-                                       margin-bottom: 30px;
-                                       font-size: 0.9rem;
-                                   ">
-                                       ${subtitleText}
-                                   </p>
-                                   <div class="auth-form">
-                                       <div class="form-group" style="margin-bottom: 20px;">
-                                           <input type="text" class="form-control" id="authUsername" placeholder="${usernamePlaceholder}" style="
-                                               border-radius: 10px;
-                                               border: 2px solid #333333;
-                                               padding: 12px 15px;
-                                               font-size: 0.9rem;
-                                               background: #111111;
-                                               color: #ffffff;
-                                           ">
-                                       </div>
-                                       <div class="form-group" style="margin-bottom: 25px;">
-                                           <input type="password" class="form-control" id="authPassword" placeholder="${passwordPlaceholder}" style="
-                                               border-radius: 10px;
-                                               border: 2px solid #333333;
-                                               padding: 12px 15px;
-                                               font-size: 0.9rem;
-                                               background: #111111;
-                                               color: #ffffff;
-                                           ">
-                                       </div>
-                                       <button id="authSubmit" class="btn btn-primary btn-block" style="
-                                           background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
-                                           border: none;
-                                           border-radius: 10px;
-                                           padding: 12px;
-                                           font-weight: 600;
-                                           color: var(--primary-blue);
-                                       ">
-                                           <i class="fas fa-sign-in-alt me-2"></i>${buttonText}
-                                       </button>
-                                   </div>
-                                   <div class="auth-note mt-4">
-                                       <small style="color: #b8c1ec; opacity: 0.6; display: block;">
-                                           <i class="fas fa-info-circle me-1"></i>
-                                           ${noteText}
-                                       </small>
-                                   </div>
-                               </div>
-                           </div>
-                       </div>
+           // Back to step 1
+           backBtn.addEventListener('click', function() {
+               stepTwo.classList.remove('active');
+               stepOne.classList.add('active');
+               step2Dot.classList.remove('active');
+               step1Dot.classList.add('active');
+               
+               // Clear verification inputs
+               verificationInputs.forEach(input => {
+                   input.value = '';
+                   input.classList.remove('filled');
+               });
+               
+               // Remove demo code display
+               removeDemoCodeDisplay();
+               
+               // Focus on username
+               document.getElementById('loginUsername').focus();
+           });
+           
+           // Verification code input handling
+           verificationInputs.forEach((input, index) => {
+               input.addEventListener('input', function(e) {
+                   const value = this.value;
+                   
+                   // Only allow numbers
+                   if (!/^\d*$/.test(value)) {
+                       this.value = '';
+                       return;
+                   }
+                   
+                   if (value.length === 1) {
+                       this.classList.add('filled');
+                       
+                       // Move to next input
+                       if (index < verificationInputs.length - 1) {
+                           verificationInputs[index + 1].focus();
+                       }
+                   } else {
+                       this.classList.remove('filled');
+                   }
+               });
+               
+               input.addEventListener('keydown', function(e) {
+                   if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                       // Move to previous input on backspace
+                       verificationInputs[index - 1].focus();
+                       verificationInputs[index - 1].value = '';
+                       verificationInputs[index - 1].classList.remove('filled');
+                   }
+               });
+               
+               input.addEventListener('paste', function(e) {
+                   e.preventDefault();
+                   const pasteData = e.clipboardData.getData('text');
+                   const numbers = pasteData.replace(/\D/g, '');
+                   
+                   if (numbers.length === 6) {
+                       // Fill all inputs with pasted code
+                       verificationInputs.forEach((input, i) => {
+                           input.value = numbers[i] || '';
+                           if (numbers[i]) {
+                               input.classList.add('filled');
+                           }
+                       });
+                       verificationInputs[5].focus();
+                   }
+               });
+           });
+           
+           // Verify 2FA code
+           verifyBtn.addEventListener('click', function() {
+               const code = Array.from(verificationInputs).map(input => input.value).join('');
+               
+               if (code.length !== 6) {
+                   // Shake all inputs
+                   verificationInputs.forEach(input => {
+                       input.style.animation = 'shake 0.5s';
+                   });
+                   setTimeout(() => {
+                       verificationInputs.forEach(input => {
+                           input.style.animation = '';
+                       });
+                   }, 500);
+                   return;
+               }
+               
+               // Show loading state
+               const originalHTML = this.innerHTML;
+               const currentLang = localStorage.getItem('language') || 'en';
+               const loadingText = currentLang === 'es' 
+                   ? '<i class="fas fa-spinner fa-spin me-2"></i>Verificando...' 
+                   : '<i class="fas fa-spinner fa-spin me-2"></i>Verifying...';
+               
+               this.innerHTML = loadingText;
+               this.disabled = true;
+               
+               // Simulate verification
+               setTimeout(() => {
+                   // In demo mode, accept any 6-digit code
+                   const username = document.getElementById('loginUsername').value;
+                   
+                   // Store authentication
+                   localStorage.setItem('aai_authenticated', 'true');
+                   localStorage.setItem('aai_username', username || 'Demo User');
+                   localStorage.setItem('aai_last_login', new Date().toISOString());
+                   
+                   // Show success state
+                   this.innerHTML = '<i class="fas fa-check me-2"></i> Success!';
+                   this.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                   
+                   // Remove demo code display
+                   removeDemoCodeDisplay();
+                   
+                   // Redirect after delay
+                   setTimeout(() => {
+                       window.location.href = 'index.html';
+                   }, 1000);
+               }, 1500);
+           });
+           
+           // Resend code functionality
+           let resendTimer = null;
+           let resendTime = 30;
+           
+           function startResendTimer() {
+               resendTime = 30;
+               resendCodeBtn.classList.add('disabled');
+               resendCodeBtn.style.pointerEvents = 'none';
+               
+               const timerDisplay = document.getElementById('resendTimer');
+               timerDisplay.textContent = `(${resendTime}s)`;
+               
+               resendTimer = setInterval(() => {
+                   resendTime--;
+                   timerDisplay.textContent = `(${resendTime}s)`;
+                   
+                   if (resendTime <= 0) {
+                       clearInterval(resendTimer);
+                       resendCodeBtn.classList.remove('disabled');
+                       resendCodeBtn.style.pointerEvents = 'auto';
+                       timerDisplay.textContent = '';
+                   }
+               }, 1000);
+           }
+           
+           resendCodeBtn.addEventListener('click', function(e) {
+               e.preventDefault();
+               
+               if (resendCodeBtn.classList.contains('disabled')) return;
+               
+               // Generate new demo code
+               demoCode = Math.floor(100000 + Math.random() * 900000).toString();
+               localStorage.setItem('demo_2fa_code', demoCode);
+               
+               // Update demo code display
+               if (demoCodeDisplay) {
+                   const currentLang = localStorage.getItem('language') || 'en';
+                   const codeText = currentLang === 'es' 
+                       ? `Código de demostración: ${demoCode}` 
+                       : `Demo verification code: ${demoCode}`;
+                   
+                   demoCodeDisplay.querySelector('span').textContent = codeText;
+               }
+               
+               // Start timer again
+               startResendTimer();
+               
+               // Show notification
+               const currentLang = localStorage.getItem('language') || 'en';
+               const notificationText = currentLang === 'es' 
+                   ? `Nuevo código de demostración: ${demoCode}`
+                   : `New demo code sent: ${demoCode}`;
+               
+               showDemoNotification(notificationText);
+               
+               // Visual feedback
+               this.style.transform = 'scale(1.1)';
+               setTimeout(() => {
+                   this.style.transform = '';
+               }, 300);
+           });
+           
+           // ClassLink social button
+           classlinkSocialBtn.addEventListener('click', function() {
+               // Simulate ClassLink login
+               const currentLang = localStorage.getItem('language') || 'en';
+               const loadingText = currentLang === 'es' 
+                   ? '<i class="fas fa-spinner fa-spin me-2"></i>Conectando con ClassLink...' 
+                   : '<i class="fas fa-spinner fa-spin me-2"></i>Connecting with ClassLink...';
+               
+               const originalHTML = this.innerHTML;
+               this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+               
+               setTimeout(() => {
+                   this.innerHTML = originalHTML;
+                   
+                   // Auto-fill demo credentials
+                   document.getElementById('loginUsername').value = 'student123';
+                   document.getElementById('loginPassword').value = 'demo123';
+                   
+                   // Show success feedback
+                   this.style.color = 'var(--success)';
+                   this.style.borderColor = 'var(--success)';
+                   
+                   setTimeout(() => {
+                       this.style.color = '';
+                       this.style.borderColor = '';
+                   }, 2000);
+                   
+                   // Show notification
+                   const notificationText = currentLang === 'es' 
+                       ? 'Credenciales de demostración rellenadas'
+                       : 'Demo credentials filled';
+                   
+                   showDemoNotification(notificationText);
+               }, 1500);
+           });
+           
+           // Add shake animation for errors
+           if (!document.querySelector('#shakeAnimation')) {
+               const style = document.createElement('style');
+               style.id = 'shakeAnimation';
+               style.textContent = `
+                   @keyframes shake {
+                       0%, 100% { transform: translateX(0); }
+                       10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                       20%, 40%, 60%, 80% { transform: translateX(5px); }
+                   }
+                   .is-invalid {
+                       border-color: #dc3545 !important;
+                       background-color: rgba(220, 53, 69, 0.1) !important;
+                   }
+               `;
+               document.head.appendChild(style);
+           }
+       }
+       
+       // NEW: Show demo code display
+       function showDemoCodeDisplay(code) {
+           // Remove existing display if any
+           removeDemoCodeDisplay();
+           
+           // Create display element
+           const currentLang = localStorage.getItem('language') || 'en';
+           const codeText = currentLang === 'es' 
+               ? `Código de demostración: ${code}` 
+               : `Demo verification code: ${code}`;
+           
+           demoCodeDisplay = document.createElement('div');
+           demoCodeDisplay.className = 'demo-code-display';
+           demoCodeDisplay.innerHTML = `
+               <i class="fas fa-key"></i>
+               <span>${codeText}</span>
+           `;
+           
+           // Add to page
+           document.body.appendChild(demoCodeDisplay);
+           
+           // Add slideIn animation if not present
+           if (!document.querySelector('#slideInAnimation')) {
+               const style = document.createElement('style');
+               style.id = 'slideInAnimation';
+               style.textContent = `
+                   @keyframes slideIn {
+                       from { transform: translateX(100%); opacity: 0; }
+                       to { transform: translateX(0); opacity: 1; }
+                   }
+               `;
+               document.head.appendChild(style);
+           }
+       }
+       
+       // NEW: Remove demo code display
+       function removeDemoCodeDisplay() {
+           if (demoCodeDisplay && demoCodeDisplay.parentNode) {
+               demoCodeDisplay.style.animation = 'slideIn 0.3s ease reverse forwards';
+               setTimeout(() => {
+                   demoCodeDisplay.parentNode.removeChild(demoCodeDisplay);
+                   demoCodeDisplay = null;
+               }, 300);
+           }
+       }
+       
+       // NEW: Show demo notification
+       function showDemoNotification(message) {
+           // Create notification element
+           const notification = document.createElement('div');
+           notification.className = 'demo-notification';
+           notification.innerHTML = `
+               <div style="
+                   position: fixed;
+                   top: 150px;
+                   right: 30px;
+                   background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+                   color: var(--primary-blue);
+                   padding: 15px 20px;
+                   border-radius: 10px;
+                   box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+                   z-index: 9998;
+                   max-width: 350px;
+                   animation: slideIn 0.3s ease;
+                   border: 1px solid rgba(255,255,255,0.2);
+               ">
+                   <div style="display: flex; align-items: center; gap: 10px;">
+                       <i class="fas fa-info-circle"></i>
+                       <span>${message}</span>
                    </div>
                </div>
            `;
-          
-           // Add modal to page
-           document.body.insertAdjacentHTML('beforeend', modalHTML);
-          
-           // Show modal with animation
-           const modal = $('#authModal');
-          
-           // Style modal backdrop to be darker
-           $('.modal-backdrop').css({
-               'background-color': 'rgba(0, 0, 0, 0.9)',
-               'opacity': '1'
-           });
-          
-           modal.modal('show');
-          
-           // Handle form submission
-           document.getElementById('authSubmit').addEventListener('click', function() {
-               const username = document.getElementById('authUsername').value;
-               const password = document.getElementById('authPassword').value;
-              
-               if (username && password) {
-                   // Store authentication
-                   localStorage.setItem('aai_authenticated', 'true');
-                   localStorage.setItem('aai_username', username);
-                  
-                   // Animate success
-                   const successText = currentLang === 'es' 
-                       ? '<i class="fas fa-check me-2"></i>¡Éxito!' 
-                       : '<i class="fas fa-check me-2"></i>Success!';
-                   this.innerHTML = successText;
-                   this.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
-                  
-                   // Close and redirect
-                   setTimeout(() => {
-                       modal.modal('hide');
-                       setTimeout(() => {
-                           window.location.href = 'index.html';
-                       }, 300);
-                   }, 1000);
-               } else {
-                   // Shake animation for error
-                   const errorText = currentLang === 'es' 
-                       ? '<i class="fas fa-exclamation me-2"></i>Complete ambos campos' 
-                       : '<i class="fas fa-exclamation me-2"></i>Please fill both fields';
-                   this.innerHTML = errorText;
-                   this.style.background = 'linear-gradient(135deg, #dc3545, #e35d6a)';
-                  
-                   setTimeout(() => {
-                       this.innerHTML = `<i class="fas fa-sign-in-alt me-2"></i>${buttonText}`;
-                       this.style.background = 'linear-gradient(135deg, var(--accent-gold), var(--light-gold))';
-                   }, 1500);
-               }
-           });
-          
-           // Clean up modal on close
-           modal.on('hidden.bs.modal', function() {
-               $('#authModal').remove();
-               $('.modal-backdrop').remove();
-           });
-          
-           // Also make the modal backdrop dark when it appears
-           modal.on('shown.bs.modal', function() {
-               $('.modal-backdrop').css({
-                   'background-color': 'rgba(0, 0, 0, 0.9)',
-                   'opacity': '1'
-               });
-           });
+           
+           // Add to page
+           document.body.appendChild(notification);
+           
+           // Remove after 5 seconds
+           setTimeout(() => {
+               notification.style.animation = 'slideIn 0.3s ease reverse forwards';
+               setTimeout(() => {
+                   if (notification.parentNode) {
+                       notification.parentNode.removeChild(notification);
+                   }
+               }, 300);
+           }, 5000);
        }
 
 
@@ -2325,11 +3131,24 @@
            initSmoothScroll();
            initNavbarScroll();
            setActiveNavItem();
-           initClassLinkLogin();
+           initTwoFactorAuth(); // NEW: Initialize 2FA system
           
+           // Load user preferences
+           loadUserPreferences();
+           
            // Check authentication
            const isAuthenticated = localStorage.getItem('aai_authenticated');
            if (isAuthenticated && window.location.pathname.endsWith('login.html')) {
+               // Show welcome back notification
+               const username = localStorage.getItem('aai_username') || 'User';
+               const currentLang = localStorage.getItem('language') || 'en';
+               const welcomeMsg = currentLang === 'es' 
+                   ? `¡Bienvenido de nuevo, ${username}!` 
+                   : `Welcome back, ${username}!`;
+               
+               showDemoNotification(welcomeMsg);
+               
+               // Redirect after delay
                setTimeout(() => {
                    window.location.href = 'index.html';
                }, 2000);
@@ -2343,6 +3162,25 @@
                }, 300);
            }, 1000);
        });
+       
+       // Load user preferences from localStorage
+       function loadUserPreferences() {
+           const savedTheme = localStorage.getItem('theme') || 'light';
+           if (savedTheme === 'dark') {
+               document.body.classList.add('dark-mode');
+           }
+           
+           const savedColorBlind = localStorage.getItem('colorBlindMode') || 'normal';
+           if (savedColorBlind === 'color-blind') {
+               document.body.classList.add('color-blind-mode');
+           }
+           
+           const savedLang = localStorage.getItem('language') || 'en';
+           setLanguage(savedLang);
+           
+           const savedFontScale = localStorage.getItem('fontScale') || '100';
+           setFontSize(savedFontScale);
+       }
 
 
        // Handle page unloading

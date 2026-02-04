@@ -19,6 +19,21 @@
     box-sizing: border-box;
 }
 
+/* Dark Mode Theme */
+.dark-mode {
+    --primary-blue: #020409;
+    --secondary-blue: #090f22;
+    --accent-gold: #d4af37;
+    --light-gold: #e6c34f;
+    --light-blue: #0a0f1f;
+    --white: #ffffff;
+    --black: #000000;
+    --text-dark: #e0e7ff;
+    --success: #28a745;
+    --warning: #ffc107;
+    --danger: #dc3545;
+}
+
 body {
     font-family: 'Georgia', serif;
     background-color: var(--light-blue);

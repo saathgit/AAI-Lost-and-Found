@@ -63,13 +63,6 @@
     <script>
         // Handle SAML authentication response
         document.addEventListener('DOMContentLoaded', function() {
-            // In a real SAML implementation, you would:
-            // 1. Parse the SAML response from ADFS
-            // 2. Validate the digital signature
-            // 3. Extract user attributes from the assertion
-            
-            // For this demo, we'll simulate successful authentication
-            // since ADFS doesn't provide a test environment
             
             simulateSAMLProcessing();
         });
@@ -91,9 +84,7 @@
                 }, 2000);
             }, 2000);
         }
-        
-        // Real SAML implementation would look like:
-    
+            
         function processSAMLResponse() {
             // Get SAMLResponse from URL parameters
             const urlParams = new URLSearchParams(window.location.search);

@@ -678,6 +678,150 @@
             0 0 0 1px rgba(255, 107, 53, 0.2);
     }
 
+    /* Enhanced Field States */
+    .form-control.valid, .form-select.valid {
+        border-color: var(--success);
+        box-shadow: 
+            0 calc(5px * var(--font-scale)) calc(15px * var(--font-scale)) rgba(40, 167, 69, 0.15),
+            0 0 0 calc(1px * var(--font-scale)) rgba(40, 167, 69, 0.2);
+        background: rgba(40, 167, 69, 0.03);
+    }
+
+    .dark-mode .form-control.valid,
+    .dark-mode .form-select.valid {
+        background: rgba(40, 167, 69, 0.1);
+    }
+
+    .form-control.invalid, .form-select.invalid {
+        border-color: var(--danger);
+        box-shadow: 
+            0 calc(5px * var(--font-scale)) calc(15px * var(--font-scale)) rgba(220, 53, 69, 0.15),
+            0 0 0 calc(1px * var(--font-scale)) rgba(220, 53, 69, 0.2);
+        background: rgba(220, 53, 69, 0.03);
+    }
+
+    .dark-mode .form-control.invalid,
+    .dark-mode .form-select.invalid {
+        background: rgba(220, 53, 69, 0.1);
+    }
+
+    .form-control:focus, .form-select:focus {
+        outline: none;
+        border-color: var(--accent-gold);
+        box-shadow: 
+            0 calc(10px * var(--font-scale)) calc(30px * var(--font-scale)) rgba(212, 175, 55, 0.15),
+            0 0 0 calc(3px * var(--font-scale)) rgba(212, 175, 55, 0.1);
+        background: var(--white);
+        transform: translateY(calc(-2px * var(--font-scale)));
+    }
+
+    .color-blind-mode .form-control:focus,
+    .color-blind-mode .form-select:focus {
+        border-color: var(--accent-gold);
+        box-shadow: 
+            0 calc(10px * var(--font-scale)) calc(30px * var(--font-scale)) rgba(255, 107, 53, 0.15),
+            0 0 0 calc(3px * var(--font-scale)) rgba(255, 107, 53, 0.1);
+    }
+
+    .dark-mode .form-control:focus,
+    .dark-mode .form-select:focus {
+        background: #1a2030;
+    }
+
+    /* Enhanced Field Feedback Icons */
+    .field-feedback {
+        position: absolute;
+        right: calc(15px * var(--font-scale));
+        top: calc(55px * var(--font-scale));
+        font-size: calc(1.1rem * var(--font-scale));
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        z-index: 2;
+    }
+
+    .field-feedback.show {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .field-feedback.valid {
+        color: var(--success);
+    }
+
+    .field-feedback.invalid {
+        color: var(--danger);
+    }
+
+    /* Character Counter */
+    .char-counter {
+        font-size: calc(0.85rem * var(--font-scale));
+        color: var(--text-dark);
+        opacity: 0.7;
+        text-align: right;
+        margin-top: calc(5px * var(--font-scale));
+        transition: all 0.3s ease;
+    }
+
+    .char-counter.warning {
+        color: var(--warning);
+        font-weight: 600;
+    }
+
+    .char-counter.danger {
+        color: var(--danger);
+        font-weight: 700;
+    }
+
+    /* Form Group with Feedback */
+    .form-group {
+        margin-bottom: calc(25px * var(--font-scale));
+        position: relative;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 600;
+        color: var(--primary-blue);
+        margin-bottom: calc(10px * var(--font-scale));
+        font-size: calc(1rem * var(--font-scale));
+        transition: color 0.3s ease;
+    }
+
+    .dark-mode .form-label {
+        color: #e0e7ff;
+    }
+
+    .form-label i {
+        margin-right: calc(8px * var(--font-scale));
+        color: var(--accent-gold);
+        width: calc(20px * var(--font-scale));
+    }
+
+    .form-control, .form-select {
+        width: 100%;
+        padding: calc(16px * var(--font-scale)) calc(20px * var(--font-scale));
+        border: calc(2px * var(--font-scale)) solid rgba(0, 15, 61, 0.1);
+        border-radius: calc(12px * var(--font-scale));
+        font-size: calc(1rem * var(--font-scale));
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 calc(5px * var(--font-scale)) calc(15px * var(--font-scale)) rgba(0, 0, 0, 0.05);
+    }
+
+    .dark-mode .form-control,
+    .dark-mode .form-select {
+        background: rgba(26, 32, 48, 0.9);
+        border: calc(2px * var(--font-scale)) solid rgba(255, 255, 255, 0.1);
+        color: #e0e7ff;
+        box-shadow: 0 calc(5px * var(--font-scale)) calc(15px * var(--font-scale)) rgba(0, 0, 0, 0.3);
+    }
+
+    textarea.form-control {
+        min-height: calc(120px * var(--font-scale));
+        resize: vertical;
+    }
+
     /* Process Steps */
     .process-steps {
         display: flex;
@@ -861,75 +1005,6 @@
         margin-bottom: calc(30px * var(--font-scale));
     }
 
-    .form-group {
-        margin-bottom: calc(25px * var(--font-scale));
-    }
-
-    .form-label {
-        display: block;
-        font-weight: 600;
-        color: var(--primary-blue);
-        margin-bottom: calc(10px * var(--font-scale));
-        font-size: calc(1rem * var(--font-scale));
-    }
-
-    .dark-mode .form-label {
-        color: #e0e7ff;
-    }
-
-    .form-label i {
-        margin-right: calc(8px * var(--font-scale));
-        color: var(--accent-gold);
-        width: calc(20px * var(--font-scale));
-    }
-
-    .form-control, .form-select {
-        width: 100%;
-        padding: calc(16px * var(--font-scale)) calc(20px * var(--font-scale));
-        border: calc(2px * var(--font-scale)) solid rgba(0, 15, 61, 0.1);
-        border-radius: calc(12px * var(--font-scale));
-        font-size: calc(1rem * var(--font-scale));
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        background: rgba(255, 255, 255, 0.9);
-        box-shadow: 0 calc(5px * var(--font-scale)) calc(15px * var(--font-scale)) rgba(0, 0, 0, 0.05);
-    }
-
-    .dark-mode .form-control,
-    .dark-mode .form-select {
-        background: rgba(26, 32, 48, 0.9);
-        border: calc(2px * var(--font-scale)) solid rgba(255, 255, 255, 0.1);
-        color: #e0e7ff;
-        box-shadow: 0 calc(5px * var(--font-scale)) calc(15px * var(--font-scale)) rgba(0, 0, 0, 0.3);
-    }
-
-    .form-control:focus, .form-select:focus {
-        outline: none;
-        border-color: var(--accent-gold);
-        box-shadow: 
-            0 calc(10px * var(--font-scale)) calc(30px * var(--font-scale)) rgba(212, 175, 55, 0.15),
-            0 0 0 calc(3px * var(--font-scale)) rgba(212, 175, 55, 0.1);
-        background: var(--white);
-        transform: translateY(calc(-2px * var(--font-scale)));
-    }
-
-    .color-blind-mode .form-control:focus,
-    .color-blind-mode .form-select:focus {
-        border-color: var(--accent-gold);
-        box-shadow: 
-            0 calc(10px * var(--font-scale)) calc(30px * var(--font-scale)) rgba(255, 107, 53, 0.15),
-            0 0 0 calc(3px * var(--font-scale)) rgba(255, 107, 53, 0.1);
-    }
-
-    .dark-mode .form-control:focus,
-    .dark-mode .form-select:focus {
-        background: #1a2030;
-    }
-
-    textarea.form-control {
-        min-height: calc(120px * var(--font-scale));
-        resize: vertical;
-    }
-
     /* Verification Section */
     .verification-section {
         background: rgba(212, 175, 55, 0.05);
@@ -1047,9 +1122,10 @@
         color: var(--primary-blue);
     }
 
-    /* Checkbox */
+    /* Checkbox with Validation */
     .form-check {
         margin-bottom: calc(20px * var(--font-scale));
+        position: relative;
     }
 
     .form-check-input {
@@ -1068,6 +1144,14 @@
     .form-check-input:checked {
         background-color: var(--accent-gold);
         border-color: var(--accent-gold);
+    }
+
+    .form-check-input.valid {
+        border-color: var(--success);
+    }
+
+    .form-check-input.invalid {
+        border-color: var(--danger);
     }
 
     .form-check-label {
@@ -2008,7 +2092,8 @@
                                 <i class="fas fa-hashtag"></i>Item ID *
                             </label>
                             <input type="text" class="form-control" id="itemId" 
-                                   placeholder="Enter the Item ID (e.g., AAI-001)" required>
+                                   placeholder="Enter the Item ID (e.g., AAI-2024-0101-123)" required>
+                            <div class="field-feedback" id="itemIdFeedback"></div>
                             <small class="form-text" style="color: var(--text-dark); opacity: 0.7;">Found on the item's details page</small>
                         </div>
                         
@@ -2018,6 +2103,10 @@
                             </label>
                             <input type="text" class="form-control" id="itemName" 
                                    placeholder="e.g., Black Jacket, Calculus Textbook" required>
+                            <div class="field-feedback" id="itemNameFeedback"></div>
+                            <div class="char-counter" id="itemNameCounter">
+                                <span id="itemNameCount">0</span>/50 characters
+                            </div>
                         </div>
                     </div>
                     
@@ -2028,6 +2117,10 @@
                         </label>
                         <textarea class="form-control" id="itemDescription" rows="3"
                                   placeholder="Please describe the item in detail as you remember it" required></textarea>
+                        <div class="field-feedback" id="itemDescriptionFeedback"></div>
+                        <div class="char-counter" id="itemDescriptionCounter">
+                            <span id="itemDescriptionCount">0</span>/200 characters
+                        </div>
                     </div>
                     
                     <!-- Verification Details -->
@@ -2042,6 +2135,10 @@
                             </label>
                             <textarea class="form-control" id="identifyingFeatures" rows="3"
                                       placeholder="Describe any unique marks, damages, stickers, engravings, or contents that prove ownership" required></textarea>
+                            <div class="field-feedback" id="identifyingFeaturesFeedback"></div>
+                            <div class="char-counter" id="identifyingFeaturesCounter">
+                                <span id="identifyingFeaturesCount">0</span>/300 characters
+                            </div>
                         </div>
                         
                         <div class="form-grid">
@@ -2050,6 +2147,7 @@
                                     <i class="fas fa-calendar"></i>Date Lost *
                                 </label>
                                 <input type="date" class="form-control" id="lostDate" required>
+                                <div class="field-feedback" id="lostDateFeedback"></div>
                             </div>
                             
                             <div class="form-group">
@@ -2068,6 +2166,7 @@
                                     <option value="bus-stop">Bus Area</option>
                                     <option value="other">Other Area</option>
                                 </select>
+                                <div class="field-feedback" id="lostLocationFeedback"></div>
                             </div>
                         </div>
                     </div>
@@ -2083,6 +2182,10 @@
                                 <i class="fas fa-user"></i>Full Name *
                             </label>
                             <input type="text" class="form-control" id="claimantName" required>
+                            <div class="field-feedback" id="claimantNameFeedback"></div>
+                            <div class="char-counter" id="claimantNameCounter">
+                                <span id="claimantNameCount">0</span>/50 characters
+                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -2090,6 +2193,7 @@
                                 <i class="fas fa-envelope"></i>Email Address *
                             </label>
                             <input type="email" class="form-control" id="claimantEmail" required>
+                            <div class="field-feedback" id="claimantEmailFeedback"></div>
                         </div>
                     </div>
                     
@@ -2099,6 +2203,7 @@
                                 <i class="fas fa-phone"></i>Phone Number *
                             </label>
                             <input type="tel" class="form-control" id="claimantPhone" required>
+                            <div class="field-feedback" id="claimantPhoneFeedback"></div>
                         </div>
                         
                         <div class="form-group">
@@ -2116,6 +2221,7 @@
                                 <option value="parent">Parent</option>
                                 <option value="other">Other</option>
                             </select>
+                            <div class="field-feedback" id="claimantGradeFeedback"></div>
                         </div>
                     </div>
                     
@@ -2125,6 +2231,7 @@
                         </label>
                         <input type="text" class="form-control" id="studentId" 
                                placeholder="For faster verification">
+                        <div class="field-feedback" id="studentIdFeedback"></div>
                     </div>
                     
                     <div class="form-group">
@@ -2133,6 +2240,10 @@
                         </label>
                         <textarea class="form-control" id="additionalInfo" rows="3"
                                   placeholder="Any other information that might help verify your claim"></textarea>
+                        <div class="field-feedback" id="additionalInfoFeedback"></div>
+                        <div class="char-counter" id="additionalInfoCounter">
+                            <span id="additionalInfoCount">0</span>/150 characters
+                        </div>
                     </div>
                     
                     <!-- Terms and Conditions -->
@@ -2142,6 +2253,7 @@
                             <strong>I certify that:</strong> I am the rightful owner of this item, the information provided is accurate, 
                             and I understand that providing false information may result in disciplinary action.
                         </label>
+                        <div class="field-feedback" id="termsFeedback"></div>
                     </div>
                     
                     <!-- Submit Button -->
@@ -2333,10 +2445,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
     <script>
-
 // ========== MAIN INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Claim page loaded - initializing modern features');
+    console.log('Claim page loaded - initializing modern features with enhanced validation');
     
     // Initialize loading bar
     document.getElementById('loadingBar').style.width = '30%';
@@ -2348,10 +2459,13 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollAnimations();
     initNavbarScroll();
     setActiveNavItem();
+    initFormValidation(); // Initialize enhanced form validation
     setupFormSubmission();
     
-    // Set current date as default for lost date
-    document.getElementById('lostDate').valueAsDate = new Date();
+    // Set current date as default for lost date (max = today)
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('lostDate').value = today;
+    document.getElementById('lostDate').max = today;
     
     // Authentication check
     const isAuthenticated = localStorage.getItem('aai_authenticated');
@@ -2388,6 +2502,11 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('itemName').value = item.title || '';
             document.getElementById('itemDescription').value = item.description || '';
             
+            // Validate pre-filled fields
+            validateField(document.getElementById('itemId'));
+            validateField(document.getElementById('itemName'));
+            validateField(document.getElementById('itemDescription'));
+            
             // Show success message
             const alertDiv = document.createElement('div');
             alertDiv.className = 'alert alert-success mt-3';
@@ -2421,7 +2540,427 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 1000);
 
     setupDataSync();
+    
+    // Show form card animation
+    setTimeout(() => {
+        const glassCard = document.querySelector('.glass-card');
+        if (glassCard) {
+            glassCard.classList.add('visible');
+        }
+    }, 800);
 });
+
+// ========== ENHANCED FORM VALIDATION WITH VISUAL FEEDBACK ==========
+function initFormValidation() {
+    console.log('Initializing enhanced form validation with visual feedback for claim page...');
+    
+    // Setup character counters
+    initCharacterCounters();
+    
+    // Setup real-time validation for all input fields
+    setupRealTimeValidation();
+    
+    // Setup email validation
+    setupEmailValidation();
+    
+    // Setup phone validation
+    setupPhoneValidation();
+    
+    // Setup checkbox validation
+    setupCheckboxValidation();
+    
+    // Setup Item ID validation (check against existing items)
+    setupItemIdValidation();
+    
+    console.log('Enhanced form validation initialized successfully.');
+}
+
+function initCharacterCounters() {
+    const textFields = [
+        { id: 'itemName', max: 50, counterId: 'itemNameCounter', countId: 'itemNameCount' },
+        { id: 'itemDescription', max: 200, counterId: 'itemDescriptionCounter', countId: 'itemDescriptionCount' },
+        { id: 'identifyingFeatures', max: 300, counterId: 'identifyingFeaturesCounter', countId: 'identifyingFeaturesCount' },
+        { id: 'claimantName', max: 50, counterId: 'claimantNameCounter', countId: 'claimantNameCount' },
+        { id: 'additionalInfo', max: 150, counterId: 'additionalInfoCounter', countId: 'additionalInfoCount' }
+    ];
+    
+    textFields.forEach(field => {
+        const input = document.getElementById(field.id);
+        const counter = document.getElementById(field.counterId);
+        const countSpan = document.getElementById(field.countId);
+        
+        if (input && counter && countSpan) {
+            // Initial count
+            updateCharacterCount(input, countSpan, counter, field.max);
+            
+            // Real-time updates
+            input.addEventListener('input', () => {
+                updateCharacterCount(input, countSpan, counter, field.max);
+                validateField(input);
+            });
+            
+            input.addEventListener('blur', () => {
+                validateField(input);
+            });
+        }
+    });
+}
+
+function updateCharacterCount(input, countSpan, counter, max) {
+    const length = input.value.length;
+    countSpan.textContent = length;
+    
+    // Update counter color based on usage
+    counter.classList.remove('warning', 'danger');
+    
+    if (length > max) {
+        counter.classList.add('danger');
+        input.classList.add('invalid');
+    } else if (length > max * 0.9) {
+        counter.classList.add('danger');
+    } else if (length > max * 0.75) {
+        counter.classList.add('warning');
+    }
+}
+
+function setupRealTimeValidation() {
+    // Get all form fields
+    const formControls = document.querySelectorAll('.form-control, .form-select');
+    
+    formControls.forEach(control => {
+        // Add focus event for immediate feedback
+        control.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+        
+        control.addEventListener('blur', function() {
+            this.parentElement.classList.remove('focused');
+            validateField(this);
+        });
+        
+        // Real-time validation for text inputs
+        if (control.type !== 'select-one') {
+            control.addEventListener('input', function() {
+                validateField(this);
+            });
+        }
+        
+        // For select elements
+        if (control.tagName === 'SELECT') {
+            control.addEventListener('change', function() {
+                validateField(this);
+            });
+        }
+    });
+}
+
+function setupEmailValidation() {
+    const emailInput = document.getElementById('claimantEmail');
+    if (emailInput) {
+        emailInput.addEventListener('input', function() {
+            validateEmail(this);
+        });
+        
+        emailInput.addEventListener('blur', function() {
+            validateEmail(this);
+        });
+    }
+}
+
+function setupPhoneValidation() {
+    const phoneInput = document.getElementById('claimantPhone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function() {
+            validatePhone(this);
+        });
+        
+        phoneInput.addEventListener('blur', function() {
+            validatePhone(this);
+        });
+    }
+}
+
+function setupCheckboxValidation() {
+    const checkbox = document.getElementById('agreeTerms');
+    if (checkbox) {
+        checkbox.addEventListener('change', function() {
+            validateCheckbox(this);
+        });
+    }
+}
+
+function setupItemIdValidation() {
+    const itemIdInput = document.getElementById('itemId');
+    if (itemIdInput) {
+        itemIdInput.addEventListener('blur', function() {
+            validateItemId(this);
+        });
+    }
+}
+
+function validateField(field) {
+    const value = field.value.trim();
+    const feedbackId = field.id + 'Feedback';
+    const feedback = document.getElementById(feedbackId);
+    
+    // Clear previous validation states
+    field.classList.remove('valid', 'invalid');
+    if (feedback) feedback.classList.remove('show', 'valid', 'invalid');
+    
+    // Skip validation for optional fields if empty
+    const optionalFields = ['studentId', 'additionalInfo'];
+    if (optionalFields.includes(field.id) && value === '') {
+        return true;
+    }
+    
+    // Special validation for different field types
+    let isValid = false;
+    let message = '';
+    
+    switch(field.id) {
+        case 'itemId':
+            isValid = value.length >= 3;
+            message = isValid ? '✓ Valid Item ID' : 'Item ID must be at least 3 characters';
+            break;
+            
+        case 'itemName':
+            isValid = value.length >= 2 && value.length <= 50;
+            message = isValid ? '✓ Good item name' : 'Item name must be 2-50 characters';
+            break;
+            
+        case 'itemDescription':
+            isValid = value.length >= 10 && value.length <= 200;
+            message = isValid ? '✓ Good description' : 'Description must be 10-200 characters';
+            break;
+            
+        case 'identifyingFeatures':
+            isValid = value.length >= 20 && value.length <= 300;
+            message = isValid ? '✓ Good identifying details' : 'Provide 20-300 characters of identifying features';
+            break;
+            
+        case 'lostLocation':
+        case 'claimantGrade':
+            isValid = value !== '';
+            message = isValid ? '✓ Selected' : 'Please select an option';
+            break;
+            
+        case 'lostDate':
+            const date = new Date(value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            isValid = !isNaN(date.getTime()) && date <= today;
+            message = isValid ? '✓ Valid date' : 'Date cannot be in the future';
+            break;
+            
+        case 'claimantName':
+            isValid = value.length >= 2 && value.length <= 50;
+            message = isValid ? '✓ Valid name' : 'Name must be 2-50 characters';
+            break;
+            
+        case 'studentId':
+            isValid = value === '' || /^\d+$/.test(value);
+            message = isValid ? '✓ Valid ID' : 'Student ID must be numeric';
+            break;
+            
+        case 'additionalInfo':
+            isValid = value.length <= 150;
+            message = isValid ? '✓ Good additional info' : 'Additional info too long';
+            break;
+            
+        default:
+            isValid = value.length > 0;
+            message = isValid ? '✓ Looks good' : 'This field is required';
+    }
+    
+    // Update field and feedback
+    if (isValid) {
+        field.classList.add('valid');
+        if (feedback) {
+            feedback.innerHTML = '<i class="fas fa-check-circle"></i>';
+            feedback.classList.add('show', 'valid');
+        }
+    } else {
+        field.classList.add('invalid');
+        if (feedback) {
+            feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+            feedback.classList.add('show', 'invalid');
+        }
+    }
+    
+    return isValid;
+}
+
+function validateEmail(emailInput) {
+    const value = emailInput.value.trim();
+    const feedback = document.getElementById('claimantEmailFeedback');
+    
+    // Clear previous validation
+    emailInput.classList.remove('valid', 'invalid');
+    if (feedback) feedback.classList.remove('show', 'valid', 'invalid');
+    
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid = emailRegex.test(value);
+    
+    if (isValid) {
+        emailInput.classList.add('valid');
+        if (feedback) {
+            feedback.innerHTML = '<i class="fas fa-check-circle"></i>';
+            feedback.classList.add('show', 'valid');
+        }
+    } else if (value.length > 0) {
+        emailInput.classList.add('invalid');
+        if (feedback) {
+            feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+            feedback.classList.add('show', 'invalid');
+        }
+    }
+    
+    return isValid;
+}
+
+function validatePhone(phoneInput) {
+    const value = phoneInput.value.trim();
+    const feedback = document.getElementById('claimantPhoneFeedback');
+    
+    // Clear previous validation
+    phoneInput.classList.remove('valid', 'invalid');
+    if (feedback) feedback.classList.remove('show', 'valid', 'invalid');
+    
+    // Phone validation regex (basic)
+    const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+    const isValid = phoneRegex.test(value) && value.replace(/\D/g, '').length >= 10;
+    
+    if (isValid) {
+        phoneInput.classList.add('valid');
+        if (feedback) {
+            feedback.innerHTML = '<i class="fas fa-check-circle"></i>';
+            feedback.classList.add('show', 'valid');
+        }
+    } else if (value.length > 0) {
+        phoneInput.classList.add('invalid');
+        if (feedback) {
+            feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+            feedback.classList.add('show', 'invalid');
+        }
+    }
+    
+    return isValid;
+}
+
+function validateCheckbox(checkbox) {
+    const feedback = document.getElementById('termsFeedback');
+    
+    // Clear previous validation
+    checkbox.classList.remove('valid', 'invalid');
+    if (feedback) feedback.classList.remove('show', 'valid', 'invalid');
+    
+    if (checkbox.checked) {
+        checkbox.classList.add('valid');
+        if (feedback) {
+            feedback.innerHTML = '<i class="fas fa-check-circle"></i>';
+            feedback.classList.add('show', 'valid');
+        }
+    } else {
+        checkbox.classList.add('invalid');
+        if (feedback) {
+            feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+            feedback.classList.add('show', 'invalid');
+        }
+    }
+    
+    return checkbox.checked;
+}
+
+function validateItemId(itemIdInput) {
+    const value = itemIdInput.value.trim();
+    const feedback = document.getElementById('itemIdFeedback');
+    
+    // Clear previous validation
+    itemIdInput.classList.remove('valid', 'invalid');
+    if (feedback) feedback.classList.remove('show', 'valid', 'invalid');
+    
+    if (value.length < 3) {
+        return false;
+    }
+    
+    // Check if item exists in storage
+    const items = JSON.parse(localStorage.getItem('lostFoundItems') || '[]');
+    const itemExists = items.some(item => item.id === value);
+    
+    if (itemExists) {
+        itemIdInput.classList.add('valid');
+        if (feedback) {
+            feedback.innerHTML = '<i class="fas fa-check-circle"></i> Item found in system';
+            feedback.classList.add('show', 'valid');
+        }
+        return true;
+    } else {
+        itemIdInput.classList.add('invalid');
+        if (feedback) {
+            feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> Item not found. Check the ID and try again.';
+            feedback.classList.add('show', 'invalid');
+        }
+        return false;
+    }
+}
+
+function validateForm() {
+    let isValid = true;
+    
+    // Clear previous error messages
+    document.querySelectorAll('.error-message').forEach(error => error.remove());
+    
+    // Check all required fields
+    const requiredFields = [
+        'itemId', 'itemName', 'itemDescription', 'identifyingFeatures',
+        'lostDate', 'lostLocation', 'claimantName', 'claimantEmail',
+        'claimantPhone', 'claimantGrade'
+    ];
+    
+    requiredFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        let fieldValid = false;
+        
+        // Special validation for email
+        if (fieldId === 'claimantEmail') {
+            fieldValid = validateEmail(field);
+        } else if (fieldId === 'claimantPhone') {
+            fieldValid = validatePhone(field);
+        } else if (fieldId === 'agreeTerms') {
+            fieldValid = validateCheckbox(field);
+        } else {
+            fieldValid = validateField(field);
+        }
+        
+        if (!fieldValid) {
+            isValid = false;
+            
+            // Add error message if not already present
+            if (!field.parentElement.querySelector('.error-message')) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message text-danger mt-2 small';
+                errorDiv.textContent = 'This field is required';
+                field.parentElement.appendChild(errorDiv);
+            }
+            
+            // Scroll to first invalid field
+            if (!isValid) {
+                field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                field.focus();
+                isValid = true; // Prevent multiple scrolls
+            }
+        }
+    });
+    
+    // Check terms agreement
+    if (!document.getElementById('agreeTerms').checked) {
+        isValid = false;
+        alert('Please agree to the terms and conditions');
+    }
+    
+    return isValid;
+}
 
 // ========== SETTINGS SYSTEM ==========
 function initSettingsSystem() {
@@ -2749,14 +3288,45 @@ function setupFormSubmission() {
         e.preventDefault();
         
         if (!validateForm()) {
+            // Show error message
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'alert alert-danger mt-3 mb-4';
+            errorMessage.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Please fix the errors above before submitting.';
+            errorMessage.style.animation = 'fadeIn 0.3s ease';
+            
+            // Remove any existing error message
+            const existingError = document.querySelector('#claimForm .alert.alert-danger');
+            if (existingError) existingError.remove();
+            
+            // Add new error message
+            const submitButton = document.getElementById('submitBtn');
+            this.insertBefore(errorMessage, submitButton.parentElement);
+            
+            // Scroll to error
+            errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
             return;
         }
         
-        // Show loading state
+        // Show loading state with animation
         const submitBtn = document.getElementById('submitBtn');
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
         submitBtn.disabled = true;
+        
+        // Add loading animation to button
+        submitBtn.style.position = 'relative';
+        submitBtn.style.overflow = 'hidden';
+        
+        const loadingOverlay = document.createElement('div');
+        loadingOverlay.style.position = 'absolute';
+        loadingOverlay.style.top = '0';
+        loadingOverlay.style.left = '0';
+        loadingOverlay.style.width = '100%';
+        loadingOverlay.style.height = '100%';
+        loadingOverlay.style.background = 'linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(230, 195, 79, 0.3))';
+        loadingOverlay.style.animation = 'shimmer 1.5s infinite linear';
+        submitBtn.appendChild(loadingOverlay);
         
         // Collect form data
         const formData = {
@@ -2792,68 +3362,9 @@ function setupFormSubmission() {
             // Reset button
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
+            submitBtn.removeChild(loadingOverlay);
         }, 1500);
     });
-}
-
-function validateForm() {
-    let isValid = true;
-    
-    // Clear previous errors
-    document.querySelectorAll('.error-message').forEach(error => error.remove());
-    document.querySelectorAll('.form-control, .form-select').forEach(field => {
-        field.style.borderColor = '';
-    });
-    
-    // Check required fields
-    const requiredFields = [
-        'itemId', 'itemName', 'itemDescription', 'identifyingFeatures',
-        'lostDate', 'lostLocation', 'claimantName', 'claimantEmail',
-        'claimantPhone', 'claimantGrade'
-    ];
-    
-    requiredFields.forEach(fieldId => {
-        const field = document.getElementById(fieldId);
-        if (!field.value.trim()) {
-            showError(field, 'This field is required');
-            isValid = false;
-        }
-    });
-    
-    // Check email format
-    const emailField = document.getElementById('claimantEmail');
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailField.value && !emailRegex.test(emailField.value)) {
-        showError(emailField, 'Please enter a valid email address');
-        isValid = false;
-    }
-    
-    // Check terms agreement
-    if (!document.getElementById('agreeTerms').checked) {
-        alert('Please agree to the terms and conditions');
-        isValid = false;
-    }
-    
-    return isValid;
-}
-
-function showError(field, message) {
-    field.style.borderColor = 'var(--danger)';
-    
-    // Remove any existing error message
-    const existingError = field.parentElement.querySelector('.error-message');
-    if (existingError) {
-        existingError.remove();
-    }
-    
-    // Add error message
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message text-danger mt-2 small';
-    errorDiv.textContent = message;
-    field.parentElement.appendChild(errorDiv);
-    
-    // Scroll to error
-    field.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function saveClaimToLocalStorage(data) {
@@ -2953,14 +3464,31 @@ function closeSuccessModal() {
     // Reset form
     document.getElementById('claimForm').reset();
     
+    // Clear all validation states
+    document.querySelectorAll('.form-control, .form-select, .form-check-input').forEach(field => {
+        field.classList.remove('valid', 'invalid');
+    });
+    
+    document.querySelectorAll('.field-feedback').forEach(feedback => {
+        feedback.classList.remove('show', 'valid', 'invalid');
+    });
+    
+    document.querySelectorAll('.char-counter').forEach(counter => {
+        counter.classList.remove('warning', 'danger');
+    });
+    
+    // Reset character counters
+    document.querySelectorAll('.char-counter span').forEach(span => {
+        span.textContent = '0';
+    });
+    
     // Reset current date
-    document.getElementById('lostDate').valueAsDate = new Date();
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('lostDate').value = today;
+    document.getElementById('lostDate').max = today;
     
     // Clear any error messages
-    document.querySelectorAll('.error-message').forEach(error => error.remove());
-    document.querySelectorAll('.form-control, .form-select').forEach(field => {
-        field.style.borderColor = '';
-    });
+    document.querySelectorAll('.error-message, .alert').forEach(error => error.remove());
     
     // Scroll to top of form
     document.getElementById('claim-process').scrollIntoView({ behavior: 'smooth' });

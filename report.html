@@ -6,8 +6,9 @@
     <title>Report Found Item - AAI Lost & Found</title>
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%230A2463'/><path d='M30,70 L45,30 L55,30 L70,70 L62,70 L59,60 L41,60 L38,70 Z' fill='%23f0b429'/><rect x='44' y='55' width='12' height='8' fill='%230A2463'/></svg>">
-    <meta name="theme-color" content="#0A2463">
+<meta name="theme-color" content="#0A2463">
 
+    
     <!-- Required Dependencies -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -882,6 +883,7 @@
         color: var(--primary-blue);
         margin-bottom: calc(10px * var(--font-scale));
         font-size: calc(1rem * var(--font-scale));
+        transition: color 0.3s ease;
     }
 
     .dark-mode .form-label {
@@ -913,6 +915,33 @@
         box-shadow: 0 calc(5px * var(--font-scale)) calc(15px * var(--font-scale)) rgba(0, 0, 0, 0.3);
     }
 
+    /* Enhanced Field States */
+    .form-control.valid, .form-select.valid {
+        border-color: var(--success);
+        box-shadow: 
+            0 calc(5px * var(--font-scale)) calc(15px * var(--font-scale)) rgba(40, 167, 69, 0.15),
+            0 0 0 calc(1px * var(--font-scale)) rgba(40, 167, 69, 0.2);
+        background: rgba(40, 167, 69, 0.03);
+    }
+
+    .dark-mode .form-control.valid,
+    .dark-mode .form-select.valid {
+        background: rgba(40, 167, 69, 0.1);
+    }
+
+    .form-control.invalid, .form-select.invalid {
+        border-color: var(--danger);
+        box-shadow: 
+            0 calc(5px * var(--font-scale)) calc(15px * var(--font-scale)) rgba(220, 53, 69, 0.15),
+            0 0 0 calc(1px * var(--font-scale)) rgba(220, 53, 69, 0.2);
+        background: rgba(220, 53, 69, 0.03);
+    }
+
+    .dark-mode .form-control.invalid,
+    .dark-mode .form-select.invalid {
+        background: rgba(220, 53, 69, 0.1);
+    }
+
     .form-control:focus, .form-select:focus {
         outline: none;
         border-color: var(--accent-gold);
@@ -928,61 +957,54 @@
         background: #1a2030;
     }
 
-    /* Real-time feedback indicators */
-    .feedback-indicator {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: calc(24px * var(--font-scale));
-        height: calc(24px * var(--font-scale));
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: calc(0.8rem * var(--font-scale));
-        opacity: 0;
-        transform: scale(0);
-        transition: all 0.3s ease;
-        z-index: 5;
+    textarea.form-control {
+        min-height: calc(120px * var(--font-scale));
+        resize: vertical;
     }
 
-    .feedback-indicator.visible {
+    /* Enhanced Field Feedback Icons */
+    .field-feedback {
+        position: absolute;
+        right: calc(15px * var(--font-scale));
+        top: calc(55px * var(--font-scale));
+        font-size: calc(1.1rem * var(--font-scale));
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        z-index: 2;
+    }
+
+    .field-feedback.show {
         opacity: 1;
         transform: scale(1);
     }
 
-    .feedback-indicator.valid {
-        background-color: var(--success);
-        color: white;
+    .field-feedback.valid {
+        color: var(--success);
     }
 
-    .feedback-indicator.invalid {
-        background-color: var(--danger);
-        color: white;
+    .field-feedback.invalid {
+        color: var(--danger);
     }
 
-    .char-count {
-        position: absolute;
-        bottom: -20px;
-        right: 10px;
-        font-size: calc(0.8rem * var(--font-scale));
+    /* Character Counter */
+    .char-counter {
+        font-size: calc(0.85rem * var(--font-scale));
         color: var(--text-dark);
-        opacity: 0.6;
+        opacity: 0.7;
+        text-align: right;
+        margin-top: calc(5px * var(--font-scale));
+        transition: all 0.3s ease;
     }
 
-    .char-count.warning {
+    .char-counter.warning {
         color: var(--warning);
         font-weight: 600;
     }
 
-    .char-count.error {
+    .char-counter.danger {
         color: var(--danger);
-        font-weight: 600;
-    }
-
-    textarea.form-control {
-        min-height: calc(120px * var(--font-scale));
-        resize: vertical;
+        font-weight: 700;
     }
 
     /* File Upload */
@@ -994,11 +1016,17 @@
         cursor: pointer;
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         background: rgba(255, 255, 255, 0.5);
+        position: relative;
     }
 
     .dark-mode .file-upload-area {
         border: calc(3px * var(--font-scale)) dashed rgba(255, 255, 255, 0.2);
         background: rgba(26, 32, 48, 0.5);
+    }
+
+    .file-upload-area.valid {
+        border-color: var(--success);
+        background: rgba(40, 167, 69, 0.05);
     }
 
     .file-upload-area:hover {
@@ -1201,11 +1229,16 @@
         border-color: var(--accent-gold);
     }
 
+    .form-check-input.valid {
+        border-color: var(--success);
+    }
+
     .form-check-label {
         margin-left: calc(12px * var(--font-scale));
         cursor: pointer;
         color: var(--text-dark);
         line-height: 1.5;
+        transition: color 0.3s ease;
     }
 
     .dark-mode .form-check-label {
@@ -1239,138 +1272,31 @@
         color: #e0e7ff;
     }
 
-    /* Fixed Draft Indicator Position */
-    .draft-indicator {
-        position: fixed;
-        bottom: calc(100px * var(--font-scale));
-        right: calc(30px * var(--font-scale));
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border-radius: calc(15px * var(--font-scale));
-        padding: calc(15px * var(--font-scale)) calc(20px * var(--font-scale));
-        box-shadow: 0 calc(10px * var(--font-scale)) calc(30px * var(--font-scale)) rgba(0, 0, 0, 0.1);
-        display: flex;
-        align-items: center;
-        gap: calc(10px * var(--font-scale));
-        z-index: 10000;
-        transform: translateY(calc(100px * var(--font-scale)));
-        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        border: 1px solid rgba(212, 175, 55, 0.2);
-        min-width: calc(250px * var(--font-scale));
-        max-width: calc(350px * var(--font-scale));
-    }
-
-    .dark-mode .draft-indicator {
-        background: rgba(26, 32, 48, 0.95);
-        border: 1px solid rgba(212, 175, 55, 0.1);
-        box-shadow: 0 calc(10px * var(--font-scale)) calc(30px * var(--font-scale)) rgba(0, 0, 0, 0.3);
-    }
-
-    .draft-indicator.visible {
-        transform: translateY(0);
-    }
-
-    .draft-indicator.saving {
-        background: rgba(212, 175, 55, 0.1);
-        border-color: var(--accent-gold);
-    }
-
-    .draft-indicator.saved {
-        background: rgba(40, 167, 69, 0.1);
-        border-color: var(--success);
-    }
-
-    .draft-icon {
-        font-size: calc(1.2rem * var(--font-scale));
-        color: var(--accent-gold);
-    }
-
-    .draft-text {
-        font-size: calc(0.9rem * var(--font-scale));
-        color: var(--text-dark);
-        font-weight: 500;
-        margin-bottom: calc(10px * var(--font-scale));
-    }
-
-    .dark-mode .draft-text {
-        color: #e0e7ff;
-    }
-
-    .draft-indicator.saving .draft-text {
-        color: var(--accent-gold);
-    }
-
-    .draft-indicator.saved .draft-text {
-        color: var(--success);
-    }
-
-    .draft-actions {
-        display: flex;
-        gap: calc(10px * var(--font-scale));
-        margin-top: calc(10px * var(--font-scale));
-        padding-top: calc(10px * var(--font-scale));
-        border-top: 1px solid rgba(0, 15, 61, 0.1);
-    }
-
-    .dark-mode .draft-actions {
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .load-draft-btn, .clear-draft-btn {
-        padding: calc(8px * var(--font-scale)) calc(15px * var(--font-scale));
-        border-radius: calc(8px * var(--font-scale));
-        font-size: calc(0.85rem * var(--font-scale));
-        cursor: pointer;
-        transition: all 0.3s ease;
-        flex: 1;
-    }
-
-    .load-draft-btn {
-        background: rgba(212, 175, 55, 0.1);
-        color: var(--accent-gold);
-        border: 1px solid rgba(212, 175, 55, 0.3);
-    }
-
-    .clear-draft-btn {
-        background: rgba(220, 53, 69, 0.1);
-        color: var(--danger);
-        border: 1px solid rgba(220, 53, 69, 0.3);
-    }
-
-    .load-draft-btn:hover {
-        background: rgba(212, 175, 55, 0.2);
-        transform: translateY(calc(-2px * var(--font-scale)));
-    }
-
-    .clear-draft-btn:hover {
-        background: rgba(220, 53, 69, 0.2);
-        transform: translateY(calc(-2px * var(--font-scale)));
-    }
-
-    /* Success Popup - In-page popup instead of overlay */
-    .success-popup-container {
+    /* Success Modal */
+    .success-modal {
+        display: none;
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 10001;
-        display: flex;
+        background: rgba(0, 15, 61, 0.85);
+        backdrop-filter: blur(20px);
+        z-index: 10000;
         align-items: center;
         justify-content: center;
         opacity: 0;
         visibility: hidden;
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        background: rgba(0, 15, 61, 0.85);
-        backdrop-filter: blur(10px);
     }
 
-    .success-popup-container.active {
+    .success-modal.active {
+        display: flex;
         opacity: 1;
         visibility: visible;
     }
 
-    .success-popup {
+    .success-content {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(20px);
         border-radius: calc(24px * var(--font-scale));
@@ -1387,7 +1313,7 @@
         border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .dark-mode .success-popup {
+    .dark-mode .success-content {
         background: rgba(26, 32, 48, 0.95);
         box-shadow: 
             0 calc(30px * var(--font-scale)) calc(80px * var(--font-scale)) rgba(0, 0, 0, 0.5),
@@ -1395,12 +1321,12 @@
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .success-popup-container.active .success-popup {
+    .success-modal.active .success-content {
         transform: scale(1) translateY(0);
         opacity: 1;
     }
 
-    .success-popup-icon {
+    .success-icon {
         width: calc(120px * var(--font-scale));
         height: calc(120px * var(--font-scale));
         background: linear-gradient(135deg, var(--success), #34d058);
@@ -1414,7 +1340,7 @@
         box-shadow: 0 calc(15px * var(--font-scale)) calc(35px * var(--font-scale)) rgba(40, 167, 69, 0.3);
     }
 
-    .success-popup h3 {
+    .success-content h3 {
         font-family: 'Playfair Display', serif;
         color: var(--primary-blue);
         margin-bottom: calc(20px * var(--font-scale));
@@ -1422,11 +1348,11 @@
         font-weight: 700;
     }
 
-    .dark-mode .success-popup h3 {
+    .dark-mode .success-content h3 {
         color: #e0e7ff;
     }
 
-    .success-popup p {
+    .success-content p {
         color: var(--text-dark);
         line-height: 1.6;
         margin-bottom: calc(30px * var(--font-scale));
@@ -1946,12 +1872,6 @@
         .accessibility-btn {
             min-width: calc(100px * var(--font-scale));
         }
-        
-        .draft-indicator {
-            right: calc(20px * var(--font-scale));
-            bottom: calc(90px * var(--font-scale));
-            min-width: calc(200px * var(--font-scale));
-        }
     }
 
     @media (max-width: 768px) {
@@ -1988,7 +1908,7 @@
             font-size: calc(1rem * var(--font-scale));
         }
         
-        .success-popup {
+        .success-content {
             padding: calc(40px * var(--font-scale)) calc(25px * var(--font-scale));
         }
         
@@ -2001,12 +1921,6 @@
         .navbar-nav .nav-link {
             margin: calc(5px * var(--font-scale)) 0;
             text-align: center;
-        }
-        
-        .draft-indicator {
-            right: calc(15px * var(--font-scale));
-            bottom: calc(80px * var(--font-scale));
-            min-width: calc(180px * var(--font-scale));
         }
     }
 
@@ -2041,19 +1955,14 @@
         .settings-modal .modal-header {
             padding: calc(20px * var(--font-scale));
         }
-        
-        .draft-indicator {
-            right: calc(10px * var(--font-scale));
-            bottom: calc(70px * var(--font-scale));
-            min-width: calc(160px * var(--font-scale));
-            padding: calc(12px * var(--font-scale)) calc(15px * var(--font-scale));
-        }
-        
-        .success-popup {
-            padding: calc(30px * var(--font-scale)) calc(20px * var(--font-scale));
-        }
     }
     </style>
+    
+    <!-- Vercel Web Analytics -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
 </head>
 
 <body>
@@ -2195,7 +2104,10 @@
                                 </label>
                                 <input type="text" class="form-control" id="itemName" 
                                        placeholder="e.g., Black Jacket, Calculus Textbook, AirPods Case" required>
-                                <div class="feedback-indicator" id="itemNameFeedback"></div>
+                                <div class="field-feedback" id="itemNameFeedback"></div>
+                                <div class="char-counter" id="itemNameCounter">
+                                    <span id="itemNameCount">0</span>/50 characters
+                                </div>
                             </div>
                             
                             <div class="form-group">
@@ -2212,7 +2124,7 @@
                                     <option value="sports">Sports Equipment</option>
                                     <option value="other">Other</option>
                                 </select>
-                                <div class="feedback-indicator" id="itemCategoryFeedback"></div>
+                                <div class="field-feedback" id="categoryFeedback"></div>
                             </div>
                         </div>
                         
@@ -2222,8 +2134,10 @@
                             </label>
                             <textarea class="form-control" id="itemDescription" rows="4"
                                       placeholder="Please describe the item in detail. Include color, brand, size, distinguishing features, and any contents." required></textarea>
-                            <div class="feedback-indicator" id="itemDescriptionFeedback"></div>
-                            <div class="char-count" id="descriptionCharCount">0/500</div>
+                            <div class="field-feedback" id="descriptionFeedback"></div>
+                            <div class="char-counter" id="descriptionCounter">
+                                <span id="descriptionCount">0</span>/500 characters
+                            </div>
                         </div>
                         
                         <!-- Image Upload -->
@@ -2278,7 +2192,7 @@
                                     <option value="classroom">Specific Classroom</option>
                                     <option value="other">Other Area</option>
                                 </select>
-                                <div class="feedback-indicator" id="foundLocationFeedback"></div>
+                                <div class="field-feedback" id="locationFeedback"></div>
                             </div>
                             
                             <div class="form-group">
@@ -2286,7 +2200,7 @@
                                     <i class="fas fa-calendar"></i>Date Found *
                                 </label>
                                 <input type="date" class="form-control" id="foundDate" required>
-                                <div class="feedback-indicator" id="foundDateFeedback"></div>
+                                <div class="field-feedback" id="dateFeedback"></div>
                             </div>
                         </div>
                         
@@ -2296,7 +2210,10 @@
                             </label>
                             <input type="text" class="form-control" id="specificLocation"
                                    placeholder="e.g., Near Room 205, Under table in cafeteria, Blue locker #123">
-                            <div class="feedback-indicator" id="specificLocationFeedback"></div>
+                            <div class="field-feedback" id="specificLocationFeedback"></div>
+                            <div class="char-counter" id="specificLocationCounter">
+                                <span id="specificLocationCount">0</span>/100 characters
+                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -2304,6 +2221,7 @@
                                 <i class="fas fa-clock"></i>Approximate Time Found
                             </label>
                             <input type="time" class="form-control" id="foundTime">
+                            <div class="field-feedback" id="timeFeedback"></div>
                         </div>
                         
                         <div class="d-flex justify-content-between mt-4">
@@ -2328,7 +2246,10 @@
                                     <i class="fas fa-user"></i>Your Name *
                                 </label>
                                 <input type="text" class="form-control" id="finderName" required>
-                                <div class="feedback-indicator" id="finderNameFeedback"></div>
+                                <div class="field-feedback" id="nameFeedback"></div>
+                                <div class="char-counter" id="nameCounter">
+                                    <span id="nameCount">0</span>/50 characters
+                                </div>
                             </div>
                             
                             <div class="form-group">
@@ -2336,7 +2257,7 @@
                                     <i class="fas fa-envelope"></i>Email Address *
                                 </label>
                                 <input type="email" class="form-control" id="finderEmail" required>
-                                <div class="feedback-indicator" id="finderEmailFeedback"></div>
+                                <div class="field-feedback" id="emailFeedback"></div>
                             </div>
                         </div>
                         
@@ -2347,7 +2268,7 @@
                                 </label>
                                 <input type="tel" class="form-control" id="finderPhone"
                                        placeholder="For contact about this item">
-                                <div class="feedback-indicator" id="finderPhoneFeedback"></div>
+                                <div class="field-feedback" id="phoneFeedback"></div>
                             </div>
                             
                             <div class="form-group">
@@ -2356,7 +2277,7 @@
                                 </label>
                                 <input type="text" class="form-control" id="studentId"
                                        placeholder="For verification purposes">
-                                <div class="feedback-indicator" id="studentIdFeedback"></div>
+                                <div class="field-feedback" id="studentIdFeedback"></div>
                             </div>
                         </div>
                         
@@ -2366,7 +2287,10 @@
                             </label>
                             <textarea class="form-control" id="additionalNotes" rows="3"
                                       placeholder="Any other information that might help identify the owner"></textarea>
-                            <div class="char-count" id="notesCharCount">0/1000</div>
+                            <div class="field-feedback" id="notesFeedback"></div>
+                            <div class="char-counter" id="notesCounter">
+                                <span id="notesCount">0</span>/250 characters
+                            </div>
                         </div>
                         
                         <!-- Terms & Conditions -->
@@ -2376,7 +2300,7 @@
                                 I confirm that I found this item at Alliance Academy For Innovation and am reporting it in good faith.
                                 I understand that providing false information may result in disciplinary action.
                             </label>
-                            <div class="feedback-indicator" id="agreeTermsFeedback"></div>
+                            <div class="field-feedback" id="termsFeedback"></div>
                         </div>
                         
                         <div class="d-flex justify-content-between mt-5">
@@ -2432,39 +2356,19 @@
         </div>
     </section>
 
-    <!-- ===== DRAFT INDICATOR ===== -->
-    <div class="draft-indicator" id="draftIndicator">
-        <div class="draft-icon">
-            <i class="fas fa-save"></i>
-        </div>
-        <div class="draft-content">
-            <div class="draft-text" id="draftText">Draft saved</div>
-            <div class="draft-actions">
-                <button class="load-draft-btn" id="loadDraftBtn">
-                    <i class="fas fa-undo me-1"></i>Load Draft
-                </button>
-                <button class="clear-draft-btn" id="clearDraftBtn">
-                    <i class="fas fa-trash me-1"></i>Clear Draft
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== SUCCESS POPUP ===== -->
-    <div class="success-popup-container" id="successPopup">
-        <div class="success-popup">
-            <div class="success-popup-icon">
+    <!-- ===== SUCCESS MODAL ===== -->
+    <div class="success-modal" id="successModal">
+        <div class="success-content">
+            <div class="success-icon">
                 <i class="fas fa-check"></i>
             </div>
             <h3>Report Submitted Successfully!</h3>
-            <p id="successMessage">
-                Thank you for helping reunite lost items with their owners. Your report has been received and will be reviewed by our staff.
-            </p>
+            <p>Thank you for helping reunite lost items with their owners. Your report has been received and will be reviewed by our staff.</p>
             <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
                 <a href="browse.html" class="modern-btn">
                     <i class="fas fa-search me-2"></i>Browse Items
                 </a>
-                <button class="btn-secondary" onclick="closeSuccessPopup()">
+                <button class="btn-secondary" onclick="closeSuccessModal()">
                     <i class="fas fa-plus me-2"></i>Report Another
                 </button>
             </div>
@@ -2775,9 +2679,308 @@
         updateSettingsUI();
     }
 
+    // ===== ENHANCED FORM VALIDATION WITH VISUAL FEEDBACK =====
+    function initFormValidation() {
+        console.log('Initializing enhanced form validation with visual feedback...');
+        
+        // Setup character counters
+        initCharacterCounters();
+        
+        // Setup real-time validation for all input fields
+        setupRealTimeValidation();
+        
+        // Setup email validation
+        setupEmailValidation();
+        
+        // Setup checkbox validation
+        setupCheckboxValidation();
+        
+        console.log('Enhanced form validation initialized successfully.');
+    }
+
+    function initCharacterCounters() {
+        const textFields = [
+            { id: 'itemName', max: 50, counterId: 'itemNameCounter', countId: 'itemNameCount' },
+            { id: 'itemDescription', max: 500, counterId: 'descriptionCounter', countId: 'descriptionCount' },
+            { id: 'specificLocation', max: 100, counterId: 'specificLocationCounter', countId: 'specificLocationCount' },
+            { id: 'finderName', max: 50, counterId: 'nameCounter', countId: 'nameCount' },
+            { id: 'additionalNotes', max: 250, counterId: 'notesCounter', countId: 'notesCount' }
+        ];
+        
+        textFields.forEach(field => {
+            const input = document.getElementById(field.id);
+            const counter = document.getElementById(field.counterId);
+            const countSpan = document.getElementById(field.countId);
+            
+            if (input && counter && countSpan) {
+                // Initial count
+                updateCharacterCount(input, countSpan, counter, field.max);
+                
+                // Real-time updates
+                input.addEventListener('input', () => {
+                    updateCharacterCount(input, countSpan, counter, field.max);
+                    validateField(input);
+                });
+                
+                input.addEventListener('blur', () => {
+                    validateField(input);
+                });
+            }
+        });
+    }
+
+    function updateCharacterCount(input, countSpan, counter, max) {
+        const length = input.value.length;
+        countSpan.textContent = length;
+        
+        // Update counter color based on usage
+        counter.classList.remove('warning', 'danger');
+        
+        if (length > max * 0.9) {
+            counter.classList.add('danger');
+        } else if (length > max * 0.75) {
+            counter.classList.add('warning');
+        }
+    }
+
+    function setupRealTimeValidation() {
+        // Get all form fields
+        const formControls = document.querySelectorAll('.form-control, .form-select');
+        
+        formControls.forEach(control => {
+            // Add focus event for immediate feedback
+            control.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            control.addEventListener('blur', function() {
+                this.parentElement.classList.remove('focused');
+                validateField(this);
+            });
+            
+            // Real-time validation for text inputs
+            if (control.type !== 'select-one') {
+                control.addEventListener('input', function() {
+                    validateField(this);
+                });
+            }
+            
+            // For select elements
+            if (control.tagName === 'SELECT') {
+                control.addEventListener('change', function() {
+                    validateField(this);
+                });
+            }
+        });
+    }
+
+    function setupEmailValidation() {
+        const emailInput = document.getElementById('finderEmail');
+        if (emailInput) {
+            emailInput.addEventListener('input', function() {
+                validateEmail(this);
+            });
+            
+            emailInput.addEventListener('blur', function() {
+                validateEmail(this);
+            });
+        }
+    }
+
+    function setupCheckboxValidation() {
+        const checkbox = document.getElementById('agreeTerms');
+        if (checkbox) {
+            checkbox.addEventListener('change', function() {
+                validateCheckbox(this);
+            });
+        }
+    }
+
+    function validateField(field) {
+        const value = field.value.trim();
+        const feedbackId = field.id + 'Feedback';
+        const feedback = document.getElementById(feedbackId);
+        
+        // Clear previous validation states
+        field.classList.remove('valid', 'invalid');
+        if (feedback) feedback.classList.remove('show', 'valid', 'invalid');
+        
+        // Skip validation for optional fields if empty
+        const optionalFields = ['specificLocation', 'finderPhone', 'studentId', 'additionalNotes'];
+        if (optionalFields.includes(field.id) && value === '') {
+            return true;
+        }
+        
+        // Special validation for different field types
+        let isValid = false;
+        let message = '';
+        
+        switch(field.id) {
+            case 'itemName':
+                isValid = value.length >= 3 && value.length <= 50;
+                message = isValid ? '✓ Good item name' : 'Item name must be 3-50 characters';
+                break;
+                
+            case 'itemDescription':
+                isValid = value.length >= 10 && value.length <= 500;
+                message = isValid ? '✓ Good description' : 'Description must be 10-500 characters';
+                break;
+                
+            case 'itemCategory':
+            case 'foundLocation':
+                isValid = value !== '';
+                message = isValid ? '✓ Selected' : 'Please select an option';
+                break;
+                
+            case 'foundDate':
+                const date = new Date(value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                isValid = !isNaN(date.getTime()) && date <= today;
+                message = isValid ? '✓ Valid date' : 'Date cannot be in the future';
+                break;
+                
+            case 'finderName':
+                isValid = value.length >= 2 && value.length <= 50;
+                message = isValid ? '✓ Valid name' : 'Name must be 2-50 characters';
+                break;
+                
+            case 'specificLocation':
+                isValid = value.length <= 100;
+                message = isValid ? '✓ Good details' : 'Location details too long';
+                break;
+                
+            case 'studentId':
+                isValid = value === '' || /^\d+$/.test(value);
+                message = isValid ? '✓ Valid ID' : 'Student ID must be numeric';
+                break;
+                
+            default:
+                isValid = value.length > 0;
+                message = isValid ? '✓ Looks good' : 'This field is required';
+        }
+        
+        // Update field and feedback
+        if (isValid) {
+            field.classList.add('valid');
+            if (feedback) {
+                feedback.innerHTML = '<i class="fas fa-check-circle"></i>';
+                feedback.classList.add('show', 'valid');
+            }
+        } else {
+            field.classList.add('invalid');
+            if (feedback) {
+                feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+                feedback.classList.add('show', 'invalid');
+            }
+        }
+        
+        return isValid;
+    }
+
+    function validateEmail(emailInput) {
+        const value = emailInput.value.trim();
+        const feedback = document.getElementById('emailFeedback');
+        
+        // Clear previous validation
+        emailInput.classList.remove('valid', 'invalid');
+        if (feedback) feedback.classList.remove('show', 'valid', 'invalid');
+        
+        // Email validation regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const isValid = emailRegex.test(value) && value.includes('@');
+        
+        if (isValid) {
+            emailInput.classList.add('valid');
+            if (feedback) {
+                feedback.innerHTML = '<i class="fas fa-check-circle"></i>';
+                feedback.classList.add('show', 'valid');
+            }
+        } else if (value.length > 0) {
+            emailInput.classList.add('invalid');
+            if (feedback) {
+                feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+                feedback.classList.add('show', 'invalid');
+            }
+        }
+        
+        return isValid;
+    }
+
+    function validateCheckbox(checkbox) {
+        const feedback = document.getElementById('termsFeedback');
+        
+        // Clear previous validation
+        checkbox.classList.remove('valid', 'invalid');
+        if (feedback) feedback.classList.remove('show', 'valid', 'invalid');
+        
+        if (checkbox.checked) {
+            checkbox.classList.add('valid');
+            if (feedback) {
+                feedback.innerHTML = '<i class="fas fa-check-circle"></i>';
+                feedback.classList.add('show', 'valid');
+            }
+        } else {
+            checkbox.classList.add('invalid');
+            if (feedback) {
+                feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+                feedback.classList.add('show', 'invalid');
+            }
+        }
+        
+        return checkbox.checked;
+    }
+
+    function validateStep(step) {
+        let isValid = true;
+        const stepFields = getStepFields(step);
+        
+        stepFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                let fieldValid = false;
+                
+                // Special validation for email
+                if (fieldId === 'finderEmail') {
+                    fieldValid = validateEmail(field);
+                } else if (fieldId === 'agreeTerms') {
+                    fieldValid = validateCheckbox(field);
+                } else {
+                    fieldValid = validateField(field);
+                }
+                
+                if (!fieldValid) {
+                    isValid = false;
+                    
+                    // Scroll to first invalid field
+                    if (isValid === false) {
+                        field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        field.focus();
+                        isValid = true; // Prevent multiple scrolls
+                    }
+                }
+            }
+        });
+        
+        return isValid;
+    }
+
+    function getStepFields(step) {
+        switch(step) {
+            case 1:
+                return ['itemName', 'itemCategory', 'itemDescription'];
+            case 2:
+                return ['foundLocation', 'foundDate'];
+            case 3:
+                return ['finderName', 'finderEmail', 'agreeTerms'];
+            default:
+                return [];
+        }
+    }
+
     // ===== PAGE INITIALIZATION =====
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('Report page loaded - initializing modern features');
+        console.log('Report page loaded - initializing modern features with enhanced validation');
 
         // Check if there's a refresh flag from other pages
         const lastAdded = localStorage.getItem('lastItemAdded');
@@ -2799,9 +3002,12 @@
         initScrollAnimations();
         initNavbarScroll();
         setActiveNavItem();
+        initFormValidation(); // Initialize enhanced form validation
         
         // Set current date as default
-        document.getElementById('foundDate').valueAsDate = new Date();
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('foundDate').value = today;
+        document.getElementById('foundDate').max = today;
         
         // Initialize file upload
         initFileUpload();
@@ -2840,14 +3046,13 @@
 
         setupDataSync();
         
-        // Initialize draft saving
-        initDraftSaving();
-        
-        // Initialize real-time form feedback
-        initRealTimeFeedback();
-        
-        // Check for existing draft
-        checkForDraft();
+        // Show form card animation
+        setTimeout(() => {
+            const glassCard = document.querySelector('.glass-card');
+            if (glassCard) {
+                glassCard.classList.add('visible');
+            }
+        }, 800);
     });
 
     // Parallax Scrolling Functionality
@@ -3057,483 +3262,8 @@
         });
     }
 
-    // ===== DRAFT SAVING FEATURES =====
-    let draftTimer;
-    const DRAFT_SAVE_INTERVAL = 5000; // Save every 5 seconds
-    let isDraftSaving = false;
-
-    function initDraftSaving() {
-        // Load draft button functionality
-        const loadDraftBtn = document.getElementById('loadDraftBtn');
-        const clearDraftBtn = document.getElementById('clearDraftBtn');
-        
-        if (loadDraftBtn) {
-            loadDraftBtn.addEventListener('click', loadDraft);
-        }
-        
-        if (clearDraftBtn) {
-            clearDraftBtn.addEventListener('click', clearDraft);
-        }
-        
-        // Set up auto-save on input
-        const formInputs = document.querySelectorAll('#foundItemForm input, #foundItemForm select, #foundItemForm textarea');
-        formInputs.forEach(input => {
-            input.addEventListener('input', function() {
-                startDraftTimer();
-            });
-        });
-        
-        // Also save on change for select elements
-        const selectElements = document.querySelectorAll('#foundItemForm select');
-        selectElements.forEach(select => {
-            select.addEventListener('change', function() {
-                startDraftTimer();
-            });
-        });
-        
-        // Save draft when leaving page
-        window.addEventListener('beforeunload', function(e) {
-            if (hasFormData()) {
-                saveDraft();
-            }
-        });
-    }
-
-    function startDraftTimer() {
-        clearTimeout(draftTimer);
-        draftTimer = setTimeout(saveDraft, DRAFT_SAVE_INTERVAL);
-        showDraftIndicator('saving');
-    }
-
-    function saveDraft() {
-        if (isDraftSaving) return;
-        
-        isDraftSaving = true;
-        
-        const draftData = {
-            timestamp: new Date().toISOString(),
-            step: currentStep,
-            formData: {
-                itemName: document.getElementById('itemName').value,
-                itemCategory: document.getElementById('itemCategory').value,
-                itemDescription: document.getElementById('itemDescription').value,
-                foundLocation: document.getElementById('foundLocation').value,
-                foundDate: document.getElementById('foundDate').value,
-                specificLocation: document.getElementById('specificLocation').value,
-                foundTime: document.getElementById('foundTime').value,
-                finderName: document.getElementById('finderName').value,
-                finderEmail: document.getElementById('finderEmail').value,
-                finderPhone: document.getElementById('finderPhone').value,
-                studentId: document.getElementById('studentId').value,
-                additionalNotes: document.getElementById('additionalNotes').value,
-                agreeTerms: document.getElementById('agreeTerms').checked
-            }
-        };
-        
-        // Save to localStorage
-        localStorage.setItem('reportDraft', JSON.stringify(draftData));
-        
-        // Show saved indicator
-        showDraftIndicator('saved');
-        
-        // Reset saving flag
-        setTimeout(() => {
-            isDraftSaving = false;
-        }, 1000);
-        
-        console.log('Draft saved at:', draftData.timestamp);
-    }
-
-    function loadDraft() {
-        const draftData = localStorage.getItem('reportDraft');
-        if (!draftData) {
-            alert('No draft found to load.');
-            return;
-        }
-        
-        const confirmLoad = confirm('Load saved draft? This will replace your current form data.');
-        if (!confirmLoad) return;
-        
-        try {
-            const draft = JSON.parse(draftData);
-            
-            // Load form data
-            document.getElementById('itemName').value = draft.formData.itemName || '';
-            document.getElementById('itemCategory').value = draft.formData.itemCategory || '';
-            document.getElementById('itemDescription').value = draft.formData.itemDescription || '';
-            document.getElementById('foundLocation').value = draft.formData.foundLocation || '';
-            document.getElementById('foundDate').value = draft.formData.foundDate || '';
-            document.getElementById('specificLocation').value = draft.formData.specificLocation || '';
-            document.getElementById('foundTime').value = draft.formData.foundTime || '';
-            document.getElementById('finderName').value = draft.formData.finderName || '';
-            document.getElementById('finderEmail').value = draft.formData.finderEmail || '';
-            document.getElementById('finderPhone').value = draft.formData.finderPhone || '';
-            document.getElementById('studentId').value = draft.formData.studentId || '';
-            document.getElementById('additionalNotes').value = draft.formData.additionalNotes || '';
-            document.getElementById('agreeTerms').checked = draft.formData.agreeTerms || false;
-            
-            // Navigate to saved step
-            if (draft.step && draft.step !== currentStep) {
-                currentStep = draft.step;
-                updateFormSteps();
-            }
-            
-            // Update character counts
-            updateCharCount('itemDescription', 'descriptionCharCount', 500);
-            updateCharCount('additionalNotes', 'notesCharCount', 1000);
-            
-            // Update feedback indicators
-            updateFieldFeedback('itemName');
-            updateFieldFeedback('itemCategory');
-            updateFieldFeedback('itemDescription');
-            updateFieldFeedback('foundLocation');
-            updateFieldFeedback('foundDate');
-            updateFieldFeedback('finderName');
-            updateFieldFeedback('finderEmail');
-            
-            showDraftIndicator('loaded');
-            
-            alert('Draft loaded successfully!');
-            
-        } catch (error) {
-            console.error('Error loading draft:', error);
-            alert('Error loading draft. The draft data may be corrupted.');
-        }
-    }
-
-    function clearDraft() {
-        const confirmClear = confirm('Are you sure you want to clear the saved draft? This cannot be undone.');
-        if (!confirmClear) return;
-        
-        localStorage.removeItem('reportDraft');
-        showDraftIndicator('cleared');
-        
-        // Reset form
-        document.getElementById('foundItemForm').reset();
-        document.getElementById('imagePreview').style.display = 'none';
-        currentStep = 1;
-        updateFormSteps();
-        
-        alert('Draft cleared successfully!');
-    }
-
-    function showDraftIndicator(state) {
-        const indicator = document.getElementById('draftIndicator');
-        const draftText = document.getElementById('draftText');
-        
-        if (!indicator) return;
-        
-        // Remove all state classes
-        indicator.classList.remove('saving', 'saved', 'loaded', 'cleared');
-        
-        switch(state) {
-            case 'saving':
-                draftText.textContent = 'Saving draft...';
-                indicator.classList.add('saving');
-                break;
-            case 'saved':
-                draftText.textContent = 'Draft saved';
-                indicator.classList.add('saved');
-                break;
-            case 'loaded':
-                draftText.textContent = 'Draft loaded';
-                indicator.classList.add('loaded');
-                break;
-            case 'cleared':
-                draftText.textContent = 'Draft cleared';
-                indicator.classList.add('cleared');
-                break;
-        }
-        
-        // Show indicator
-        indicator.classList.add('visible');
-        
-        // Hide after 3 seconds (except for saving state)
-        if (state !== 'saving') {
-            setTimeout(() => {
-                indicator.classList.remove('visible');
-            }, 3000);
-        }
-    }
-
-       function checkForDraft() {
-        const draftData = localStorage.getItem('reportDraft');
-        if (draftData) {
-            const draft = JSON.parse(draftData);
-            const draftTime = new Date(draft.timestamp);
-            const now = new Date();
-            const hoursSinceDraft = (now - draftTime) / (1000 * 60 * 60);
-            
-            // Just show the draft indicator without the popup
-            if (hoursSinceDraft < 24) {
-                // Show the draft indicator in the corner
-                const indicator = document.getElementById('draftIndicator');
-                const draftText = document.getElementById('draftText');
-                
-                if (indicator && draftText) {
-                    draftText.textContent = 'Draft available';
-                    indicator.classList.add('visible');
-                    
-                    // Hide after 5 seconds
-                    setTimeout(() => {
-                        indicator.classList.remove('visible');
-                    }, 5000);
-                }
-                
-                console.log('Draft available from ' + draftTime.toLocaleTimeString());
-            } else {
-                // Draft is older than 24 hours, clear it
-                localStorage.removeItem('reportDraft');
-            }
-        }
-    }
-
-    function hasFormData() {
-        const inputs = document.querySelectorAll('#foundItemForm input, #foundItemForm select, #foundItemForm textarea');
-        for (let input of inputs) {
-            if (input.type !== 'submit' && input.type !== 'button' && input.value) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // ===== REAL-TIME FORM FEEDBACK =====
-    function initRealTimeFeedback() {
-        // Set up feedback for all required fields
-        const requiredFields = [
-            'itemName', 'itemCategory', 'itemDescription', 
-            'foundLocation', 'foundDate', 'finderName', 'finderEmail'
-        ];
-        
-        requiredFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                field.addEventListener('input', () => updateFieldFeedback(fieldId));
-                field.addEventListener('change', () => updateFieldFeedback(fieldId));
-                
-                // Initialize feedback
-                updateFieldFeedback(fieldId);
-            }
-        });
-        
-        // Set up character count for textareas
-        const descriptionField = document.getElementById('itemDescription');
-        const notesField = document.getElementById('additionalNotes');
-        
-        if (descriptionField) {
-            descriptionField.addEventListener('input', () => {
-                updateCharCount('itemDescription', 'descriptionCharCount', 500);
-                updateFieldFeedback('itemDescription');
-            });
-        }
-        
-        if (notesField) {
-            notesField.addEventListener('input', () => {
-                updateCharCount('additionalNotes', 'notesCharCount', 1000);
-            });
-        }
-        
-        // Set up email validation
-        const emailField = document.getElementById('finderEmail');
-        if (emailField) {
-            emailField.addEventListener('blur', () => validateEmail(emailField));
-        }
-        
-        // Set up phone validation
-        const phoneField = document.getElementById('finderPhone');
-        if (phoneField) {
-            phoneField.addEventListener('blur', () => validatePhone(phoneField));
-        }
-        
-        // Initialize character counts
-        updateCharCount('itemDescription', 'descriptionCharCount', 500);
-        updateCharCount('additionalNotes', 'notesCharCount', 1000);
-    }
-
-    function updateFieldFeedback(fieldId) {
-        const field = document.getElementById(fieldId);
-        const feedbackIndicator = document.getElementById(fieldId + 'Feedback');
-        
-        if (!field || !feedbackIndicator) return;
-        
-        let isValid = false;
-        let message = '';
-        
-        switch(fieldId) {
-            case 'itemName':
-                isValid = field.value.trim().length >= 2;
-                message = isValid ? '✓' : 'Name must be at least 2 characters';
-                break;
-            case 'itemCategory':
-                isValid = field.value !== '';
-                message = isValid ? '✓' : 'Please select a category';
-                break;
-            case 'itemDescription':
-                isValid = field.value.trim().length >= 10 && field.value.length <= 500;
-                if (field.value.length < 10) {
-                    message = 'Description must be at least 10 characters';
-                } else if (field.value.length > 500) {
-                    message = 'Description too long';
-                } else {
-                    message = '✓';
-                }
-                break;
-            case 'foundLocation':
-                isValid = field.value !== '';
-                message = isValid ? '✓' : 'Please select a location';
-                break;
-            case 'foundDate':
-                const selectedDate = new Date(field.value);
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                isValid = field.value && selectedDate <= today;
-                message = isValid ? '✓' : 'Please select a valid date (not in the future)';
-                break;
-            case 'finderName':
-                isValid = field.value.trim().length >= 2;
-                message = isValid ? '✓' : 'Name must be at least 2 characters';
-                break;
-            case 'finderEmail':
-                isValid = validateEmail(field, true);
-                message = isValid ? '✓' : 'Please enter a valid email';
-                break;
-            case 'finderPhone':
-                if (field.value.trim() === '') {
-                    isValid = true; // Optional field
-                    message = '';
-                } else {
-                    isValid = validatePhone(field, true);
-                    message = isValid ? '✓' : 'Please enter a valid phone number';
-                }
-                break;
-            case 'agreeTerms':
-                isValid = field.checked;
-                message = isValid ? '✓' : 'You must agree to the terms';
-                break;
-        }
-        
-        // Update visual feedback
-        if (field.type === 'checkbox') {
-            // For checkboxes, update parent label styling
-            const label = field.closest('.form-check-label');
-            if (label) {
-                if (isValid) {
-                    label.style.color = 'var(--success)';
-                } else {
-                    label.style.color = 'var(--danger)';
-                }
-            }
-        } else {
-            // For other fields
-            if (isValid) {
-                field.style.borderColor = 'var(--success)';
-                feedbackIndicator.className = 'feedback-indicator visible valid';
-                feedbackIndicator.innerHTML = '<i class="fas fa-check"></i>';
-            } else if (field.value.trim() !== '' || (field.type === 'date' && field.value) || field.type === 'select-one') {
-                field.style.borderColor = 'var(--danger)';
-                feedbackIndicator.className = 'feedback-indicator visible invalid';
-                feedbackIndicator.innerHTML = '<i class="fas fa-exclamation"></i>';
-            } else {
-                field.style.borderColor = '';
-                feedbackIndicator.className = 'feedback-indicator';
-            }
-        }
-        
-        // Store validation state for later use
-        field.dataset.valid = isValid;
-        
-        return isValid;
-    }
-
-    function updateCharCount(textareaId, counterId, maxLength) {
-        const textarea = document.getElementById(textareaId);
-        const counter = document.getElementById(counterId);
-        
-        if (!textarea || !counter) return;
-        
-        const currentLength = textarea.value.length;
-        counter.textContent = `${currentLength}/${maxLength}`;
-        
-        // Update color based on length
-        if (currentLength > maxLength) {
-            counter.className = 'char-count error';
-        } else if (currentLength > maxLength * 0.8) {
-            counter.className = 'char-count warning';
-        } else {
-            counter.className = 'char-count';
-        }
-    }
-
-    function validateEmail(emailField, silent = false) {
-        const email = emailField.value.trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const isValid = emailRegex.test(email);
-        
-        if (!silent) {
-            const feedbackIndicator = document.getElementById('finderEmailFeedback');
-            if (isValid) {
-                emailField.style.borderColor = 'var(--success)';
-                if (feedbackIndicator) {
-                    feedbackIndicator.className = 'feedback-indicator visible valid';
-                    feedbackIndicator.innerHTML = '<i class="fas fa-check"></i>';
-                }
-            } else if (email !== '') {
-                emailField.style.borderColor = 'var(--danger)';
-                if (feedbackIndicator) {
-                    feedbackIndicator.className = 'feedback-indicator visible invalid';
-                    feedbackIndicator.innerHTML = '<i class="fas fa-exclamation"></i>';
-                }
-            }
-        }
-        
-        return isValid;
-    }
-
-    function validatePhone(phoneField, silent = false) {
-        const phone = phoneField.value.trim();
-        // Simple phone validation - accepts various formats
-        const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-        const cleanedPhone = phone.replace(/[\s\-\(\)]/g, '');
-        const isValid = phoneRegex.test(cleanedPhone);
-        
-        if (!silent && phone !== '') {
-            const feedbackIndicator = document.getElementById('finderPhoneFeedback');
-            if (isValid) {
-                phoneField.style.borderColor = 'var(--success)';
-                if (feedbackIndicator) {
-                    feedbackIndicator.className = 'feedback-indicator visible valid';
-                    feedbackIndicator.innerHTML = '<i class="fas fa-check"></i>';
-                }
-            } else {
-                phoneField.style.borderColor = 'var(--danger)';
-                if (feedbackIndicator) {
-                    feedbackIndicator.className = 'feedback-indicator visible invalid';
-                    feedbackIndicator.innerHTML = '<i class="fas fa-exclamation"></i>';
-                }
-            }
-        }
-        
-        return isValid || phone === '';
-    }
-
     // ===== FORM STEP NAVIGATION =====
     let currentStep = 1;
-
-    function updateFormSteps() {
-        // Hide all steps
-        document.querySelectorAll('.form-step').forEach(step => {
-            step.style.display = 'none';
-        });
-        
-        // Show current step
-        const currentStepElement = document.querySelector(`.form-step[data-step="${currentStep}"]`);
-        if (currentStepElement) {
-            currentStepElement.style.display = 'block';
-        }
-        
-        updateProgress();
-    }
 
     function updateProgress() {
         const progress = (currentStep / 3) * 100;
@@ -3552,8 +3282,28 @@
     }
 
     function nextStep(step) {
-        // Validate current step
+        // Validate current step using enhanced validation
         if (!validateStep(currentStep)) {
+            // Show error message
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'alert alert-danger mt-3';
+            errorMessage.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Please fix the errors above before continuing.';
+            errorMessage.style.animation = 'fadeIn 0.3s ease';
+            
+            // Remove any existing error message
+            const existingError = document.querySelector('.form-step.active .alert');
+            if (existingError) existingError.remove();
+            
+            // Add new error message
+            const activeStep = document.querySelector('.form-step.active');
+            const firstField = activeStep.querySelector('.form-control, .form-select');
+            if (firstField) {
+                activeStep.insertBefore(errorMessage, firstField.parentElement);
+                
+                // Scroll to error
+                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
             return;
         }
         
@@ -3569,9 +3319,6 @@
         
         // Scroll to top of form
         document.getElementById('report-form').scrollIntoView({ behavior: 'smooth' });
-        
-        // Save draft
-        saveDraft();
     }
 
     function prevStep(step) {
@@ -3587,48 +3334,6 @@
         
         // Scroll to top of form
         document.getElementById('report-form').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function validateStep(step) {
-        let isValid = true;
-        
-        if (step === 1) {
-            const requiredFields = ['itemName', 'itemCategory', 'itemDescription'];
-            requiredFields.forEach(fieldId => {
-                if (!updateFieldFeedback(fieldId)) {
-                    isValid = false;
-                }
-            });
-        } else if (step === 2) {
-            const requiredFields = ['foundLocation', 'foundDate'];
-            requiredFields.forEach(fieldId => {
-                if (!updateFieldFeedback(fieldId)) {
-                    isValid = false;
-                }
-            });
-        }
-        
-        return isValid;
-    }
-
-    function showError(fieldId, message) {
-        const field = document.getElementById(fieldId);
-        field.style.borderColor = 'var(--danger)';
-        
-        // Remove any existing error message
-        const existingError = field.parentElement.querySelector('.error-message');
-        if (existingError) {
-            existingError.remove();
-        }
-        
-        // Add error message
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message text-danger mt-2 small';
-        errorDiv.textContent = message;
-        field.parentElement.appendChild(errorDiv);
-        
-        // Scroll to error
-        field.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     // ===== FILE UPLOAD =====
@@ -3653,7 +3358,7 @@
                 reader.onload = function(e) {
                     previewImg.src = e.target.result;
                     preview.style.display = 'block';
-                    saveDraft(); // Save draft when image is uploaded
+                    uploadArea.classList.add('valid');
                 }
                 reader.readAsDataURL(file);
             }
@@ -3686,7 +3391,7 @@
                 reader.onload = function(e) {
                     previewImg.src = e.target.result;
                     preview.style.display = 'block';
-                    saveDraft(); // Save draft when image is uploaded
+                    uploadArea.classList.add('valid');
                 }
                 reader.readAsDataURL(file);
             }
@@ -3696,7 +3401,7 @@
             preview.style.display = 'none';
             previewImg.src = '';
             fileInput.value = '';
-            saveDraft(); // Save draft when image is removed
+            uploadArea.classList.remove('valid');
         });
     }
 
@@ -3713,21 +3418,34 @@
         }
         
         if (!allValid) {
-            alert('Please fix all errors before submitting.');
+            alert('Please fix all errors before submitting the form.');
             return;
         }
         
         if (!document.getElementById('agreeTerms').checked) {
             alert('Please agree to the terms and conditions');
-            updateFieldFeedback('agreeTerms');
             return;
         }
         
-        // Show loading state
+        // Show loading state with animation
         const submitBtn = document.getElementById('submitBtn');
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
         submitBtn.disabled = true;
+        
+        // Add loading animation to button
+        submitBtn.style.position = 'relative';
+        submitBtn.style.overflow = 'hidden';
+        
+        const loadingOverlay = document.createElement('div');
+        loadingOverlay.style.position = 'absolute';
+        loadingOverlay.style.top = '0';
+        loadingOverlay.style.left = '0';
+        loadingOverlay.style.width = '100%';
+        loadingOverlay.style.height = '100%';
+        loadingOverlay.style.background = 'linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(230, 195, 79, 0.3))';
+        loadingOverlay.style.animation = 'shimmer 1.5s infinite linear';
+        submitBtn.appendChild(loadingOverlay);
         
         // Generate a unique, readable Item ID (e.g., AAI-2025-001)
         const timestamp = new Date();
@@ -3771,9 +3489,7 @@
         // Save and show success
         setTimeout(() => {
             if (saveToLocalStorage(formData)) {
-                // Clear draft on successful submission
-                localStorage.removeItem('reportDraft');
-                showSuccessPopup(itemId); // Pass the Item ID to show in success popup
+                showSuccessModal(itemId); // Pass the Item ID to show in success modal
             } else {
                 alert('There was an error saving your item. Please try again.');
             }
@@ -3781,10 +3497,11 @@
             // Reset button
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
-        }, 1000);
+            submitBtn.removeChild(loadingOverlay);
+        }, 1500);
     }
 
-    function getNextItemSequence() {
+    async function getNextItemSequence(year, month, day) {
         // Simple + safe ID: use a short random 3-digit suffix (no collisions in practice for school use)
         const rand = Math.floor(100 + Math.random() * 900); // 100-999
         return String(rand);
@@ -3849,12 +3566,13 @@
         }
     }
 
-    // Update showSuccessPopup to display Item ID
-    function showSuccessPopup(itemId) {
-        const successMessage = document.getElementById('successMessage');
+    // Update showSuccessModal to display Item ID
+    function showSuccessModal(itemId) {
+        const modalContent = document.querySelector('.success-content');
+        const successMsg = modalContent.querySelector('p');
         
-        // Update success message with Item ID
-        successMessage.innerHTML = `
+        // Update success message
+        successMsg.innerHTML = `
             Thank you for helping reunite lost items with their owners. 
             Your report has been received and will be reviewed by our staff.
             <br><br>
@@ -3878,11 +3596,11 @@
             </div>
         `;
         
-        document.getElementById('successPopup').classList.add('active');
+        document.getElementById('successModal').classList.add('active');
         
-        // Animate popup entrance
+        // Animate modal entrance
         if (typeof gsap !== 'undefined') {
-            gsap.from('.success-popup', {
+            gsap.from('.success-content', {
                 duration: 0.6,
                 y: 50,
                 opacity: 0,
@@ -3891,34 +3609,49 @@
         }
     }
 
-    function closeSuccessPopup() {
-        document.getElementById('successPopup').classList.remove('active');
+    function closeSuccessModal() {
+        document.getElementById('successModal').classList.remove('active');
         
         // Reset form
         document.getElementById('foundItemForm').reset();
         document.getElementById('imagePreview').style.display = 'none';
+        document.getElementById('uploadArea').classList.remove('valid');
+        
+        // Clear all validation states
+        document.querySelectorAll('.form-control, .form-select, .form-check-input').forEach(field => {
+            field.classList.remove('valid', 'invalid');
+        });
+        
+        document.querySelectorAll('.field-feedback').forEach(feedback => {
+            feedback.classList.remove('show', 'valid', 'invalid');
+        });
+        
+        document.querySelectorAll('.char-counter').forEach(counter => {
+            counter.classList.remove('warning', 'danger');
+        });
+        
+        // Reset character counters
+        document.querySelectorAll('.char-counter span').forEach(span => {
+            span.textContent = '0';
+        });
         
         // Reset to step 1
+        document.querySelectorAll('.form-step').forEach(step => {
+            step.style.display = 'none';
+        });
         currentStep = 1;
-        updateFormSteps();
+        document.querySelector('.form-step[data-step="1"]').style.display = 'block';
+        updateProgress();
         
         // Clear any error messages
-        document.querySelectorAll('.error-message').forEach(error => error.remove());
-        document.querySelectorAll('.form-control, .form-select').forEach(field => {
-            field.style.borderColor = '';
-        });
-        
-        // Reset feedback indicators
-        document.querySelectorAll('.feedback-indicator').forEach(indicator => {
-            indicator.className = 'feedback-indicator';
-        });
-        
-        // Reset character counts
-        updateCharCount('itemDescription', 'descriptionCharCount', 500);
-        updateCharCount('additionalNotes', 'notesCharCount', 1000);
+        document.querySelectorAll('.error-message, .alert').forEach(error => error.remove());
         
         // Set current date
-        document.getElementById('foundDate').valueAsDate = new Date();
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('foundDate').value = today;
+        
+        // Scroll to top of form
+        document.getElementById('report-form').scrollIntoView({ behavior: 'smooth' });
     }
 
     // ===== FORM NAVIGATION INIT =====
@@ -3940,13 +3673,6 @@
         
         if (items.length > 0) {
             console.log('Latest item:', items[items.length - 1]);
-        }
-        
-        const draft = localStorage.getItem('reportDraft');
-        if (draft) {
-            console.log('Draft exists:', JSON.parse(draft));
-        } else {
-            console.log('No draft found');
         }
     }
 
@@ -3989,52 +3715,12 @@
             }
         });
     }
-    
-    // Add this function to get a unique next sequence
-    function getNextItemSequence() {
-        try {
-            const items = JSON.parse(localStorage.getItem('lostFoundItems') || '[]');
-            
-            // Get the latest ID from existing items
-            let maxSequence = 0;
-            items.forEach(item => {
-                if (item.id && item.id.includes('AAI-')) {
-                    const parts = item.id.split('-');
-                    if (parts.length >= 4) {
-                        const sequence = parseInt(parts[3]);
-                        if (!isNaN(sequence) && sequence > maxSequence) {
-                            maxSequence = sequence;
-                        }
-                    }
-                }
-            });
-            
-            // Return next sequence number (or start from 1 if none)
-            return String(maxSequence + 1).padStart(3, '0');
-        } catch (error) {
-            console.error('Error getting next sequence:', error);
-            return '001';
-        }
-    }
     </script>
 
+<!-- Vercel Speed Insights -->
 <script>
-// Force scroll to top on page load
-window.addEventListener('DOMContentLoaded', function() {
-    window.scrollTo(0, 0);
-});
-
-// Also scroll to top immediately (for faster loading)
-setTimeout(function() {
-    window.scrollTo(0, 0);
-}, 0);
-
-// For back/forward navigation
-window.addEventListener('pageshow', function(event) {
-    if (event.persisted) {
-        window.scrollTo(0, 0);
-    }
-});
+  window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
 </script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>

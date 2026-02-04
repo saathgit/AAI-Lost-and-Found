@@ -3076,6 +3076,99 @@
     let isSyncing = false;
     let lastKnownUpdate = null;
 
+    // Initialize sample items if localStorage is empty
+    function initializeSampleItems() {
+        const existingItems = localStorage.getItem('lostFoundItems');
+        if (!existingItems) {
+            const sampleItems = [
+                {
+                    id: 'AAI-2024-001',
+                    title: 'Blue Nike Hoodie',
+                    category: 'clothing',
+                    description: 'Men\'s medium size blue Nike hoodie with white swoosh logo. Found near the gym entrance.',
+                    dateFound: new Date().toISOString().split('T')[0],
+                    location: 'gym',
+                    foundBy: 'Coach Johnson',
+                    contact: 'coach.johnson@aai.edu',
+                    status: 'available',
+                    adminApproved: true,
+                    isRecent: true
+                },
+                {
+                    id: 'AAI-2024-002',
+                    title: 'Black Essentials Hoodie',
+                    category: 'clothing',
+                    description: 'Black Fear of God Essentials hoodie, size large. Found in the main hallway near lockers.',
+                    dateFound: new Date(Date.now() - 86400000).toISOString().split('T')[0], // Yesterday
+                    location: 'main-hallway',
+                    foundBy: 'Ms. Thompson',
+                    contact: 'office@aai.edu',
+                    status: 'available',
+                    adminApproved: true,
+                    isRecent: true
+                },
+                {
+                    id: 'AAI-2024-003',
+                    title: 'Goyard Wallet',
+                    category: 'accessories',
+                    description: 'Brown Goyard wallet with multiple card slots. Contains no cash or identification.',
+                    dateFound: new Date(Date.now() - 172800000).toISOString().split('T')[0], // 2 days ago
+                    location: 'cafeteria',
+                    foundBy: 'Cafeteria Staff',
+                    contact: 'cafeteria@aai.edu',
+                    status: 'available',
+                    adminApproved: true,
+                    isRecent: true
+                },
+                {
+                    id: 'AAI-2024-004',
+                    title: 'Black Owala Water Bottle',
+                    category: 'accessories',
+                    description: '24oz black Owala water bottle with purple lid. Slightly used but in good condition.',
+                    dateFound: new Date(Date.now() - 259200000).toISOString().split('T')[0], // 3 days ago
+                    location: 'library',
+                    foundBy: 'Librarian',
+                    contact: 'library@aai.edu',
+                    status: 'available',
+                    adminApproved: true,
+                    isRecent: true
+                },
+                {
+                    id: 'AAI-2024-005',
+                    title: 'AP Calculus Book',
+                    category: 'books',
+                    description: 'AP Calculus textbook by James Stewart. Some notes written in margins.',
+                    dateFound: new Date(Date.now() - 345600000).toISOString().split('T')[0], // 4 days ago
+                    location: 'classroom',
+                    foundBy: 'Math Dept',
+                    contact: 'math.dept@aai.edu',
+                    status: 'available',
+                    adminApproved: true,
+                    isRecent: true
+                },
+                {
+                    id: 'AAI-2024-006',
+                    title: 'Black Audi Lanyard',
+                    category: 'accessories',
+                    description: 'Black lanyard with Audi car logo. Has a single house key attached.',
+                    dateFound: new Date(Date.now() - 432000000).toISOString().split('T')[0], // 5 days ago
+                    location: 'parking-lot',
+                    foundBy: 'Security',
+                    contact: 'security@aai.edu',
+                    status: 'available',
+                    adminApproved: true,
+                    isRecent: true
+                }
+            ];
+            
+            localStorage.setItem('lostFoundItems', JSON.stringify(sampleItems));
+            localStorage.setItem('lastDataUpdate', Date.now().toString());
+            console.log('✅ Sample items initialized');
+            return sampleItems;
+        }
+        return null;
+    }
+
     // Consolidate Data Sync Function
     function setupBrowseDataSync() {
         console.log('🔧 Setting up data synchronization for browse page...');
@@ -3157,6 +3250,9 @@
         
         // Initialize loading bar
         document.getElementById('loadingBar').style.width = '30%';
+        
+        // Initialize sample items if needed
+        initializeSampleItems();
         
         // Load user preferences first
         loadUserPreferences();

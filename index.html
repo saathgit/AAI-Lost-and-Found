@@ -3942,6 +3942,105 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
    <script>
+    // Initialize sample items if localStorage is empty
+    function initializeSampleItems() {
+        const existingItems = localStorage.getItem('lostFoundItems');
+        if (!existingItems) {
+            const sampleItems = [
+                {
+                    id: 'AAI-2024-001',
+                    title: 'Blue Nike Hoodie',
+                    category: 'clothing',
+                    description: 'Men\'s medium size blue Nike hoodie with white swoosh logo. Found near the gym entrance.',
+                    dateFound: new Date().toISOString().split('T')[0],
+                    location: 'gym',
+                    foundBy: 'Coach Johnson',
+                    contact: 'coach.johnson@aai.edu',
+                    status: 'available',
+                    adminApproved: true,
+                    isRecent: true,
+                    image: 'https://store.steelcityfc.com/cdn/shop/files/3_1_300x300.png?v=1707870796'
+                },
+                {
+                    id: 'AAI-2024-002',
+                    title: 'Black Essentials Hoodie',
+                    category: 'clothing',
+                    description: 'Black Fear of God Essentials hoodie, size large. Found in the main hallway near lockers.',
+                    dateFound: new Date(Date.now() - 86400000).toISOString().split('T')[0], // Yesterday
+                    location: 'main-hallway',
+                    foundBy: 'Saathvik Ankarapu',
+                    contact: 'saathankara@gmail.com',
+                    status: 'available',
+                    adminApproved: true,
+                    isRecent: true,
+                    image: 'https://614sneaker.com/cdn/shop/files/FullSizeRender_bdb2a817-7d45-42bc-93fa-c71fbb890942.jpg?v=1706672953&width=1227'
+                },
+                {
+                    id: 'AAI-2024-003',
+                    title: 'Goyard Wallet',
+                    category: 'accessories',
+                    description: 'Brown Goyard wallet with multiple card slots. Contains no cash or identification.',
+                    dateFound: new Date(Date.now() - 172800000).toISOString().split('T')[0], // 2 days ago
+                    location: 'cafeteria',
+                    foundBy: 'Cafeteria Staff',
+                    contact: 'cafeteria@aai.edu',
+                    status: 'available',
+                    adminApproved: true,
+                    isRecent: true,
+                    image: 'https://images.bloomingdalesassets.com/is/image/BLM/products/7/optimized/15606397_fpx.tif?$2014_BROWSE_FASHION$&qlt=80,0&resMode=sharp2&op_usm=1.75,0.3,2,0&fmt=jpeg&wid=342&hei=428'
+                },
+                {
+                    id: 'AAI-2024-004',
+                    title: 'Black Owala Water Bottle',
+                    category: 'accessories',
+                    description: '24oz black Owala water bottle with purple lid. Slightly used but in good condition.',
+                    dateFound: new Date(Date.now() - 259200000).toISOString().split('T')[0], // 3 days ago
+                    location: 'library',
+                    foundBy: 'Sanni Somsagar',
+                    contact: 'somsagar@gmail.com',
+                    status: 'available',
+                    adminApproved: true,
+                    isRecent: true,
+                    image: 'https://i5.walmartimages.com/seo/Owala-Freesip-Water-Bottle-Stainless-Steel-24oz-Black_1a6b89ea-a607-4c37-8562-e3d8c840d416.a96742f70d95f392a878515c3ce5dd24.jpeg'
+                },
+                {
+                    id: 'AAI-2024-005',
+                    title: 'AP Calculus Book',
+                    category: 'books',
+                    description: 'AP Calculus textbook by James Stewart. Some notes written in margins.',
+                    dateFound: new Date(Date.now() - 345600000).toISOString().split('T')[0], // 4 days ago
+                    location: 'classroom',
+                    foundBy: 'Arya Sanga',
+                    contact: 'sanga@gmail.com',
+                    status: 'available',
+                    adminApproved: true,
+                    isRecent: true,
+                    image: 'https://m.media-amazon.com/images/I/81i35IX8DVL.jpg_BO30,255,255,255_UF750,750_SR1910,1000,0,C_QL100_.jpg'
+                },
+                {
+                    id: 'AAI-2024-006',
+                    title: 'Black Audi Lanyard',
+                    category: 'accessories',
+                    description: 'Black lanyard with Audi car logo. Has a single house key attached.',
+                    dateFound: new Date(Date.now() - 432000000).toISOString().split('T')[0], // 5 days ago
+                    location: 'parking-lot',
+                    foundBy: 'Security',
+                    contact: 'security@aai.edu',
+                    status: 'available',
+                    adminApproved: true,
+                    isRecent: true,
+                    image: 'https://6sideauto.com/cdn/shop/products/K24.jpg?v=1625168901'
+                }
+            ];
+            
+            localStorage.setItem('lostFoundItems', JSON.stringify(sampleItems));
+            localStorage.setItem('lastDataUpdate', Date.now().toString());
+            console.log('✅ Sample items initialized');
+            return sampleItems;
+        }
+        return null;
+    }
+
 // ========== MAIN INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Page loading...');
@@ -3954,7 +4053,10 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'login.html';
         return;
     }
-    
+
+     // Initialize sample items if needed
+        initializeSampleItems();
+        
     initNavbarScroll();
     setActiveNavItem();
     initBackToTop();

@@ -2086,29 +2086,24 @@
    <script>
        // Dark Mode Functionality
        function initDarkMode() {
-           const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-           const currentTheme = localStorage.getItem('theme') || 'light';
-          
-           // Set initial theme
-           if (currentTheme === 'dark' || (prefersDarkScheme.matches && currentTheme !== 'light')) {
-               document.body.classList.add('dark-mode');
-               localStorage.setItem('theme', 'dark');
-           } else {
-               document.body.classList.remove('dark-mode');
-               localStorage.setItem('theme', 'light');
-           }
-          
-           // Listen for system theme changes
-           prefersDarkScheme.addEventListener('change', function(e) {
-               if (!localStorage.getItem('theme')) {
-                   if (e.matches) {
-                       document.body.classList.add('dark-mode');
-                   } else {
-                       document.body.classList.remove('dark-mode');
-                   }
-               }
-           });
-       }
+    // Always set to dark mode initially
+    document.body.classList.add('dark-mode');
+    localStorage.setItem('theme', 'dark');
+    
+    // Keep this part for future theme switching capability
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    // Listen for system theme changes (optional - if you want system preference to override)
+    prefersDarkScheme.addEventListener('change', function(e) {
+        if (!localStorage.getItem('theme') || localStorage.getItem('theme') === 'auto') {
+            if (e.matches) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        }
+    });
+}
 
        // Language Management
        function initLanguage() {
